@@ -12,7 +12,9 @@ class App extends React.Component {
   }
 
   handleClick = (e) => {
-    this.props.getProfileFetch()
+    e.preventDefault()
+    localStorage.removeItem("token")
+    this.props.logoutUser()
   }
 
   render() {
@@ -32,7 +34,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.reducer.currentUser
+  currentUser: state.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -40,4 +42,4 @@ const mapDispatchToProps = dispatch => ({
   logoutUser: () => dispatch(logoutUser())
 })
 
-export default connect(null,mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

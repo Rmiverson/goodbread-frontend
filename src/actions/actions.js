@@ -59,6 +59,7 @@ export const getProfileFetch = () => {
          .then(data => {
             if (data.message) {
                //handle error resp
+               localStorage.removeItem("token")
             } else {
                dispatch(loginUser(data.user))
             }
