@@ -1,12 +1,16 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser } from './actions/actions'
+import { logoutUser, userPersistFetch } from './actions/actions'
 import Signup from './containers/Signup'
 import Login from './containers/Login'
 import './App.css';
 
 class App extends React.Component {
+
+  componentDidMount = () => {
+    this.props.userPersistFetch()
+  }
 
   handleClick = (e) => {
     e.preventDefault()
@@ -35,6 +39,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  userPersistFetch: () => dispatch(userPersistFetch()),
   logoutUser: () => dispatch(logoutUser())
 })
 

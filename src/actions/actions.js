@@ -1,6 +1,8 @@
+const API = "http://localhost:3000/api/v1"
+
 export const userPostFetch = user => {
    return dispatch => {
-      return fetch("http://localhost:3000/api/v1/sign_up", {
+      return fetch(API + "/sign_up", {
          method: "POST",
          headers: {
             'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ export const userPostFetch = user => {
 
 export const userLoginFetch = user => {
    return dispatch => {
-      return fetch("http://localhost:3000/api/v1/login", {
+      return fetch(API + "/login", {
          method: "POST",
          headers: {
             'Content-Type': 'application/json',
@@ -41,6 +43,29 @@ export const userLoginFetch = user => {
             dispatch(loginUser(data))
          }
       })
+   }
+}
+
+export const userPersistFetch = user => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/persist", {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+               localStorage.removeItem("token")
+            } else {
+               dispatch(loginUser(data))
+            }
+         })   
+      }
    }
 }
 
