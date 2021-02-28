@@ -1,18 +1,18 @@
 export const userPostFetch = user => {
    return dispatch => {
-      return fetch("http://localhost:3000/users", {
+      return fetch("http://localhost:3000/api/v1/sign_up", {
          method: "POST",
          headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
          },
-         body: JSON.stringify({user})
+         body: JSON.stringify({user: user})
       })
       .then(resp => resp.json())
       .then(data => {
-         if (data.message) {
-            //handle logic if an invalid user is created
-            //ie: invalid username or password
+         console.log(data)
+         if (!!data.message) {
+            console.log(data.message)
          } else {
             localStorage.setItem("token", data.token)
             dispatch(loginUser(data.user))
@@ -23,53 +23,28 @@ export const userPostFetch = user => {
 
 export const userLoginFetch = user => {
    return dispatch => {
-      return fetch("http://localhost:3000/login", {
+      return fetch("http://localhost:3000/api/v1/login", {
          method: "POST",
          headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json'
          },
-         body: JSON.stringify({user})
+         body: JSON.stringify(user)
       })
       .then(resp => resp.json())
       .then(data => {
+         console.log(data)
          if (data.message) {
-            //handle invalid input
+            console.log(data.message)
          } else {
             localStorage.setItem("token", data.token)
-            dispatch(loginUser(data.user))
+            dispatch(loginUser(data))
          }
       })
    }
 }
 
-export const getProfileFetch = () => {
-   return dispatch => {
-      const token = localStorage.token
-      if (token) {
-         return fetch("http://localhost:3000/profile", {
-            method: "GET",
-            headers: {
-               'Content-Type': 'application/json',
-               Accept: 'application/json',
-               'Authorization': `Bearer ${token}`
-            }
-         })
-         .then(resp => resp.json())
-         .then(data => {
-            if (data.message) {
-               //handle error resp
-               localStorage.removeItem("token")
-            } else {
-               dispatch(loginUser(data.user))
-            }
-
-         })
-      }
-   }
-}
-
-const loginUser = userObj => ({
+export const loginUser = userObj => ({
    type: 'LOGIN_USER',
    payload: userObj
 })

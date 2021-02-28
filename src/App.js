@@ -1,15 +1,12 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getProfileFetch, logoutUser } from './actions/actions'
+import { logoutUser } from './actions/actions'
 import Signup from './containers/Signup'
 import Login from './containers/Login'
 import './App.css';
 
 class App extends React.Component {
-  componentDidMount = () => {
-    this.props.getProfileFetch()
-  }
 
   handleClick = (e) => {
     e.preventDefault()
@@ -38,7 +35,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getProfileFetch: () => dispatch(getProfileFetch()),
   logoutUser: () => dispatch(logoutUser())
 })
 

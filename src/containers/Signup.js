@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { userPostFetch } from '../actions/actions'
+import { userPostFetch } from '../actions/actions.js'
 
 import UserForm from '../components/UserForm'
 
@@ -10,14 +10,15 @@ class Signup extends React.Component {
       password: ""
    }
 
-   handleChange = (e) => {
+   handleChange = e => {
       this.setState({
          [e.target.name]: e.target.value
       })
    }
 
-   handleSubmit = (e) => {
+   handleSubmit = e => {
       e.preventDefault()
+      // console.log(this.state)
       this.props.userPostFetch(this.state)
    }
 

@@ -18,7 +18,8 @@ class Login extends React.Component {
 
    handleSubmit = (e) => {
       e.preventDefault()
-      this.props.userPostFetch(this.state)
+      // console.log(this.state)
+      this.props.userLoginFetch(this.state)
    }
 
    render() {
