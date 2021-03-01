@@ -23,7 +23,7 @@ class App extends React.Component {
       <div className="App">
         <Switch>
           <Route path="/signup" component={Signup} />
-          <Route path="/login" component={Login} />
+          <Route path="/" component={Login} />
         </Switch>
           {this.props.currentUser.username
             ? <button onClick={this.handleClick}>Log Out</button>
