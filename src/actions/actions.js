@@ -35,10 +35,11 @@ export const userLoginFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         console.log(data)
+         // console.log(data)
          if (data.message) {
             console.log(data.message)
          } else {
+            // console.log(data)
             localStorage.setItem("token", data.token)
             dispatch(loginUser(data))
          }

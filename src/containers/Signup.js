@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { userPostFetch } from '../actions/actions.js'
+import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
 
@@ -18,13 +19,16 @@ class Signup extends React.Component {
 
    handleSubmit = e => {
       e.preventDefault()
-      // console.log(this.state)
       this.props.userPostFetch(this.state)
    }
 
    render() {
       return(
-         <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+         <div className="signup-form">
+            {!!this.props.currentUser.id && <Redirect to="/" />}
+            <h2>Signup</h2>
+            <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+         </div>
       )
    }
 }

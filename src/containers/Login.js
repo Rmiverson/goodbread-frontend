@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { userLoginFetch } from '../actions/actions'
+import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
 
@@ -18,14 +19,18 @@ class Login extends React.Component {
 
    handleSubmit = (e) => {
       e.preventDefault()
-      // console.log(this.state)
       this.props.userLoginFetch(this.state)
    }
 
+
    render() {
       return(
-         <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
-      )
+         <div className="login-form">
+            {!!this.props.currentUser.id && <Redirect to="/" />}
+            <h2>Login</h2>
+            <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+         </div>
+      )   
    }
 }
 
