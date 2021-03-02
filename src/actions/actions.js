@@ -35,11 +35,9 @@ export const userLoginFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         // console.log(data)
          if (data.message) {
             console.log(data.message)
          } else {
-            // console.log(data)
             localStorage.setItem("token", data.token)
             dispatch(loginUser(data))
          }
@@ -70,6 +68,29 @@ export const userPersistFetch = user => {
    }
 }
 
+export const userFollowPostsFetch = user => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/followposts/" + user.id, {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+            } else {
+               // console.log(data)
+               dispatch(followsPosts(data))
+            }
+         })
+      }
+   }
+}
+
 export const loginUser = userObj => ({
    type: 'LOGIN_USER',
    payload: userObj
@@ -79,3 +100,7 @@ export const logoutUser = userObj => ({
    type: 'LOGOUT_USER'
 })
 
+export const followsPosts = dataObj => ({
+   type: 'FOLLOWS_POSTS',
+   payload: dataObj
+})

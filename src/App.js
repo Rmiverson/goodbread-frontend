@@ -32,7 +32,7 @@ class App extends React.Component {
     return(<Signup currentUser={this.props.currentUser}/>)
   }
   renderHomePage = () => {
-    return(<Home />)
+    return(<Home currentUser={this.props.currentUser} followsPosts={this.props.followsPosts}/>)
   }
   renderSearchPage = () => {
     return(<Search />)
@@ -62,7 +62,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.currentUser
+  currentUser: state.currentUser,
+  followsPosts: state.followsPosts
 })
 
 const mapDispatchToProps = dispatch => ({
