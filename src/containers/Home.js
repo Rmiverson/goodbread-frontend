@@ -13,7 +13,6 @@ class Home extends React.Component {
 
    renderFeed = () => {
       let posts = this.props.followsPosts
-      console.log(posts)
       if (Object.keys(posts).length > 1) {
          return posts.map(post => {
             return (<PostPreviewCard post={post} key={post.id}/>)
@@ -25,16 +24,20 @@ class Home extends React.Component {
       return(
          <div className="home-page">
             <h2>Home Page</h2>
-            <div className="feed">
+            <div className="home-feed">
                {this.renderFeed()}
             </div>
          </div>
       )
    }
 }
+const mapStateToProps = state => ({
+   currentUser: state.currentUser,
+   followsPosts: state.followsPosts
+})
 
 const mapDispatchToProps = dispatch => ({
    userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser))
 })
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

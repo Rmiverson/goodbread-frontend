@@ -1,6 +1,7 @@
 export const initialState = {
    currentUser: {},
-   followsPosts: {}
+   followsPosts: {},
+   allPosts: {}
 }
 
 export default function reducer(state = initialState, action) {
@@ -11,6 +12,8 @@ export default function reducer(state = initialState, action) {
          return {...state, currentUser: {}}
       case 'FOLLOWS_POSTS':
          return {...state, followsPosts: action.payload}
+      case 'ALL_POSTS':
+         return {...state, allPosts: action.payload}
       default:
          return state
    }

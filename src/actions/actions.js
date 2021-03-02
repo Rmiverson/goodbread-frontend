@@ -68,6 +68,28 @@ export const userPersistFetch = user => {
    }
 }
 
+export const allPostsFetch = () => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/posts", {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+            } else {
+               dispatch(posts(data))
+            }
+         })
+      }
+   }
+}
+
 export const userFollowPostsFetch = user => {
    return dispatch => {
       const token = localStorage.token
@@ -83,7 +105,6 @@ export const userFollowPostsFetch = user => {
             if (data.message) {
                console.log(data.message)
             } else {
-               // console.log(data)
                dispatch(followsPosts(data))
             }
          })
@@ -102,5 +123,10 @@ export const logoutUser = userObj => ({
 
 export const followsPosts = dataObj => ({
    type: 'FOLLOWS_POSTS',
+   payload: dataObj
+})
+
+export const posts = dataObj => ({
+   type: 'ALL_POSTS',
    payload: dataObj
 })
