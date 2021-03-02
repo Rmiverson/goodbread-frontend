@@ -83,7 +83,7 @@ export const userFollowPostsFetch = user => {
             if (data.message) {
                console.log(data.message)
             } else {
-               console.log(data)
+               // console.log(data)
                dispatch(followsPosts(data))
             }
          })
