@@ -83,6 +83,7 @@ export const userFollowPostsFetch = user => {
             if (data.message) {
                console.log(data.message)
             } else {
+               console.log(data)
                dispatch(followsPosts(data))
             }
          })
@@ -99,7 +100,7 @@ export const logoutUser = userObj => ({
    type: 'LOGOUT_USER'
 })
 
-export const followPosts = dataObj = ({
+export const followsPosts = dataObj => ({
    type: 'FOLLOWS_POSTS',
-   payload: userObj
+   payload: dataObj
 })
