@@ -1,6 +1,7 @@
 import React from 'react'
 
 class UserForm extends React.Component {
+
    render() {
       return(
          <div className="user-form">
@@ -21,6 +22,7 @@ class UserForm extends React.Component {
                   <input 
                      name='password'
                      placeholder='password'
+                     type="password"
                      value={this.props.password}
                      onChange={this.props.handleChange}
                   />
