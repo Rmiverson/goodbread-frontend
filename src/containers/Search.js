@@ -12,7 +12,7 @@ class Search extends React.Component {
 
    renderFeed = () => {
       let posts = this.props.allPosts
-      console.log(posts)
+      // console.log(posts)
       if (Object.keys(posts).length > 1) {
          return posts.map(post => {
             return (<PostPreviewCard post={post} key={post.id}/>)
