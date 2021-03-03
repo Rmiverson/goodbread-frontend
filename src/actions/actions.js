@@ -134,6 +134,34 @@ export const userInfoFetch = user => {
    }
 }
 
+export const setSelectedPost = post => {
+   return dispatch => {
+      dispatch(selectedPost(post))
+   }
+}
+
+export const setSelectedUser = user => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/users/" + user.id, {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+            } else {
+               dispatch(selectedUser(data))
+            }
+         })
+      }
+   }
+}
+
 export const loginUser = userObj => ({
    type: 'LOGIN_USER',
    payload: userObj
@@ -155,5 +183,15 @@ export const posts = dataObj => ({
 
 export const currentUserData = userObj => ({
    type: 'USER_DATA',
+   payload: userObj
+})
+
+export const selectedPost = post => ({
+   type: 'POST',
+   payload: post
+})
+
+export const selectedUser = userObj => ({
+   type: 'SELECT_USER',
    payload: userObj
 })
