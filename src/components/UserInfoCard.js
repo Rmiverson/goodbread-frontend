@@ -14,7 +14,7 @@ class UserInfoCard extends React.Component {
             <h3>{this.props.user.username}</h3>
             <h5>Following: {this.renderFollow(this.props.user.followees)}</h5>
             <h5>Followers: {this.renderFollow(this.props.user.followers)}</h5>
-            <p>{this.props.description}</p>
+            <p>{this.props.user.user_desc}</p>
          </div>
    )
    }

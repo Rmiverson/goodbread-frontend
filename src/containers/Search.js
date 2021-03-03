@@ -2,22 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { allPostsFetch } from '../actions/actions'
 
-import PostPreviewCard from '../components/PostPreviewCard'
+import Feed from '../containers/Feed'
 
 class Search extends React.Component {
    componentDidMount() {
-      let currentUser = this.props.currentUser
-      this.props.allPostsFetch(currentUser)
-   }
-
-   renderFeed = () => {
-      let posts = this.props.allPosts
-      // console.log(posts)
-      if (Object.keys(posts).length > 1) {
-         return posts.map(post => {
-            return (<PostPreviewCard post={post} key={post.id}/>)
-         })  
-      }
+      this.props.allPostsFetch(this.props.currentUser)
    }
 
    render() {
@@ -25,7 +14,7 @@ class Search extends React.Component {
          <div className="Search-page">
             <h2>Search Page</h2>
             <div className="search-feed">
-               {this.renderFeed()}
+               <Feed posts={this.props.allPosts} />
             </div>
          </div>
       )
