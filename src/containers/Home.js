@@ -2,22 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { userFollowPostsFetch } from '../actions/actions'
 
-import PostPreviewCard from '../components/PostPreviewCard'
+import Feed from '../containers/Feed'
 
 
 class Home extends React.Component {
    componentDidMount() {
-      let currentUser = this.props.currentUser
-      this.props.userFollowPostsFetch(currentUser)
-   }
-
-   renderFeed = () => {
-      let posts = this.props.followsPosts
-      if (Object.keys(posts).length > 1) {
-         return posts.map(post => {
-            return (<PostPreviewCard post={post} key={post.id}/>)
-         })  
-      }
+      this.props.userFollowPostsFetch(this.props.currentUser)
    }
 
    render() {
@@ -25,7 +15,7 @@ class Home extends React.Component {
          <div className="home-page">
             <h2>Home Page</h2>
             <div className="home-feed">
-               {this.renderFeed()}
+               <Feed posts={this.props.followsPosts} />   
             </div>
          </div>
       )
