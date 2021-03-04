@@ -2,35 +2,103 @@ import React from 'react'
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
+import { connect } from 'react-redux'
+import { getUserPosts, userInfoFetch } from '../actions/actions'
+
 class User extends React.Component {
    state = {
-      selectedUserPosts: {}
+      update: false
    }
 
-   componentDidMount() {
-      // console.log(this.props.user)
-      this.getUserPosts()
+   UNSAFE_componentWillMount() {
+      this.props.getUserPosts(this.props.currentUserData)
    }
 
-   getUserPosts = () => {
+   updateComponent = () => {
+      this.setState((prevState) => ({
+         update: !prevState.update
+      }))
+   }
+
+   arrIncludesId = (arr, id) => {
+      return arr.every( element => {
+         if (element.id === id) {
+            return false
+         }
+         return true 
+      })
+   }
+
+   renderFollowButton = () => {
+      let currentUser = this.props.currentUserData
+      let selectedUser = this.props.user
+
+      if (!this.arrIncludesId(currentUser.followees, selectedUser.id)) {
+         return <button onClick={this.handleUnfollow}>Unfollow</button>
+      } else {
+         return <button onClick={this.handleFollow}>Follow</button>
+      }
+   }
+
+   handleUnfollow = e => {
+      let currentUser = this.props.currentUserData
+      let selectedUser = this.props.user
+
+      let relationship = {
+         follower_id: currentUser.id,
+         followee_id: selectedUser.id
+      }
+      
       const token = localStorage.token
-      const userId = this.props.user.id
       if (token) {
-         return fetch('http://localhost:3000/api/v1/userposts/' + userId, {
-            method: "GET",
+         return fetch('http://localhost:3000/api/v1/relationships', {
+            method: "DELETE",
             headers: {
-               Authorization: `Bearer ${token}`
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
             },
+            body: JSON.stringify(relationship)
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               this.setState({
-                  selectedUserPosts: data
-               })
-            }
+            this.props.userInfoFetch(this.props.currentUserData)
+            this.updateComponent()
+            console.log(data.message)
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+
+   handleFollow = e => {
+      let currentUser = this.props.currentUserData
+      let selectedUser = this.props.user
+
+      let relationship = {
+         follower_id: currentUser.id,
+         followee_id: selectedUser.id
+      }
+      
+      const token = localStorage.token
+      if (token) {
+         return fetch('http://localhost:3000/api/v1/relationships', {
+            method: "POST",
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json',
+               Accept: 'application/json'
+            },
+            body: JSON.stringify(relationship)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            this.props.userInfoFetch(this.props.currentUserData)
+            this.updateComponent()
+            console.log(data.message)
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -39,12 +107,22 @@ class User extends React.Component {
       return(
          <div className="profile-page">
             <h2>user page</h2>
-            <UserInfoCard user={this.props.user} />
-            <Feed posts={this.state.selectedUserPosts} />   
+            {this.renderFollowButton()}
+            <UserInfoCard user={this.props.user} /> {/* update card when follow/unfollow */}
+            <Feed posts={this.props.selectedUserPosts} />   
          </div>
-
       )
    }
 }
 
-export default User
+const mapStateToProps = state => ({
+   currentUserData: state.currentUserData,
+   selectedUserPosts: state.selectedUserPosts
+})
+
+const mapDispatchToProps = dispatch => ({
+   getUserPosts: (user) => dispatch(getUserPosts(user)),
+   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(User)
