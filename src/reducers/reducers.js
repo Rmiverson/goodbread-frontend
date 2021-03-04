@@ -6,7 +6,8 @@ export const initialState = {
    allPosts: {},
    currentUserData: {},
    selectedPost: {},
-   selectedUser: {}
+   selectedUser: {},
+   selectedUserPosts: {}
 }
 
 export default function reducer(state = initialState, action) {
@@ -25,6 +26,8 @@ export default function reducer(state = initialState, action) {
          return {...state, selectedPost: action.payload}
       case 'SELECT_USER':
          return {...state, selectedUser: action.payload}
+      case 'SELECTED_USER_POSTS':
+         return {...state, selectedUserPosts: action.payload}
       default:
          return state
    }

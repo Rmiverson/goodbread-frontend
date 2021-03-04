@@ -9,6 +9,10 @@ class NewPost extends React.Component {
       submitted: false
    }
 
+   UNSAFE_componentWillMount() {
+      this.props.setSelectedUser(this.props.user)
+   }
+
    handleSubmit = e => {
       e.preventDefault()
 
@@ -45,11 +49,6 @@ class NewPost extends React.Component {
          </div>
       )
    }
-
-   UNSAFE_componentWillMount() {
-      this.props.setSelectedUser(this.props.user)
-   }
-
 }
 
 const mapDispatchToProps = dispatch => ({

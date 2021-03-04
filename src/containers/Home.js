@@ -1,16 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { userFollowPostsFetch } from '../actions/actions'
+import { userFollowPostsFetch, userInfoFetch } from '../actions/actions'
 import { Link } from 'react-router-dom'
 
 import Feed from '../containers/Feed'
 
 
 class Home extends React.Component {
-   componentDidMount() {
-      this.props.userFollowPostsFetch(this.props.currentUser)
-   }
-
    render() {
       return(
          <div className="home-page">
@@ -22,14 +18,22 @@ class Home extends React.Component {
          </div>
       )
    }
+
+   componentDidMount() {
+      this.props.userFollowPostsFetch(this.props.currentUser)
+      this.props.userInfoFetch(this.props.currentUser)
+   }
 }
+
 const mapStateToProps = state => ({
    currentUser: state.currentUser,
-   followsPosts: state.followsPosts
+   followsPosts: state.followsPosts,
+   currentUserData: state.currentUserData
 })
 
 const mapDispatchToProps = dispatch => ({
-   userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser))
+   userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser)),
+   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

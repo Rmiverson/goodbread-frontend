@@ -180,9 +180,32 @@ export const newPostFetch = post => {
             if (data.message) {
                console.log(data.message)
             } else {
-               console.log("post successful")
-               console.log(data)
+               // console.log("post successful")
+               // console.log(data)
                dispatch(selectedPost(data))
+            }
+         })
+      }
+   }
+}
+
+export const getUserPosts = user => {
+   return dispatch => {
+      const token = localStorage.token
+      const userId = user.id
+      if (token) {
+         return fetch(API + '/userposts/' + userId, {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+            } else {
+               dispatch(selectedUserPosts(data))
             }
          })
       }
@@ -221,4 +244,9 @@ export const selectedPost = post => ({
 export const selectedUser = userObj => ({
    type: 'SELECT_USER',
    payload: userObj
+})
+
+export const selectedUserPosts = postsObj => ({
+   type: 'SELECTED_USER_POSTS',
+   payload: postsObj
 })

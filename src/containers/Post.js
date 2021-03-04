@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom'
 import Comment from '../components/Comment'
 
 class Post extends React.Component {
+   UNSAFE_componentWillMount() {
+      this.props.setSelectedUser(this.props.post.user)
+    }
 
    renderComments = () => {
       let comments = this.props.post.comments
@@ -26,12 +29,7 @@ class Post extends React.Component {
          </div>
       )
    }
-
-   UNSAFE_componentWillMount() {
-     this.props.setSelectedUser(this.props.post.user) 
-   }
 }
-
 
 const mapDispatchToProps = dispatch => ({
    setSelectedUser: (user) => dispatch(setSelectedUser(user))
