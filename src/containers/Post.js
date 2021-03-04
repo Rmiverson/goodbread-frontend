@@ -14,15 +14,11 @@ class Post extends React.Component {
       })
    }
 
-   handleUserClick = e => {
-      
-   }
-
    render() {
       return(
          <div className="post">
             <h2>{this.props.post.title}</h2>
-            <Link to="/user" onClick={this.handleUserClick}>{this.props.post.user.username}</Link>
+            <Link to="/user" >{this.props.post.user.username}</Link>
             <p>{this.props.post.content}</p>
             <div className="comment-section">
                {this.renderComments()}
@@ -31,7 +27,7 @@ class Post extends React.Component {
       )
    }
 
-   componentDidMount() {
+   UNSAFE_componentWillMount() {
      this.props.setSelectedUser(this.props.post.user) 
    }
 }
