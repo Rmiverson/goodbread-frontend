@@ -162,6 +162,33 @@ export const setSelectedUser = user => {
    }
 }
 
+export const newPostFetch = post => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/posts", {
+            method: "POST",
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json',
+               Accept: 'application/json'
+            },
+            body: JSON.stringify(post)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            if (data.message) {
+               console.log(data.message)
+            } else {
+               console.log("post successful")
+               console.log(data)
+               dispatch(selectedPost(data))
+            }
+         })
+      }
+   }
+}
+
 export const loginUser = userObj => ({
    type: 'LOGIN_USER',
    payload: userObj

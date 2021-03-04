@@ -14,6 +14,7 @@ import Profile from './containers/Profile'
 import NotFound from './components/NotFound'
 import Post from './containers/Post'
 import User from './containers/User'
+import NewPost from './containers/NewPost'
 
 
 class App extends React.Component {
@@ -29,7 +30,7 @@ class App extends React.Component {
   }
 
   render() {
-    // console.log(this.props.selectedUser)
+    // console.log(this.props.selectedPost)
     return (
       <div className="App">
         <NavBar user={this.props.currentUser} handleLogout={this.handleLogout}/>
@@ -44,6 +45,7 @@ class App extends React.Component {
           <Route exact path="/profile" render={() => <Profile />}/>
           <Route exact path={'/post'} render={() => <Post post={this.props.selectedPost}/>} />
           <Route exact path={'/user'} render={() => <User user={this.props.selectedUser}/>} />
+          <Route exact path="/newpost" render={() => <NewPost user={this.props.currentUser}/>} />
 
           <Route component={NotFound} />
         </Switch>
