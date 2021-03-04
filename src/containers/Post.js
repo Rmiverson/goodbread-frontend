@@ -7,11 +7,11 @@ import Comment from '../components/Comment'
 
 class Post extends React.Component {
    UNSAFE_componentWillMount() {
-      this.props.setSelectedUser(this.props.post.user)
+      this.props.setSelectedUser(this.props.selectedPost.user)
     }
 
    renderComments = () => {
-      let comments = this.props.post.comments
+      let comments = this.props.selectedPost.comments
       return comments.map(comment => {
          return <Comment key={comment.id} comment={comment} />
       })
@@ -20,9 +20,9 @@ class Post extends React.Component {
    render() {
       return(
          <div className="post">
-            <h2>{this.props.post.title}</h2>
-            <Link to="/user" >{this.props.post.user.username}</Link>
-            <p>{this.props.post.content}</p>
+            <h2>{this.props.selectedPost.title}</h2>
+            <Link to="/user" >{this.props.selectedPost.user.username}</Link>
+            <p>{this.props.selectedPost.content}</p>
             <div className="comment-section">
                {this.renderComments()}
             </div>
@@ -31,8 +31,12 @@ class Post extends React.Component {
    }
 }
 
+const mapStateToProps = state => ({
+   selectedPost: state.selectedPost
+ })
+
 const mapDispatchToProps = dispatch => ({
    setSelectedUser: (user) => dispatch(setSelectedUser(user))
 })
 
-export default connect(null, mapDispatchToProps)(Post)
+export default connect(mapStateToProps, mapDispatchToProps)(Post)

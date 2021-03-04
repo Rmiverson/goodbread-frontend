@@ -15,6 +15,7 @@ import NotFound from './components/NotFound'
 import Post from './containers/Post'
 import User from './containers/User'
 import NewPost from './containers/NewPost'
+import EditPost from './containers/EditPost';
 
 
 class App extends React.Component {
@@ -33,19 +34,20 @@ class App extends React.Component {
     // console.log(this.props.selectedPost)
     return (
       <div className="App">
-        <NavBar user={this.props.currentUser} handleLogout={this.handleLogout}/>
+        <NavBar handleLogout={this.handleLogout}/>
 
         <Switch>
-          <Route exact path="/login" render={() => <Login currentUser={this.props.currentUser}/>} />        
-          <Route exact path="/signup" render={() => <Signup currentUser={this.props.currentUser}/>} />
+          <Route exact path="/login" render={() => <Login />} />        
+          <Route exact path="/signup" render={() => <Signup />} />
 
           {!this.props.currentUser.id && <Redirect to="/login" />}
           <Route exact path="/" render={() => <Home />}/>
           <Route exact path="/search" render={() => <Search />}/>
           <Route exact path="/profile" render={() => <Profile />}/>
-          <Route exact path={'/post'} render={() => <Post post={this.props.selectedPost}/>} />
-          <Route exact path={'/user'} render={() => <User user={this.props.selectedUser}/>} />
-          <Route exact path="/newpost" render={() => <NewPost user={this.props.currentUser}/>} />
+          <Route exact path={'/post'} render={() => <Post />} />
+          <Route exact path={'/user'} render={() => <User />} />
+          <Route exact path="/newpost" render={() => <NewPost />} />
+          {/* {!!this.props.currentUser.id === !!this.props.selectedPost.user.id && <Route exact path="/editpost" render={() => <EditPost />} />} */}
 
           <Route component={NotFound} />
         </Switch>
@@ -56,8 +58,7 @@ class App extends React.Component {
 
 const mapStateToProps = state => ({
   currentUser: state.currentUser,
-  selectedPost: state.selectedPost,
-  selectedUser: state.selectedUser
+  selectedPost: state.selectedPost
 })
 
 const mapDispatchToProps = dispatch => ({

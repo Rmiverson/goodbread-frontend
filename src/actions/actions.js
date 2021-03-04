@@ -180,9 +180,7 @@ export const newPostFetch = post => {
             if (data.message) {
                console.log(data.message)
             } else {
-               // console.log("post successful")
-               // console.log(data)
-               dispatch(selectedPost(data))
+               dispatch(setSelectedPost(data))
             }
          })
       }
@@ -207,6 +205,30 @@ export const getUserPosts = user => {
             } else {
                dispatch(selectedUserPosts(data))
             }
+         })
+      }
+   }
+}
+
+export const updatePostFetch = post => {
+   return dispatch => {
+      const token = localStorage.token
+      const postId = post.id
+      if (token) {
+         return fetch(API + '/posts/' + postId, {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            dispatch(setSelectedPost(data))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }

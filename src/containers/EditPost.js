@@ -1,19 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { newPostFetch, setSelectedUser } from '../actions/actions'
+import { updatePostFetch, setSelectedUser } from '../actions/actions'
 import { store } from '../store/store'
 
 import PostForm from '../components/PostForm'
 
-class NewPost extends React.Component {
+class EditPost extends React.Component {
    state = {
       submitted: false
-   }
-
-   emptyValues = {
-      title: "",
-      content: ""
    }
 
    UNSAFE_componentWillMount() {
@@ -23,13 +18,13 @@ class NewPost extends React.Component {
    handleSubmit = e => {
       e.preventDefault()
 
-      let newPostObj = {
+      let updatePostObj = {
          user_id: this.props.currentUser.id,
          title: this.sanitize(e.target.title.value),
          content: this.sanitize(e.target.content.value)
       }
 
-      this.props.newPostFetch(newPostObj)
+      this.props.newPostFetch(updatePostObj)
       store.subscribe(() => this.setState({submitted: true}))       
    }
 
@@ -45,18 +40,19 @@ class NewPost extends React.Component {
 
    render() {
       return(
-         <PostForm renderReRoute={this.renderReRoute} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
+         <PostForm renderFun={this.renderReRoute} handleSubmit={this.handleSubmit} values={this.selectedPost}/>
       )
    }
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser
+   currentUser: state.currentUser,
+   selectedPost: state.selectedPost
  })
 
 const mapDispatchToProps = dispatch => ({
-   newPostFetch: (newPostObj) => dispatch(newPostFetch(newPostObj)),
+   updatePostFetch: (updatePostObj) => dispatch(updatePostFetch(updatePostObj)),
    setSelectedUser: (user) => dispatch(setSelectedUser(user))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPost)
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost)

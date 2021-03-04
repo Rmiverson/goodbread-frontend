@@ -31,7 +31,7 @@ class User extends React.Component {
 
    renderFollowButton = () => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       if (!this.arrIncludesId(currentUser.followees, selectedUser.id)) {
          return <button onClick={this.handleUnfollow}>Unfollow</button>
@@ -42,7 +42,7 @@ class User extends React.Component {
 
    handleUnfollow = e => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       let relationship = {
          follower_id: currentUser.id,
@@ -73,7 +73,7 @@ class User extends React.Component {
 
    handleFollow = e => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       let relationship = {
          follower_id: currentUser.id,
@@ -108,7 +108,7 @@ class User extends React.Component {
          <div className="profile-page">
             <h2>user page</h2>
             {this.renderFollowButton()}
-            <UserInfoCard user={this.props.user} /> {/* update card when follow/unfollow */}
+            <UserInfoCard user={this.props.selectedUser} /> {/* update card when follow/unfollow */}
             <Feed posts={this.props.selectedUserPosts} />   
          </div>
       )
@@ -116,6 +116,7 @@ class User extends React.Component {
 }
 
 const mapStateToProps = state => ({
+   selectedUser: state.selectedUser,
    currentUserData: state.currentUserData,
    selectedUserPosts: state.selectedUserPosts
 })

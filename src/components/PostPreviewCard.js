@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 class PostPreviewCard extends React.Component {
 
    handleClick = e => {
-      // e.preventDefault()
       this.props.setSelectedPost(this.props.post)
    }
 
