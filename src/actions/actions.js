@@ -219,7 +219,8 @@ export const getPostFetch = (id, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            dispatch(setSelectedPost(data, callback))
+            // dispatch(setSelectedPost(data, callback))
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -266,7 +267,7 @@ export const getUserPosts = (user, callback = () => {}) => {
          .then(resp => resp.json())
          .then(data => {
             dispatch(selectedUserPosts(data))
-            callback()
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -304,6 +305,95 @@ export const deletePost = (id, callback = () => {}) => {
       const token = localStorage.token
       if (token) {
          return fetch(API + '/posts/' + id, {
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+// comment actions
+export const newCommentFetch = (comment, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/comments', {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+export const getCommentFetch = (id, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/comments/" + id, {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback(data)
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }   
+}
+
+export const editCommentFetch = (comment, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/comments/" + comment.id, {
+            method: "POST",
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback(data)
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }   
+}
+
+export const deleteCommentFetch = (id, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/comments/' + id, {
             method: 'DELETE',
             headers: {
                Authorization: `Bearer ${token}`
