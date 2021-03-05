@@ -16,7 +16,7 @@ class Feed extends React.Component {
       return(
          <div className="user-post-feed">
             {this.renderFeed()}
-         </div>
+         </div> 
       )
    }
 }

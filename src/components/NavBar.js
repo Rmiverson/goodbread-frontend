@@ -1,38 +1,46 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux'
 
-const NavBar = ({ user, handleLogout}) => {
-   return (
-      <div>
-         <nav className="navbar">
-            {!user.id ? (
-               <>
-                  <NavLink className="link" to="/">Login</NavLink>
-                  <NavLink className="link" to="/signup">Signup</NavLink>
-               </>
-            ) : (
-               <>
-                  <NavLink
-                     to="/"
-                     exact
-                     className="link"
-                  >Home</NavLink>
-                  <NavLink
-                     to="/search"
-                     exact
-                     className="link"
-                  >Search</NavLink>
-                  <NavLink
-                     to="/profile"
-                     exact
-                     className="link"
-                  >Profile</NavLink>
-                  <a href="http://localhost:3001/" className="link" onClick={handleLogout}>Logout</a>
-               </>
-            )}
-         </nav>
-      </div>
-   )
+class NavBar extends React.Component {
+   render() {
+      return (
+         <div>
+            <nav className="navbar">
+               {!this.props.currentUser.id ? (
+                  <>
+                     <NavLink className="link" to="/">Login</NavLink>
+                     <NavLink className="link" to="/signup">Signup</NavLink>
+                  </>
+               ) : (
+                  <>
+                     <NavLink
+                        to="/"
+                        exact
+                        className="link"
+                     >Home</NavLink>
+                     <NavLink
+                        to="/search"
+                        exact
+                        className="link"
+                     >Search</NavLink>
+                     <NavLink
+                        to="/profile"
+                        exact
+                        className="link"
+                     >Profile</NavLink>
+                     <a href="http://localhost:3001/" className="link" onClick={this.props.handleLogout}>Logout</a>
+                  </>
+               )}
+            </nav>
+         </div>
+      )
+   }
+   
 }
 
-export default NavBar
+const mapStateToProps = state => ({
+   currentUser: state.currentUser
+})
+
+export default connect(mapStateToProps, null)(NavBar)

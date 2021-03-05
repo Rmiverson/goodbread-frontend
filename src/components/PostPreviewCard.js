@@ -3,13 +3,7 @@ import { setSelectedPost } from '../actions/actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-
 class PostPreviewCard extends React.Component {
-
-   handleClick = e => {
-      // e.preventDefault()
-      this.props.setSelectedPost(this.props.post)
-   }
 
    previewContent = (content) => {
       let str = content
@@ -26,7 +20,7 @@ class PostPreviewCard extends React.Component {
             <p>
                {this.previewContent(this.props.post.content)}
             </p>
-            <Link to={'/post'} onClick={this.handleClick}>Read More</Link>
+            <Link to={`post/${this.props.post.id}`} >Read More</Link>
          </div>
       )
    }
@@ -35,6 +29,5 @@ class PostPreviewCard extends React.Component {
 const mapDispatchToProps = dispatch => ({
    setSelectedPost: (post) => dispatch(setSelectedPost(post))
 })
-
 
 export default connect(null, mapDispatchToProps)(PostPreviewCard)

@@ -1,23 +1,42 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getUserPosts, selectedUserPosts } from '../actions/actions'
+import { getUserPosts } from '../actions/actions'
 
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from '../containers/Feed'
 
 class Profile extends React.Component {
-   UNSAFE_componentWillMount() {
-      this.props.getUserPosts(this.props.currentUserData)
+   state = {
+      loading: true
    }
-   
-   render() {
+
+   renderProfile = () => {
       return(
          <div className="profile-page">
             <h2>Profile Page</h2>
             <UserInfoCard user={this.props.currentUserData} />
             <Feed posts={this.props.selectedUserPosts} />
          </div>
-      )
+      ) 
+   }
+   
+   render() {
+      if (this.state.loading) {
+         return (
+            <span>Loading...</span>
+         )
+      } else {
+         return(
+            <div>
+               { this.renderProfile() }
+            </div>
+         )
+      }
+   }
+
+   componentDidMount() {
+      this.props.getUserPosts(this.props.currentUserData)
+      this.setState({loading:false})
    }
 }
 

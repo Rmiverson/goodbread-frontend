@@ -1,5 +1,3 @@
-import { selectedPost } from "../actions/actions"
-
 export const initialState = {
    currentUser: {},
    followsPosts: {},

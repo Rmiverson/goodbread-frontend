@@ -3,15 +3,16 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { getUserPosts, userInfoFetch } from '../actions/actions'
+import { getUserPosts, setSelectedUser, userInfoFetch } from '../actions/actions'
 
 class User extends React.Component {
    state = {
-      update: false
+      update: false,
+      loading: true
    }
 
-   UNSAFE_componentWillMount() {
-      this.props.getUserPosts(this.props.currentUserData)
+   userCallback = () => {
+      this.setState({loading: false})
    }
 
    updateComponent = () => {
@@ -31,7 +32,7 @@ class User extends React.Component {
 
    renderFollowButton = () => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       if (!this.arrIncludesId(currentUser.followees, selectedUser.id)) {
          return <button onClick={this.handleUnfollow}>Unfollow</button>
@@ -42,7 +43,7 @@ class User extends React.Component {
 
    handleUnfollow = e => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       let relationship = {
          follower_id: currentUser.id,
@@ -63,7 +64,6 @@ class User extends React.Component {
          .then(data => {
             this.props.userInfoFetch(this.props.currentUserData)
             this.updateComponent()
-            console.log(data.message)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -73,7 +73,7 @@ class User extends React.Component {
 
    handleFollow = e => {
       let currentUser = this.props.currentUserData
-      let selectedUser = this.props.user
+      let selectedUser = this.props.selectedUser
 
       let relationship = {
          follower_id: currentUser.id,
@@ -95,7 +95,6 @@ class User extends React.Component {
          .then(data => {
             this.props.userInfoFetch(this.props.currentUserData)
             this.updateComponent()
-            console.log(data.message)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -103,26 +102,48 @@ class User extends React.Component {
       }
    }
 
+   renderProfile = () => {
+      return <div className="profile-page">
+         <h2>user page</h2>
+         {this.renderFollowButton()}
+         <UserInfoCard user={this.props.selectedUser} /> {/* update card when follow/unfollow */}
+         <Feed posts={this.props.selectedUserPosts} />   
+      </div>
+   }
+
    render() {
-      return(
-         <div className="profile-page">
-            <h2>user page</h2>
-            {this.renderFollowButton()}
-            <UserInfoCard user={this.props.user} /> {/* update card when follow/unfollow */}
-            <Feed posts={this.props.selectedUserPosts} />   
-         </div>
-      )
+      if (this.state.loading) {
+         return (
+            <span>Loading...</span>
+         )
+      } else {
+         return(
+            <div>
+               { this.renderProfile() }
+            </div>
+         )
+      }
+   }
+
+   componentDidMount() {
+      let path = window.location.pathname
+      let arr = path.split("/")
+      let id = {id: arr[2]}
+
+      this.props.setSelectedUser(id, () => this.props.getUserPosts(this.props.currentUserData, this.userCallback))
    }
 }
 
 const mapStateToProps = state => ({
+   selectedUser: state.selectedUser,
    currentUserData: state.currentUserData,
    selectedUserPosts: state.selectedUserPosts
 })
 
 const mapDispatchToProps = dispatch => ({
-   getUserPosts: (user) => dispatch(getUserPosts(user)),
-   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
+   getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback)),
+   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser)),
+   setSelectedUser: (id, callback) => dispatch(setSelectedUser(id, callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)
