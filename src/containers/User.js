@@ -3,12 +3,16 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { getUserPosts, userInfoFetch } from '../actions/actions'
+import { getUserPosts, setSelectedUser, userInfoFetch } from '../actions/actions'
 
 class User extends React.Component {
    state = {
       update: false,
       loading: true
+   }
+
+   userCallback = () => {
+      this.setState({loading: false})
    }
 
    updateComponent = () => {
@@ -91,7 +95,6 @@ class User extends React.Component {
          .then(data => {
             this.props.userInfoFetch(this.props.currentUserData)
             this.updateComponent()
-            // console.log(data.message)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -99,20 +102,35 @@ class User extends React.Component {
       }
    }
 
+   renderProfile = () => {
+      return <div className="profile-page">
+         <h2>user page</h2>
+         {this.renderFollowButton()}
+         <UserInfoCard user={this.props.selectedUser} /> {/* update card when follow/unfollow */}
+         <Feed posts={this.props.selectedUserPosts} />   
+      </div>
+   }
+
    render() {
-      return(
-         <div className="profile-page">
-            <h2>user page</h2>
-            {this.renderFollowButton()}
-            <UserInfoCard user={this.props.selectedUser} /> {/* update card when follow/unfollow */}
-            <Feed posts={this.props.selectedUserPosts} />   
-         </div>
-      )
+      if (this.state.loading) {
+         return (
+            <span>Loading...</span>
+         )
+      } else {
+         return(
+            <div>
+               { this.renderProfile() }
+            </div>
+         )
+      }
    }
 
    componentDidMount() {
-      this.props.getUserPosts(this.props.currentUserData)
-      this.setState({loading: false})
+      let path = window.location.pathname
+      let arr = path.split("/")
+      let id = {id: arr[2]}
+
+      this.props.setSelectedUser(id, () => this.props.getUserPosts(this.props.currentUserData, this.userCallback))
    }
 }
 
@@ -123,8 +141,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   getUserPosts: (user) => dispatch(getUserPosts(user)),
-   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
+   getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback)),
+   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser)),
+   setSelectedUser: (id, callback) => dispatch(setSelectedUser(id, callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

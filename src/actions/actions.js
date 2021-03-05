@@ -163,7 +163,7 @@ export const getPostFetch = (id, callback = () => {}) => {
    }   
 }
 
-export const setSelectedUser = user => {
+export const setSelectedUser = (user, callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       if (token) {
@@ -179,6 +179,7 @@ export const setSelectedUser = user => {
                console.log(data.message)
             } else {
                dispatch(selectedUser(data))
+               callback()
             }
          })
       }
@@ -210,7 +211,7 @@ export const newPostFetch = (post, callback = () => {}) => {
    }
 }
 
-export const getUserPosts = user => {
+export const getUserPosts = (user, callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       const userId = user.id
@@ -227,6 +228,7 @@ export const getUserPosts = user => {
                console.log(data.message)
             } else {
                dispatch(selectedUserPosts(data))
+               callback()
             }
          })
       }
@@ -248,7 +250,6 @@ export const updatePostFetch = post => {
          })
          .then(resp => resp.json())
          .then(data => {
-            // dispatch(setSelectedPost(data))
             console.log(data)
          })
          .catch(error => {

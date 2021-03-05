@@ -25,7 +25,7 @@ class Post extends React.Component {
       return (
          <div className="post">
             <h2>{this.props.selectedPost.title}</h2>
-            <Link to="/user" >{this.props.selectedPost.user.username}</Link>
+            <Link to={`/user/${this.props.selectedPost.user.id}`} >{this.props.selectedPost.user.username}</Link>
             <p>{this.props.selectedPost.content}</p>
             <div className="comment-section">
                {this.renderComments()}
