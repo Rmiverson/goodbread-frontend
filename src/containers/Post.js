@@ -27,7 +27,7 @@ class Post extends React.Component {
    renderComments = () => {
       let comments = this.state.post.comments
       return comments.map(comment => {
-         return <Comment key={comment.id} comment={comment} />
+         return <Comment key={comment.id} id={comment.id} commentCallback={this.commentCallback}/>
       })
    }
 
@@ -60,7 +60,7 @@ class Post extends React.Component {
             <Link to={`/user/${this.state.post.user.id}`} >{this.state.post.user.username}</Link>
             <p>{this.state.post.content}</p>
             <div className="comment-section">
-               <CommentForm handleSubmit={this.handleCommentSubmit}/>
+               <CommentForm type="New" handleSubmit={this.handleCommentSubmit} value=""/>
                {this.renderComments()}
             </div>
          </div>         
