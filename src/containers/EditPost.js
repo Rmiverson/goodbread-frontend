@@ -76,10 +76,10 @@ class EditPost extends React.Component {
          )
       } else {
          return(
-            <div>
+            <div className="edit-post-page">
                { this.renderForm() }
                { this.renderDelete() }
-               {this.state.deleted && <Redirect to={'/profile'} />}
+               { this.state.deleted && <Redirect to={'/profile'} /> }
             </div>
          )
       }

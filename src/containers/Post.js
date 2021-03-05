@@ -48,11 +48,7 @@ class Post extends React.Component {
             <span>Loading...</span>
          )
       } else {
-         return(
-            <div>
-               { this.renderPost() }
-            </div>
-         )
+         return( this.renderPost() )
       }
    }
 

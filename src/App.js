@@ -16,6 +16,7 @@ import Post from './containers/Post'
 import User from './containers/User'
 import NewPost from './containers/NewPost'
 import EditPost from './containers/EditPost';
+import EditUser from './containers/EditUser';
 
 
 class App extends React.Component {
@@ -47,6 +48,7 @@ class App extends React.Component {
           <Route path='/user/:userId' render={() => <User />} />
           <Route exact path="/newpost" render={() => <NewPost />} />
           <Route path="/editpost/:postId" render={() => <EditPost />} />
+          <Route path="/edituser" render={() => <EditUser/> } />
 
           <Route component={NotFound} />
         </Switch>
