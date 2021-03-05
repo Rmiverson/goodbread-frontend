@@ -1,14 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setSelectedUser } from '../actions/actions'
+import { getPostFetch } from '../actions/actions'
 import { Link } from 'react-router-dom'
 
 import Comment from '../components/Comment'
 
 class Post extends React.Component {
-   UNSAFE_componentWillMount() {
-      this.props.setSelectedUser(this.props.selectedPost.user)
-    }
+   state = {
+      loading: true
+   }
+
+   renderCallback = (id) => {
+      this.setState({ loading: false })
+   }
 
    renderComments = () => {
       let comments = this.props.selectedPost.comments
@@ -17,8 +21,8 @@ class Post extends React.Component {
       })
    }
 
-   render() {
-      return(
+   renderPost = () => {
+      return (
          <div className="post">
             <h2>{this.props.selectedPost.title}</h2>
             <Link to="/user" >{this.props.selectedPost.user.username}</Link>
@@ -26,8 +30,29 @@ class Post extends React.Component {
             <div className="comment-section">
                {this.renderComments()}
             </div>
-         </div>
+         </div>         
       )
+   }
+
+   render() {
+      if (this.state.loading) {
+         return (
+            <span>Loading...</span>
+         )
+      } else {
+         return(
+            <div>
+               { this.renderPost() }
+            </div>
+         )
+      }
+   }
+
+   componentDidMount() {
+      let path = window.location.pathname
+      let arr = path.split("/")
+      let id = arr[2]
+      this.props.getPostFetch(id, this.renderCallback)
    }
 }
 
@@ -36,7 +61,7 @@ const mapStateToProps = state => ({
  })
 
 const mapDispatchToProps = dispatch => ({
-   setSelectedUser: (user) => dispatch(setSelectedUser(user))
+   getPostFetch: (postId, renderCallback) => dispatch(getPostFetch(postId, renderCallback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

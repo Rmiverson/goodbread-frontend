@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { newPostFetch, setSelectedUser } from '../actions/actions'
+import { newPostFetch } from '../actions/actions'
 import { store } from '../store/store'
 
 import PostForm from '../components/PostForm'
 
 class NewPost extends React.Component {
    state = {
-      submitted: false
+      submitted: false,
+      postId: ""
    }
 
    emptyValues = {
@@ -16,8 +17,12 @@ class NewPost extends React.Component {
       content: ""
    }
 
-   UNSAFE_componentWillMount() {
-      this.props.setSelectedUser(this.props.currentUser)
+   updateIdCallback = (id) => {
+      console.log(id)
+      this.setState({
+         submitted: true,
+         postId: id
+      })
    }
 
    handleSubmit = e => {
@@ -29,8 +34,7 @@ class NewPost extends React.Component {
          content: this.sanitize(e.target.content.value)
       }
 
-      this.props.newPostFetch(newPostObj)
-      store.subscribe(() => this.setState({submitted: true}))       
+      this.props.newPostFetch(newPostObj, this.updateIdCallback)      
    }
 
    sanitize = (text) => {  
@@ -40,23 +44,23 @@ class NewPost extends React.Component {
    }
 
    renderReRoute = () => {
-      return (this.state.submitted && <Redirect to="/post" />)
+      return (this.state.submitted && <Redirect to={`/post/${this.state.postId}`} />)
    }
 
    render() {
       return(
-         <PostForm renderReRoute={this.renderReRoute} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
+         <PostForm renderReRoute={(this.renderReRoute)} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
       )
    }
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser
+   currentUser: state.currentUser,
+   selectedPost: state.selectedPost
  })
 
 const mapDispatchToProps = dispatch => ({
-   newPostFetch: (newPostObj) => dispatch(newPostFetch(newPostObj)),
-   setSelectedUser: (user) => dispatch(setSelectedUser(user))
+   newPostFetch: (newPostObj, callback) => dispatch(newPostFetch(newPostObj, callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost)

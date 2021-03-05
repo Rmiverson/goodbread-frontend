@@ -44,8 +44,9 @@ class App extends React.Component {
           <Route exact path="/" render={() => <Home />}/>
           <Route exact path="/search" render={() => <Search />}/>
           <Route exact path="/profile" render={() => <Profile />}/>
-          <Route exact path={'/post'} render={() => <Post />} />
-          <Route exact path={'/user'} render={() => <User />} />
+          <Route path='/post/:postId' render={() => <Post />} />
+
+          <Route exact path='/user' render={() => <User />} />
           <Route exact path="/newpost" render={() => <NewPost />} />
           {/* {!!this.props.currentUser.id === !!this.props.selectedPost.user.id && <Route exact path="/editpost" render={() => <EditPost />} />} */}
 

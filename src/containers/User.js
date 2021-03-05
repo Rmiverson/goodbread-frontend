@@ -7,11 +7,8 @@ import { getUserPosts, userInfoFetch } from '../actions/actions'
 
 class User extends React.Component {
    state = {
-      update: false
-   }
-
-   UNSAFE_componentWillMount() {
-      this.props.getUserPosts(this.props.currentUserData)
+      update: false,
+      loading: true
    }
 
    updateComponent = () => {
@@ -63,7 +60,6 @@ class User extends React.Component {
          .then(data => {
             this.props.userInfoFetch(this.props.currentUserData)
             this.updateComponent()
-            console.log(data.message)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -95,7 +91,7 @@ class User extends React.Component {
          .then(data => {
             this.props.userInfoFetch(this.props.currentUserData)
             this.updateComponent()
-            console.log(data.message)
+            // console.log(data.message)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -112,6 +108,11 @@ class User extends React.Component {
             <Feed posts={this.props.selectedUserPosts} />   
          </div>
       )
+   }
+
+   componentDidMount() {
+      this.props.getUserPosts(this.props.currentUserData)
+      this.setState({loading: false})
    }
 }
 
