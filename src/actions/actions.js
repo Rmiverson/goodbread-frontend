@@ -235,7 +235,7 @@ export const getUserPosts = (user, callback = () => {}) => {
    }
 }
 
-export const updatePostFetch = post => {
+export const updatePostFetch = (post, callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       const postId = post.id
@@ -250,7 +250,8 @@ export const updatePostFetch = post => {
          })
          .then(resp => resp.json())
          .then(data => {
-            console.log(data)
+            // console.log(data)
+            callback()
          })
          .catch(error => {
             console.error('Error:', error)

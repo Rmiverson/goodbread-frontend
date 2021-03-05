@@ -44,9 +44,9 @@ class App extends React.Component {
           <Route exact path="/search" render={() => <Search />}/>
           <Route exact path="/profile" render={() => <Profile />}/>
           <Route path='/post/:postId' render={() => <Post />} />
-          <Route exact path='/user/:userId' render={() => <User />} />
+          <Route path='/user/:userId' render={() => <User />} />
           <Route exact path="/newpost" render={() => <NewPost />} />
-          {/* {!!this.props.currentUser.id === !!this.props.selectedPost.user.id && <Route exact path="/editpost" render={() => <EditPost />} />} */}
+          <Route path="/editpost/:postId" render={() => <EditPost />} />
 
           <Route component={NotFound} />
         </Switch>

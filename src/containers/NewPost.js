@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { newPostFetch } from '../actions/actions'
-import { store } from '../store/store'
 
 import PostForm from '../components/PostForm'
 
@@ -49,7 +48,7 @@ class NewPost extends React.Component {
 
    render() {
       return(
-         <PostForm renderReRoute={(this.renderReRoute)} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
+         <PostForm type="New Form Page" renderReRoute={(this.renderReRoute)} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
       )
    }
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const PostForm = ( {renderReRoute, handleSubmit, values} ) => {
+const PostForm = ( {type, renderReRoute, handleSubmit, values} ) => {
    return(
       <div className="new-post-page">
-         <h2>New Form Page</h2>
+         <h2>{type}</h2>
          <form className="new-post-form" onSubmit={handleSubmit}>
             <label>Title</label>
             <input type="text" name="title" id="new-post-title" defaultValue={values.title}/>

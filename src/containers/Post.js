@@ -10,7 +10,7 @@ class Post extends React.Component {
       loading: true
    }
 
-   renderCallback = (id) => {
+   postCallback = (id) => {
       this.setState({ loading: false })
    }
 
@@ -21,10 +21,18 @@ class Post extends React.Component {
       })
    }
 
+   renderEditBtn = () => {
+      if (this.props.currentUser.id === this.props.selectedPost.user.id) {
+         return <Link to={`/editpost/${this.props.selectedPost.id}`}>Edit</Link>
+      }
+   }
+
    renderPost = () => {
       return (
          <div className="post">
             <h2>{this.props.selectedPost.title}</h2>
+            {this.renderEditBtn()}
+            <br/>
             <Link to={`/user/${this.props.selectedPost.user.id}`} >{this.props.selectedPost.user.username}</Link>
             <p>{this.props.selectedPost.content}</p>
             <div className="comment-section">
@@ -52,16 +60,17 @@ class Post extends React.Component {
       let path = window.location.pathname
       let arr = path.split("/")
       let id = arr[2]
-      this.props.getPostFetch(id, this.renderCallback)
+      this.props.getPostFetch(id, this.postCallback)
    }
 }
 
 const mapStateToProps = state => ({
+   currentUser: state.currentUser,
    selectedPost: state.selectedPost
  })
 
 const mapDispatchToProps = dispatch => ({
-   getPostFetch: (postId, renderCallback) => dispatch(getPostFetch(postId, renderCallback))
+   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)
