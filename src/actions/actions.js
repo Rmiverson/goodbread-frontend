@@ -219,7 +219,8 @@ export const getPostFetch = (id, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            dispatch(setSelectedPost(data, callback))
+            // dispatch(setSelectedPost(data, callback))
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -266,7 +267,7 @@ export const getUserPosts = (user, callback = () => {}) => {
          .then(resp => resp.json())
          .then(data => {
             dispatch(selectedUserPosts(data))
-            callback()
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -311,6 +312,31 @@ export const deletePost = (id, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+// comment actions
+export const newCommentFetch = (comment, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/comments', {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            // console.log(data)
             callback()
          })
          .catch(error => {

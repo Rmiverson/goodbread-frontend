@@ -1,41 +1,66 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getPostFetch } from '../actions/actions'
+import { getPostFetch, newCommentFetch } from '../actions/actions'
 import { Link } from 'react-router-dom'
 
 import Comment from '../components/Comment'
+import CommentForm from '../components/CommentForm'
 
 class Post extends React.Component {
    state = {
-      loading: true
+      loading: true,
+      post: {}
    }
 
-   postCallback = (id) => {
-      this.setState({ loading: false })
+   postCallback = (post) => {
+      this.setState({ 
+         loading: false,
+         post: post
+      })
+
+   }
+
+   commentCallback = () => {
+      this.props.getPostFetch(this.state.post.id, this.postCallback)
    }
 
    renderComments = () => {
-      let comments = this.props.selectedPost.comments
+      let comments = this.state.post.comments
       return comments.map(comment => {
          return <Comment key={comment.id} comment={comment} />
       })
    }
 
    renderEditBtn = () => {
-      if (this.props.currentUser.id === this.props.selectedPost.user.id) {
-         return <Link to={`/editpost/${this.props.selectedPost.id}`}>Edit</Link>
+      if (this.props.currentUser.id === this.state.post.user.id) {
+         return <Link to={`/editpost/${this.state.post.id}`}>Edit</Link>
       }
+   }
+
+   handleCommentSubmit = e => {
+      e.preventDefault()
+
+      let comment = {
+         user_id: this.props.currentUser.id,
+         post_id: this.state.post.id,
+         content: e.target.content.value
+      }
+
+      this.props.newCommentFetch(comment, this.commentCallback)
+
+      e.target.content.value = ""
    }
 
    renderPost = () => {
       return (
          <div className="post">
-            <h2>{this.props.selectedPost.title}</h2>
+            <h2>{this.state.post.title}</h2>
             {this.renderEditBtn()}
             <br/>
-            <Link to={`/user/${this.props.selectedPost.user.id}`} >{this.props.selectedPost.user.username}</Link>
-            <p>{this.props.selectedPost.content}</p>
+            <Link to={`/user/${this.state.post.user.id}`} >{this.state.post.user.username}</Link>
+            <p>{this.state.post.content}</p>
             <div className="comment-section">
+               <CommentForm handleSubmit={this.handleCommentSubmit}/>
                {this.renderComments()}
             </div>
          </div>         
@@ -61,12 +86,12 @@ class Post extends React.Component {
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser,
-   selectedPost: state.selectedPost
+   currentUser: state.currentUser
  })
 
 const mapDispatchToProps = dispatch => ({
-   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback))
+   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback)),
+   newCommentFetch: (comment, commentCallback) => dispatch(newCommentFetch(comment, commentCallback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)
