@@ -117,11 +117,7 @@ class User extends React.Component {
             <span>Loading...</span>
          )
       } else {
-         return(
-            <div>
-               { this.renderProfile() }
-            </div>
-         )
+         return( this.renderProfile() )
       }
    }
 

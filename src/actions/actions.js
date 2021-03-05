@@ -1,5 +1,6 @@
 const API = "http://localhost:3000/api/v1"
 
+// user actions
 export const userPostFetch = user => {
    return dispatch => {
       return fetch(API + "/sign_up", {
@@ -12,7 +13,6 @@ export const userPostFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         console.log(data)
          if (!!data.message) {
             console.log(data.message)
          } else {
@@ -35,7 +35,7 @@ export const userLoginFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         if (data.message) {
+         if (!!data.message) {
             console.log(data.message)
          } else {
             localStorage.setItem("token", data.token)
@@ -57,34 +57,13 @@ export const userPersistFetch = user => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
+            if (!!data.message) {
                console.log(data.message)
                localStorage.removeItem("token")
             } else {
                dispatch(loginUser(data))
             }
          })   
-      }
-   }
-}
-
-export const allPostsFetch = () => {
-   return dispatch => {
-      const token = localStorage.token
-      if (token) {
-         return fetch(API + "/posts", {
-            method: "GET",
-            headers: {
-               Authorization: `Bearer ${token}`
-            },
-         })
-         .then(resp => resp.json())
-         .then(data => {
-            dispatch(posts(data))
-         })
-         .catch(error => {
-            console.error('Error:', error)
-         })
       }
    }
 }
@@ -131,10 +110,100 @@ export const userInfoFetch = user => {
    }
 }
 
+export const setSelectedUser = (user, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/users/" + user.id, {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            dispatch(selectedUser(data))
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+export const updateUserFetch = (user, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/users/" + user.id, {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            dispatch(currentUserData(data))
+            callback()
+         })
+         .catch(error => {
+            console.log('Error:', error)
+         })
+      }
+   }
+}
+
+export const deleteUser = (id) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/users/' + id, {
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            dispatch(logoutUser())
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+
+// post actions
 export const setSelectedPost = (post, callback = () => {}) => {
    return dispatch => {
       dispatch(selectedPost(post))
       callback(post.id)
+   }
+}
+
+export const allPostsFetch = () => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + "/posts", {
+            method: "GET",
+            headers: {
+               Authorization: `Bearer ${token}`
+            },
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            dispatch(posts(data))
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
    }
 }
 
@@ -157,28 +226,6 @@ export const getPostFetch = (id, callback = () => {}) => {
          })
       }
    }   
-}
-
-export const setSelectedUser = (user, callback = () => {}) => {
-   return dispatch => {
-      const token = localStorage.token
-      if (token) {
-         return fetch(API + "/users/" + user.id, {
-            method: "GET",
-            headers: {
-               Authorization: `Bearer ${token}`
-            },
-         })
-         .then(resp => resp.json())
-         .then(data => {
-            dispatch(selectedUser(data))
-            callback()
-         })
-         .catch(error => {
-            console.error('Error:', error)
-         })
-      }
-   }
 }
 
 export const newPostFetch = (post, callback = () => {}) => {

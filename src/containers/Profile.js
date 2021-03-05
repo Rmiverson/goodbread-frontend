@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getUserPosts } from '../actions/actions'
 
 import UserInfoCard from '../components/UserInfoCard'
@@ -15,6 +16,7 @@ class Profile extends React.Component {
          <div className="profile-page">
             <h2>Profile Page</h2>
             <UserInfoCard user={this.props.currentUserData} />
+            <Link to="/edituser">Edit Profile</Link>
             <Feed posts={this.props.selectedUserPosts} />
          </div>
       ) 
@@ -26,11 +28,7 @@ class Profile extends React.Component {
             <span>Loading...</span>
          )
       } else {
-         return(
-            <div>
-               { this.renderProfile() }
-            </div>
-         )
+         return( this.renderProfile() )
       }
    }
 
