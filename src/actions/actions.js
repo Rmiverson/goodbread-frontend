@@ -80,11 +80,10 @@ export const allPostsFetch = () => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(posts(data))
-            }
+            dispatch(posts(data))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -102,11 +101,10 @@ export const userFollowPostsFetch = user => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(followsPosts(data))
-            }
+            dispatch(followsPosts(data))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -124,11 +122,10 @@ export const userInfoFetch = user => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(currentUserData(data))
-            }
+            dispatch(currentUserData(data))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -153,11 +150,10 @@ export const getPostFetch = (id, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(setSelectedPost(data, callback))
-            }
+            dispatch(setSelectedPost(data, callback))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }   
@@ -175,12 +171,11 @@ export const setSelectedUser = (user, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(selectedUser(data))
-               callback()
-            }
+            dispatch(selectedUser(data))
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -201,11 +196,10 @@ export const newPostFetch = (post, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(setSelectedPost(data, callback))
-            }
+            dispatch(setSelectedPost(data, callback))
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -224,12 +218,11 @@ export const getUserPosts = (user, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (data.message) {
-               console.log(data.message)
-            } else {
-               dispatch(selectedUserPosts(data))
-               callback()
-            }
+            dispatch(selectedUserPosts(data))
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
          })
       }
    }
@@ -250,7 +243,27 @@ export const updatePostFetch = (post, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            // console.log(data)
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+export const deletePost = (id, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/posts/' + id, {
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
+         })
+         .then(resp => resp.json())
+         .then(data => {
             callback()
          })
          .catch(error => {

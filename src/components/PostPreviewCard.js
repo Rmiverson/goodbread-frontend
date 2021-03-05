@@ -1,7 +1,7 @@
 import React from 'react'
 import { setSelectedPost } from '../actions/actions'
 import { connect } from 'react-redux'
-import { Link, Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class PostPreviewCard extends React.Component {
 

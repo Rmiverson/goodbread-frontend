@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getUserPosts, selectedUserPosts } from '../actions/actions'
+import { getUserPosts } from '../actions/actions'
 
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from '../containers/Feed'

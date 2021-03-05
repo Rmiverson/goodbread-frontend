@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getPostFetch, updatePostFetch } from '../actions/actions'
+import { getPostFetch, updatePostFetch, deletePost } from '../actions/actions'
 
 import PostForm from '../components/PostForm'
 
@@ -9,6 +9,7 @@ class EditPost extends React.Component {
    state = {
       loading: true,
       submitted: false,
+      deleted: false,
       postId: ""
    }
 
@@ -21,9 +22,15 @@ class EditPost extends React.Component {
       this.setState({ loading: false })
    }
 
-   updateIdCallback = (id) => {
+   updateSubmittedCallback = () => {
       this.setState({
          submitted: true
+      })
+   }
+
+   updateDeleteCallback = () => {
+      this.setState({
+         deleted: true
       })
    }
 
@@ -37,7 +44,7 @@ class EditPost extends React.Component {
          content: this.sanitize(e.target.content.value)
       }
 
-      this.props.updatePostFetch(newPostObj, this.updateIdCallback)      
+      this.props.updatePostFetch(newPostObj, this.updateSubmittedCallback)      
    }
 
    sanitize = (text) => {  
@@ -52,6 +59,16 @@ class EditPost extends React.Component {
       )
    }
 
+   renderDelete = () => {
+      return(
+         <button onClick={this.handleDelete}>Delete</button>
+      )
+   }
+
+   handleDelete = () => {
+      this.props.deletePost(this.props.selectedPost.id, this.updateDeleteCallback)
+   }
+
    render() {
       if (this.state.loading) {
          return (
@@ -61,6 +78,8 @@ class EditPost extends React.Component {
          return(
             <div>
                { this.renderForm() }
+               { this.renderDelete() }
+               {this.state.deleted && <Redirect to={'/profile'} />}
             </div>
          )
       }
@@ -82,7 +101,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    updatePostFetch: (newPostObj, callback) => dispatch(updatePostFetch(newPostObj, callback)),
-   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback))
+   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback)),
+   deletePost: (id, callback) => dispatch(deletePost(id, callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPost)
