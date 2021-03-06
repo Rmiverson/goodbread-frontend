@@ -3,31 +3,71 @@ import { connect } from 'react-redux'
 import { allPostsFetch } from '../actions/actions'
 
 import Feed from '../containers/Feed'
+import SearchBar from '../components/SearchBar'
 
 class Search extends React.Component {
-   componentDidMount() {
-      this.props.allPostsFetch(this.props.currentUser)
+   state = {
+      loading: true,
+      search: ""
    }
 
-   render() {
-      return(
+   searchCallback = () => {
+      this.setState({
+         loading: false
+      })
+   }
+
+   handleChange = e => {
+      this.setState({
+         [e.target.name]: e.target.value
+      })
+   }
+
+   renderFeed = () => {
+      let posts = this.props.allPosts
+
+      let filtered = posts.filter(post => {
+         let postTitle = post.title.toLowerCase()
+         let search = this.state.search.toLowerCase()
+         return postTitle.includes(search) ? true : false
+      })
+
+      return <Feed posts={filtered}/>
+   }
+
+   renderSearchPage = () => {
+      return (
          <div className="Search-page">
             <h2>Search Page</h2>
+            <SearchBar handleChange={this.handleChange}/>
             <div className="search-feed">
-               <Feed posts={this.props.allPosts} />
+               {this.renderFeed()}
             </div>
          </div>
       )
    }
+
+   render() {
+      if (this.state.loading) {
+         return (
+            <span>Loading...</span>
+         )
+      } else {
+         return( this.renderSearchPage() )
+      }
+   }
+
+   componentDidMount() {
+      this.props.allPostsFetch( this.searchCallback )
+   }
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser,
    allPosts: state.allPosts
 })
 
 const mapDispatchToProps = dispatch => ({
-   allPostsFetch: (currentUser) => dispatch(allPostsFetch(currentUser))
+   allPostsFetch: (callback) => dispatch(allPostsFetch(callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

@@ -89,7 +89,7 @@ export const userFollowPostsFetch = user => {
    }
 }
 
-export const userInfoFetch = user => {
+export const userInfoFetch = (user, callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       if (token) {
@@ -102,6 +102,7 @@ export const userInfoFetch = user => {
          .then(resp => resp.json())
          .then(data => {
             dispatch(currentUserData(data))
+            callback()
          })
          .catch(error => {
             console.error('Error:', error)
@@ -110,11 +111,11 @@ export const userInfoFetch = user => {
    }
 }
 
-export const setSelectedUser = (user, callback = () => {}) => {
+export const getUserInfoFetch = (id, callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       if (token) {
-         return fetch(API + "/users/" + user.id, {
+         return fetch(API + "/users/" + id, {
             method: "GET",
             headers: {
                Authorization: `Bearer ${token}`
@@ -122,8 +123,7 @@ export const setSelectedUser = (user, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            dispatch(selectedUser(data))
-            callback()
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -177,16 +177,60 @@ export const deleteUser = (id) => {
    }
 }
 
+// follow actions
 
-// post actions
-export const setSelectedPost = (post, callback = () => {}) => {
+export const followUserFetch = (relationship, callback = () => {}) => {
    return dispatch => {
-      dispatch(selectedPost(post))
-      callback(post.id)
+      const token = localStorage.token
+      if (token) {
+         return fetch('http://localhost:3000/api/v1/relationships', {
+            method: "POST",
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json',
+               Accept: 'application/json'
+            },
+            body: JSON.stringify(relationship)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }      
    }
 }
 
-export const allPostsFetch = () => {
+export const unfollowUserFetch = (relationship, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch('http://localhost:3000/api/v1/relationships', {
+            method: "DELETE",
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(relationship)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }      
+   }
+}
+
+
+
+// post actions
+
+export const allPostsFetch = (callback = () => {}) => {
    return dispatch => {
       const token = localStorage.token
       if (token) {
@@ -199,6 +243,7 @@ export const allPostsFetch = () => {
          .then(resp => resp.json())
          .then(data => {
             dispatch(posts(data))
+            callback()
          })
          .catch(error => {
             console.error('Error:', error)
@@ -219,7 +264,6 @@ export const getPostFetch = (id, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            // dispatch(setSelectedPost(data, callback))
             callback(data)
          })
          .catch(error => {
@@ -244,7 +288,7 @@ export const newPostFetch = (post, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            dispatch(setSelectedPost(data, callback))
+            callback(data)
          })
          .catch(error => {
             console.error('Error:', error)
@@ -266,7 +310,6 @@ export const getUserPosts = (user, callback = () => {}) => {
          })
          .then(resp => resp.json())
          .then(data => {
-            dispatch(selectedUserPosts(data))
             callback(data)
          })
          .catch(error => {
@@ -502,8 +545,6 @@ export const commentUnlikeFetch = (id, callback = () => {}) => {
    }
 }
 
-
-
 export const loginUser = userObj => ({
    type: 'LOGIN_USER',
    payload: userObj
@@ -526,19 +567,4 @@ export const posts = dataObj => ({
 export const currentUserData = userObj => ({
    type: 'USER_DATA',
    payload: userObj
-})
-
-export const selectedPost = post => ({
-   type: 'POST',
-   payload: post
-})
-
-export const selectedUser = userObj => ({
-   type: 'SELECT_USER',
-   payload: userObj
-})
-
-export const selectedUserPosts = postsObj => ({
-   type: 'SELECTED_USER_POSTS',
-   payload: postsObj
 })
