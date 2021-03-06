@@ -17,7 +17,6 @@ class NewPost extends React.Component {
    }
 
    updateIdCallback = (id) => {
-      console.log(id)
       this.setState({
          submitted: true,
          postId: id
