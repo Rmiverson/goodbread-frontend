@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getPostFetch, newCommentFetch } from '../actions/actions'
+import { getPostFetch, newCommentFetch, postLikeFetch, postUnlikeFetch } from '../actions/actions'
 import { Link } from 'react-router-dom'
 
 import Comment from '../components/Comment'
@@ -17,7 +17,6 @@ class Post extends React.Component {
          loading: false,
          post: post
       })
-
    }
 
    commentCallback = () => {
@@ -51,6 +50,42 @@ class Post extends React.Component {
       e.target.content.value = ""
    }
 
+   handleLike = e => {
+      let likeObj = {
+         user_id: this.props.currentUser.id,
+         post_id: this.state.post.id
+      }
+
+      this.props.postLikeFetch(likeObj, this.commentCallback)
+   }
+
+   handleUnlike = e => {
+      let likeArr = this.state.post.post_likes
+
+      let like = likeArr.find(like => like.user_id === this.props.currentUser.id)
+
+      this.props.postUnlikeFetch(like.id, this.commentCallback)
+   }  
+
+   renderFollowBtn = () => {
+      let currentUser = this.props.currentUser
+
+      if (!this.arrIncludesId(this.state.post.post_likes, currentUser.id)) {
+         return <button onClick={this.handleUnlike}>Unlike</button>
+      } else {
+         return <button onClick={this.handleLike}>Like</button>
+      }
+   }
+
+   arrIncludesId = (arr, id) => {
+      return arr.every( element => {
+         if (element.user_id === id) {
+            return false
+         }
+         return true 
+      })
+   }
+
    renderPost = () => {
       return (
          <div className="post">
@@ -59,6 +94,8 @@ class Post extends React.Component {
             <br/>
             <Link to={`/user/${this.state.post.user.id}`} >{this.state.post.user.username}</Link>
             <p>{this.state.post.content}</p>
+            <p>Likes: {this.state.post.post_likes.length}</p>
+            {this.renderFollowBtn()}
             <div className="comment-section">
                <CommentForm type="New" handleSubmit={this.handleCommentSubmit} value=""/>
                {this.renderComments()}
@@ -91,7 +128,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback)),
-   newCommentFetch: (comment, commentCallback) => dispatch(newCommentFetch(comment, commentCallback))
+   newCommentFetch: (comment, commentCallback) => dispatch(newCommentFetch(comment, commentCallback)),
+   postLikeFetch: (likeObj, callback) => dispatch(postLikeFetch(likeObj, callback)),
+   postUnlikeFetch: (id, callback) => dispatch(postUnlikeFetch(id, callback))
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

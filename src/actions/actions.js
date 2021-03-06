@@ -410,6 +410,52 @@ export const deleteCommentFetch = (id, callback = () => {}) => {
    }
 }
 
+// post likes actions
+export const postLikeFetch = (likeObj, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/postlikes', {
+            method: 'POST',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(likeObj)
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
+export const postUnlikeFetch = (id, callback = () => {}) => {
+   return dispatch => {
+      const token = localStorage.token
+      if (token) {
+         return fetch(API + '/postlikes/' + id, {
+            method: 'DELETE',
+            headers: {
+               Authorization: `Bearer ${token}`,
+               'Content-Type': 'application/json'
+            }
+         })
+         .then(resp => resp.json())
+         .then(data => {
+            callback()
+         })
+         .catch(error => {
+            console.error('Error:', error)
+         })
+      }
+   }
+}
+
 
 
 export const loginUser = userObj => ({
