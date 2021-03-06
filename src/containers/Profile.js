@@ -8,7 +8,15 @@ import Feed from '../containers/Feed'
 
 class Profile extends React.Component {
    state = {
-      loading: true
+      loading: true,
+      posts: []
+   }
+
+   postsCallback = (postsArr) =>  {
+      this.setState({
+         loading:false,
+         posts: postsArr
+      })
    }
 
    renderProfile = () => {
@@ -17,7 +25,7 @@ class Profile extends React.Component {
             <h2>Profile Page</h2>
             <UserInfoCard user={this.props.currentUserData} />
             <Link to="/edituser">Edit Profile</Link>
-            <Feed posts={this.props.selectedUserPosts} />
+            <Feed posts={this.state.posts} />
          </div>
       ) 
    }
@@ -33,18 +41,16 @@ class Profile extends React.Component {
    }
 
    componentDidMount() {
-      this.props.getUserPosts(this.props.currentUserData)
-      this.setState({loading:false})
+      this.props.getUserPosts(this.props.currentUserData, this.postsCallback)
    }
 }
 
 const mapStateToProps = state => ({
-   currentUserData: state.currentUserData,
-   selectedUserPosts: state.selectedUserPosts
+   currentUserData: state.currentUserData
  })
 
  const mapDispatchToProps = dispatch => ({
-   getUserPosts: (user) => dispatch(getUserPosts(user))
+   getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback))
  })
  
 

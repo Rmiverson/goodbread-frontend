@@ -3,22 +3,23 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { getUserPosts, setSelectedUser, userInfoFetch } from '../actions/actions'
+import { followUserFetch, getUserInfoFetch, getUserPosts,  selectedUserPosts,  unfollowUserFetch } from '../actions/actions'
 
 class User extends React.Component {
    state = {
-      update: false,
+      user: {},
       loading: true
    }
 
-   userCallback = () => {
-      this.setState({loading: false})
+   userCallback = (userObj) => {
+      this.setState({
+         user: userObj,
+         loading: false
+      })
    }
 
-   updateComponent = () => {
-      this.setState((prevState) => ({
-         update: !prevState.update
-      }))
+   getUserInfo = (id = this.state.user.id) => {
+      this.props.getUserInfoFetch(id, this.userCallback)
    }
 
    arrIncludesId = (arr, id) => {
@@ -30,75 +31,32 @@ class User extends React.Component {
       })
    }
 
-   renderFollowButton = () => {
-      let currentUser = this.props.currentUserData
-      let selectedUser = this.props.selectedUser
-
-      if (!this.arrIncludesId(currentUser.followees, selectedUser.id)) {
-         return <button onClick={this.handleUnfollow}>Unfollow</button>
-      } else {
-         return <button onClick={this.handleFollow}>Follow</button>
-      }
-   }
-
    handleUnfollow = e => {
-      let currentUser = this.props.currentUserData
-      let selectedUser = this.props.selectedUser
-
       let relationship = {
-         follower_id: currentUser.id,
-         followee_id: selectedUser.id
+         follower_id: this.props.currentUserData.id,
+         followee_id: this.state.user.id
       }
-      
-      const token = localStorage.token
-      if (token) {
-         return fetch('http://localhost:3000/api/v1/relationships', {
-            method: "DELETE",
-            headers: {
-               Authorization: `Bearer ${token}`,
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(relationship)
-         })
-         .then(resp => resp.json())
-         .then(data => {
-            this.props.userInfoFetch(this.props.currentUserData)
-            this.updateComponent()
-         })
-         .catch(error => {
-            console.error('Error:', error)
-         })
-      }
+
+      this.props.unfollowUserFetch(relationship, this.getUserInfo)
    }
 
    handleFollow = e => {
-      let currentUser = this.props.currentUserData
-      let selectedUser = this.props.selectedUser
-
       let relationship = {
-         follower_id: currentUser.id,
-         followee_id: selectedUser.id
+         follower_id: this.props.currentUserData.id,
+         followee_id: this.state.user.id
       }
-      
-      const token = localStorage.token
-      if (token) {
-         return fetch('http://localhost:3000/api/v1/relationships', {
-            method: "POST",
-            headers: {
-               Authorization: `Bearer ${token}`,
-               'Content-Type': 'application/json',
-               Accept: 'application/json'
-            },
-            body: JSON.stringify(relationship)
-         })
-         .then(resp => resp.json())
-         .then(data => {
-            this.props.userInfoFetch(this.props.currentUserData)
-            this.updateComponent()
-         })
-         .catch(error => {
-            console.error('Error:', error)
-         })
+
+      this.props.followUserFetch(relationship, this.getUserInfo)
+   }
+   
+   renderFollowButton = () => {
+      let currentUser = this.props.currentUserData
+      let selectedUser = this.state.user
+
+      if (!this.arrIncludesId(selectedUser.followers, currentUser.id)) {
+         return <button onClick={this.handleUnfollow}>Unfollow</button>
+      } else {
+         return <button onClick={this.handleFollow}>Follow</button>
       }
    }
 
@@ -106,8 +64,8 @@ class User extends React.Component {
       return <div className="profile-page">
          <h2>user page</h2>
          {this.renderFollowButton()}
-         <UserInfoCard user={this.props.selectedUser} /> {/* update card when follow/unfollow */}
-         <Feed posts={this.props.selectedUserPosts} />   
+         <UserInfoCard user={this.state.user} />
+         <Feed posts={this.state.user.posts} />   
       </div>
    }
 
@@ -124,22 +82,22 @@ class User extends React.Component {
    componentDidMount() {
       let path = window.location.pathname
       let arr = path.split("/")
-      let id = {id: arr[2]}
+      let id = arr[2]
 
-      this.props.setSelectedUser(id, () => this.props.getUserPosts(this.props.currentUserData, this.userCallback))
+      this.getUserInfo(id)
    }
 }
 
 const mapStateToProps = state => ({
    selectedUser: state.selectedUser,
-   currentUserData: state.currentUserData,
-   selectedUserPosts: state.selectedUserPosts
+   currentUserData: state.currentUserData
 })
 
 const mapDispatchToProps = dispatch => ({
    getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback)),
-   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser)),
-   setSelectedUser: (id, callback) => dispatch(setSelectedUser(id, callback))
+   getUserInfoFetch: (id, callback) => dispatch(getUserInfoFetch(id, callback)),
+   followUserFetch: (relationship, callback) => dispatch(followUserFetch(relationship, callback)),
+   unfollowUserFetch: (relationship, callback) => dispatch(unfollowUserFetch(relationship, callback))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(User)

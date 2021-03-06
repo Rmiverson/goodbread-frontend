@@ -7,6 +7,7 @@ import Feed from '../containers/Feed'
 
 
 class Home extends React.Component {
+
    render() {
       return(
          <div className="home-page">
@@ -22,7 +23,7 @@ class Home extends React.Component {
    componentDidMount() {
       this.props.userFollowPostsFetch(this.props.currentUser)
       this.props.userInfoFetch(this.props.currentUser)
-      this.props.setSelectedUser(this.props.currentUser)
+      // this.props.setSelectedUser(this.props.currentUser)
    }
 }
 
@@ -34,8 +35,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser)),
-   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser)),
-   setSelectedUser: (user) => dispatch(setSelectedUser(user))
+   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
+   // setSelectedUser: (user) => dispatch(setSelectedUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

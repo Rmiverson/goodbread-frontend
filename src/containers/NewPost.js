@@ -16,10 +16,10 @@ class NewPost extends React.Component {
       content: ""
    }
 
-   updateIdCallback = (id) => {
+   updateIdCallback = (post) => {
       this.setState({
          submitted: true,
-         postId: id
+         postId: post.id
       })
    }
 
@@ -53,8 +53,7 @@ class NewPost extends React.Component {
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser,
-   selectedPost: state.selectedPost
+   currentUser: state.currentUser
  })
 
 const mapDispatchToProps = dispatch => ({

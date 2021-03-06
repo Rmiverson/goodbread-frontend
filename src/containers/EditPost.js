@@ -8,18 +8,22 @@ import PostForm from '../components/PostForm'
 class EditPost extends React.Component {
    state = {
       loading: true,
+      post: "",
       submitted: false,
-      deleted: false,
-      postId: ""
+      deleted: false
    }
 
-   values = {
-      title: this.props.selectedPost.title,
-      content: this.props.selectedPost.content
+   sanitize = (text) => {  
+      let sanitized = text.replace("<script>", "")
+      sanitized = sanitized.replace("</script>", "")
+      return sanitized
    }
 
-   updateLoadingCallback = (id) => {
-      this.setState({ loading: false })
+   updateLoadingCallback = (postObj) => {
+      this.setState({ 
+         loading: false,
+         post: postObj
+      })
    }
 
    updateSubmittedCallback = () => {
@@ -38,7 +42,7 @@ class EditPost extends React.Component {
       e.preventDefault()
 
       let newPostObj = {
-         id: this.props.selectedPost.id,
+         id: this.state.post.id,
          user_id: this.props.currentUser.id,
          title: this.sanitize(e.target.title.value),
          content: this.sanitize(e.target.content.value)
@@ -47,26 +51,9 @@ class EditPost extends React.Component {
       this.props.updatePostFetch(newPostObj, this.updateSubmittedCallback)      
    }
 
-   sanitize = (text) => {  
-      let sanitized = text.replace("<script>", "")
-      sanitized = sanitized.replace("</script>", "")
-      return sanitized
-   }
-
-   renderForm = () => {
-      return(
-         <PostForm type="Edit Form Page" renderReRoute={() => this.state.submitted && <Redirect to={`/post/${this.props.selectedPost.id}`} />} handleSubmit={this.handleSubmit} values={this.values}/>
-      )
-   }
-
-   renderDelete = () => {
-      return(
-         <button onClick={this.handleDelete}>Delete</button>
-      )
-   }
-
+   
    handleDelete = () => {
-      this.props.deletePost(this.props.selectedPost.id, this.updateDeleteCallback)
+      this.props.deletePost(this.state.post.id, this.updateDeleteCallback)
    }
 
    render() {
@@ -77,8 +64,18 @@ class EditPost extends React.Component {
       } else {
          return(
             <div className="edit-post-page">
-               { this.renderForm() }
-               { this.renderDelete() }
+               <PostForm 
+                  type="Edit Form Page" 
+                  renderReRoute={() => this.state.submitted && <Redirect to={`/post/${this.state.post.id}`} />} 
+                  handleSubmit={this.handleSubmit} 
+                  values={   
+                     {
+                        title: this.state.post.title,
+                        content: this.state.post.content
+                     }
+                  }
+               />
+               <button onClick={this.handleDelete}>Delete</button>
                { this.state.deleted && <Redirect to={'/profile'} /> }
             </div>
          )
@@ -95,8 +92,7 @@ class EditPost extends React.Component {
 }
 
 const mapStateToProps = state => ({
-   currentUser: state.currentUser,
-   selectedPost: state.selectedPost
+   currentUser: state.currentUser
  })
 
 const mapDispatchToProps = dispatch => ({

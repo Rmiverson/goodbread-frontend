@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getCommentFetch, editCommentFetch, deleteCommentFetch, commentLikeFetch, commentUnlikeFetch } from '../actions/actions'
 import CommentForm from './CommentForm'
 
@@ -103,7 +104,7 @@ class Comment extends React.Component {
    renderComment = () => {
       return(
          <div className="comment">
-            <h5>{this.state.comment.user.username}</h5>
+            <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
             <p>{this.state.comment.content}</p>
             <p>likes: {this.state.comment.comment_likes.length}</p>
             {this.renderEditBtn()}
