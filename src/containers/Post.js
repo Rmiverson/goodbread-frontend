@@ -67,14 +67,17 @@ class Post extends React.Component {
       this.props.postUnlikeFetch(like.id, this.commentCallback)
    }  
 
-   renderFollowBtn = () => {
+   renderLikeBtn = () => {
       let currentUser = this.props.currentUser
 
-      if (!this.arrIncludesId(this.state.post.post_likes, currentUser.id)) {
-         return <button onClick={this.handleUnlike}>Unlike</button>
-      } else {
-         return <button onClick={this.handleLike}>Like</button>
+      if (this.props.currentUser.id !== this.state.post.user_id) {
+         if (!this.arrIncludesId(this.state.post.post_likes, currentUser.id)) {
+            return <button onClick={this.handleUnlike}>Unlike</button>
+         } else {
+            return <button onClick={this.handleLike}>Like</button>
+         }         
       }
+
    }
 
    arrIncludesId = (arr, id) => {
@@ -95,7 +98,7 @@ class Post extends React.Component {
             <Link to={`/user/${this.state.post.user.id}`} >{this.state.post.user.username}</Link>
             <p>{this.state.post.content}</p>
             <p>Likes: {this.state.post.post_likes.length}</p>
-            {this.renderFollowBtn()}
+            {this.renderLikeBtn()}
             <div className="comment-section">
                <CommentForm type="New" handleSubmit={this.handleCommentSubmit} value=""/>
                {this.renderComments()}

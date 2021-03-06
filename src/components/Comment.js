@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCommentFetch, editCommentFetch, deleteCommentFetch } from '../actions/actions'
+import { getCommentFetch, editCommentFetch, deleteCommentFetch, commentLikeFetch, commentUnlikeFetch } from '../actions/actions'
 import CommentForm from './CommentForm'
 
 class Comment extends React.Component {
@@ -9,6 +9,19 @@ class Comment extends React.Component {
       edit: false,
       deleted: false,
       comment: {}
+   }
+
+   arrIncludesId = (arr, id) => {
+      return arr.every( element => {
+         if (element.user_id === id) {
+            return false
+         }
+         return true 
+      })
+   }
+
+   getComment = () => {
+      this.props.getCommentFetch(this.props.id, this.commentCallback)
    }
 
    commentCallback = (commentObj) => {
@@ -49,6 +62,23 @@ class Comment extends React.Component {
       this.setState({edit: false})
    }
 
+   handleLike = () => {
+      let like = {
+         user_id: this.props.currentUser.id,
+         comment_id: this.state.comment.id
+      }
+
+      this.props.commentLikeFetch(like, this.getComment)
+   }
+
+   handleUnlike = () => {
+      let likeArr = this.state.comment.comment_likes
+
+      let like = likeArr.find(like => like.user_id === this.props.currentUser.id)
+
+      this.props.commentUnlikeFetch(like.id, this.getComment)
+   }
+
    renderEditBtn = () => {
       if (this.props.currentUser.id === this.state.comment.user.id) {
          return (
@@ -60,6 +90,16 @@ class Comment extends React.Component {
       }
    }
 
+   renderLikeBtn = () => {
+      if (this.props.currentUser.id !== this.state.comment.user.id) {
+         if (!this.arrIncludesId(this.state.comment.comment_likes, this.props.currentUser.id)) {
+            return <button onClick={this.handleUnlike}>Unlike</button>
+         } else {
+            return <button onClick={this.handleLike}>Like</button>
+         } 
+      } 
+   }
+
    renderComment = () => {
       return(
          <div className="comment">
@@ -67,6 +107,7 @@ class Comment extends React.Component {
             <p>{this.state.comment.content}</p>
             <p>likes: {this.state.comment.comment_likes.length}</p>
             {this.renderEditBtn()}
+            {this.renderLikeBtn()}
          </div>
       )      
    }
@@ -88,7 +129,7 @@ class Comment extends React.Component {
    }
 
    componentDidMount() {
-      this.props.getCommentFetch(this.props.id, this.commentCallback)
+      this.getComment()
    }
 
 }
@@ -100,7 +141,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
    getCommentFetch: (comment, callback) => dispatch(getCommentFetch(comment, callback)),
    editCommentFetch: (comment, callback) => dispatch(editCommentFetch(comment, callback)),
-   deleteCommentFetch: (id, callback) => dispatch(deleteCommentFetch(id, callback))
+   deleteCommentFetch: (id, callback) => dispatch(deleteCommentFetch(id, callback)),
+   commentLikeFetch: (comment, callback) => dispatch(commentLikeFetch(comment, callback)),
+   commentUnlikeFetch: (id, callback) => dispatch(commentUnlikeFetch(id, callback))
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Comment)
