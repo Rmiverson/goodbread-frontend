@@ -23,17 +23,13 @@ class Post extends React.Component {
       this.props.getPostFetch(this.state.post.id, this.postCallback)
    }
 
-   renderComments = () => {
-      let comments = this.state.post.comments
-      return comments.map(comment => {
-         return <Comment key={comment.id} id={comment.id} commentCallback={this.commentCallback}/>
+   arrIncludesId = (arr, id) => {
+      return arr.every( element => {
+         if (element.user_id === id) {
+            return false
+         }
+         return true 
       })
-   }
-
-   renderEditBtn = () => {
-      if (this.props.currentUser.id === this.state.post.user.id) {
-         return <Link to={`/editpost/${this.state.post.id}`}>Edit</Link>
-      }
    }
 
    handleCommentSubmit = e => {
@@ -80,25 +76,33 @@ class Post extends React.Component {
 
    }
 
-   arrIncludesId = (arr, id) => {
-      return arr.every( element => {
-         if (element.user_id === id) {
-            return false
-         }
-         return true 
+   renderComments = () => {
+      let comments = this.state.post.comments
+      return comments.map(comment => {
+         return <Comment key={comment.id} id={comment.id} commentCallback={this.commentCallback}/>
       })
+   }
+
+   renderEditBtn = () => {
+      if (this.props.currentUser.id === this.state.post.user.id) {
+         return <Link to={`/editpost/${this.state.post.id}`}>Edit</Link>
+      }
    }
 
    renderPost = () => {
       return (
-         <div className="post">
-            <h2>{this.state.post.title}</h2>
-            {this.renderEditBtn()}
-            <br/>
-            <Link to={`/user/${this.state.post.user.id}`} >{this.state.post.user.username}</Link>
-            <p>{this.state.post.content}</p>
-            <p>Likes: {this.state.post.post_likes.length}</p>
-            {this.renderLikeBtn()}
+         <div className="post-page">
+            <div className="post">
+               <h2>{this.state.post.title}</h2>
+               {this.renderEditBtn()}
+               <Link to={`/user/${this.state.post.user.id}`} >Author: {this.state.post.user.username}</Link>
+               <h5>Likes: {this.state.post.post_likes.length}</h5>
+               <p>{this.state.post.content}</p>
+               <div className="like-btn">
+                  {this.renderLikeBtn()}
+               </div>
+            </div>
+            
             <div className="comment-section">
                <CommentForm type="New" handleSubmit={this.handleCommentSubmit} value=""/>
                {this.renderComments()}

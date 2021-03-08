@@ -3,7 +3,7 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { followUserFetch, getUserInfoFetch, getUserPosts,  selectedUserPosts,  unfollowUserFetch } from '../actions/actions'
+import { followUserFetch, getUserInfoFetch, getUserPosts,  unfollowUserFetch } from '../actions/actions'
 
 class User extends React.Component {
    state = {
@@ -53,7 +53,9 @@ class User extends React.Component {
       let currentUser = this.props.currentUserData
       let selectedUser = this.state.user
 
-      if (!this.arrIncludesId(selectedUser.followers, currentUser.id)) {
+      if (selectedUser.id === currentUser.id) {
+         return ""
+      } else if (!this.arrIncludesId(selectedUser.followers, currentUser.id)) {
          return <button onClick={this.handleUnfollow}>Unfollow</button>
       } else {
          return <button onClick={this.handleFollow}>Follow</button>
@@ -89,7 +91,6 @@ class User extends React.Component {
 }
 
 const mapStateToProps = state => ({
-   selectedUser: state.selectedUser,
    currentUserData: state.currentUserData
 })
 

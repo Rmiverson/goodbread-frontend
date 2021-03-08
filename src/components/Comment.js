@@ -83,7 +83,7 @@ class Comment extends React.Component {
    renderEditBtn = () => {
       if (this.props.currentUser.id === this.state.comment.user.id) {
          return (
-            <div className="comment-edit-delete-btns">
+            <div className="edit-delete-btns">
                <button onClick={this.handleEdit}>Edit</button>
                <button onClick={this.handleDelete}>Delete</button>
             </div>
@@ -104,11 +104,20 @@ class Comment extends React.Component {
    renderComment = () => {
       return(
          <div className="comment">
-            <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
+            <div className="content-header">
+               <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
+               <h5>likes: {this.state.comment.comment_likes.length}</h5>
+            </div>
+
             <p>{this.state.comment.content}</p>
-            <p>likes: {this.state.comment.comment_likes.length}</p>
-            {this.renderEditBtn()}
-            {this.renderLikeBtn()}
+            
+            <div className="comment-edit-section">
+               {this.renderEditBtn()}
+               <div className="like-btns">
+                  {this.renderLikeBtn()}  
+               </div>
+            </div>
+
          </div>
       )      
    }
