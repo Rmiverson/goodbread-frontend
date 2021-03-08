@@ -27,7 +27,9 @@ body {
   background-color: #f45229;
 }
 .home-page,
-.post-page {
+.post-page,
+.profile-page,
+.edit-user-page {
   width: 75%;
   margin: auto;
 }
@@ -66,6 +68,7 @@ body {
 }
 .post-preview-card p {
   padding: 0 15px 5px 15px;
+  text-align: left;
 }
 .comment-form {
   border-radius: 6px;
@@ -133,5 +136,100 @@ body {
 }
 .link-btn:hover {
   opacity: 1;
+}
+.edit-user-form,
+.new-post-page {
+  border-radius: 6px;
+  width: 50rem;
+  margin: 4rem auto 1rem auto;
+  padding: 0.05rem 1rem 1.3rem 1rem;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px 5px #595959;
+}
+.edit-user-form form,
+.new-post-page form {
+  display: flex;
+  flex-direction: column;
+}
+.edit-user-form form label,
+.new-post-page form label {
+  padding: 1rem;
+}
+.edit-user-form form textarea,
+.new-post-page form textarea {
+  margin: 0 1rem 0 1rem;
+  resize: none;
+}
+.edit-user-form form input,
+.new-post-page form input {
+  margin: 0.75rem auto 0 auto;
+  width: 5rem;
+}
+.user-form {
+  border-radius: 6px;
+  width: 30rem;
+  margin: 4rem auto 1rem auto;
+  padding: 0.05rem 1rem 1.3rem 1rem;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px 5px #595959;
+}
+.user-form form {
+  display: flex;
+  flex-direction: column;
+}
+.user-form form label {
+  padding: 0 0 0.5rem 0;
+}
+.user-form form input {
+  margin: 0 auto 1rem auto;
+  width: 5rem;
+}
+@media (max-width: 1500px) {
+  .post,
+  .edit-user-form,
+  .header {
+    width: 100%;
+  }
+}
+@media (max-width: 890px) {
+  .home-page,
+  .post-page {
+    width: 75%;
+    margin: 0 5rem 0 5rem;
+  }
+  .edit-user-form,
+  .new-post-page,
+  .header,
+  .post-preview-card,
+  .user-form {
+    border-radius: 0;
+    width: 100%;
+  }
+}
+@media (max-width: 650px) {
+  .navbar {
+    width: 100%;
+  }
+  .navbar .link {
+    margin: auto;
+    width: 100%;
+    padding: 1.5rem 1rem 1.3rem 1rem;
+  }
+  .home-page,
+  .post-page {
+    width: 100%;
+    margin: auto;
+  }
+  .post {
+    border-radius: 0;
+  }
+  .comment {
+    width: 100%;
+    border-radius: 0;
+  }
+  .comment-form {
+    border-radius: 0;
+    width: 100%;
+  }
 }
 /*# sourceMappingURL=index.css.map */

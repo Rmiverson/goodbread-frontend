@@ -6,18 +6,16 @@ class UserForm extends React.Component {
       return(
          <div className="user-form">
             <h2>{this.props.type}</h2>
-            <form onSubmit={this.props.handleSubmit}>
-               <div className="form-username-block">
+            <form onSubmit={this.props.handleSubmit}>            
                   <label>Username</label>
+   
                   <input 
                      name='username'
                      placeholder='Username'
                      value={this.props.username}
                      onChange={this.props.handleChange}
                   />
-               </div>
-               <br />
-               <div className="form-password-block">
+               
                   <label>Password</label>
                   <input 
                      name='password'
@@ -26,8 +24,7 @@ class UserForm extends React.Component {
                      value={this.props.password}
                      onChange={this.props.handleChange}
                   />
-               </div>
-               <br />
+               
                <input type='submit' />
             </form>
          </div>

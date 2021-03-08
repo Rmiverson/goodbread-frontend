@@ -64,9 +64,12 @@ class User extends React.Component {
 
    renderProfile = () => {
       return <div className="profile-page">
-         <h2>user page</h2>
-         {this.renderFollowButton()}
-         <UserInfoCard user={this.state.user} />
+         <div className="header">
+            <h2>user page</h2>
+            {this.renderFollowButton()}
+            <UserInfoCard user={this.state.user} />            
+         </div>
+
          <Feed posts={this.state.user.posts} />   
       </div>
    }

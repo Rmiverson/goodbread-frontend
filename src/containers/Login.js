@@ -27,8 +27,7 @@ class Login extends React.Component {
       return(
          <div className="login-form">
             {!!this.props.currentUser.id && <Redirect to="/" />}
-            <h2>Login</h2>
-            <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+            <UserForm type="Login" username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
          </div>
       )   
    }

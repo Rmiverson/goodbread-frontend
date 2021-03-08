@@ -28,7 +28,7 @@ class EditUser extends React.Component {
    }
 
    renderForm = () => {
-      return <EditUserForm handleSubmit={this.handleSubmit} username={this.props.currentUserData.username} userDesc={this.props.currentUserData.user_desc} />
+      return <EditUserForm type="Edit Profile" handleSubmit={this.handleSubmit} username={this.props.currentUserData.username} userDesc={this.props.currentUserData.user_desc} />
    }
 
    renderRedirect = () => {

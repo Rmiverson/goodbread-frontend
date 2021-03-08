@@ -34,7 +34,6 @@ body {
    .link {
       text-decoration: none
       color: colors.black
-      // margin: auto //maybe mobile view?
       width: 9rem
       padding-top: 1.45rem
 
@@ -51,7 +50,7 @@ body {
    }   
 }
 
-.home-page, .post-page {
+.home-page, .post-page, .profile-page, .edit-user-page {
    width: 75%   
    margin: auto
 }
@@ -95,7 +94,9 @@ body {
 
    p {
       padding: 0 15px 5px 15px
+      text-align: left
    }
+
 }
 
 .comment-form {
@@ -182,3 +183,106 @@ body {
       opacity: 1   
    }
 }
+
+.edit-user-form, .new-post-page {
+   br(6px)
+   width: 50rem
+   margin: 4rem auto 1rem auto
+   padding: 0.05rem 1rem 1.30rem 1rem  
+   background-color: white
+   box-shadow: 5px 5px 10px 5px colors.grey
+
+   form {
+      display: flex
+      flex-direction: column
+
+      label {
+         padding: 1rem
+      }
+
+      textarea {
+         margin: 0 1rem 0 1rem
+         resize: none
+      }
+
+      input {
+         margin: 0.75rem auto 0 auto
+         width: 5rem
+      }
+   }
+}
+
+.user-form {
+   br(6px)
+   width: 30rem
+   margin: 4rem auto 1rem auto
+   padding: 0.05rem 1rem 1.30rem 1rem  
+   background-color: white
+   box-shadow: 5px 5px 10px 5px colors.grey
+
+   form {
+      display: flex
+      flex-direction: column
+
+      label {
+         padding: 0 0 0.5rem 0
+      }
+
+      input {
+         margin: 0 auto 1rem auto
+         width: 5rem
+      }
+   }   
+}
+
+@media (max-width:1500px) {  
+   .post, .edit-user-form, .header {
+      width: 100%   
+   }
+
+}
+
+@media (max-width:890px) {
+   .home-page, .post-page {
+      width: 75%
+      margin: 0 5rem 0 5rem
+   }
+
+   .edit-user-form, .new-post-page, .header, .post-preview-card, .user-form {
+      br(0)   
+      width: 100%
+   }
+}
+
+@media (max-width: 650px) {
+   .navbar {
+      width: 100%
+
+      .link {
+         margin: auto 
+         width: 100%         
+            padding: 1.5rem 1rem 1.30rem 1rem
+      }
+   }
+
+   .home-page, .post-page {
+      width: 100%   
+      margin: auto
+   }
+
+   .post {
+      br(0)
+   }
+
+   .comment {
+      width: 100%
+      br(0)   
+   }
+
+   .comment-form {
+      br(0)
+      width: 100%   
+   }
+}
+
+
