@@ -22,9 +22,12 @@ class Profile extends React.Component {
    renderProfile = () => {
       return(
          <div className="profile-page">
-            <h2>Profile Page</h2>
-            <UserInfoCard user={this.props.currentUserData} />
-            <Link to="/edituser">Edit Profile</Link>
+            <div className="header">
+               <h2>Profile Page</h2>
+               <UserInfoCard user={this.props.currentUserData} />
+               <Link to="/edituser">Edit Profile</Link>               
+            </div>
+
             <Feed posts={this.state.posts} />
          </div>
       ) 

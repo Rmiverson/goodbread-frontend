@@ -26,8 +26,7 @@ class Signup extends React.Component {
       return(
          <div className="signup-form">
             {!!this.props.currentUser.id && <Redirect to="/" />}
-            <h2>Signup</h2>
-            <UserForm username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+            <UserForm type="Signup" username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
          </div>
       )
    }

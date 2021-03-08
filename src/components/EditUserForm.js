@@ -7,16 +7,16 @@ class EditUserForm extends React.Component {
          <div className="edit-user-form">
             <h2>{this.props.type}</h2>
             <form onSubmit={this.props.handleSubmit}>
-               <div className="form-username-block">
+               {/* <div className="form-username-block"> */}
                   <label>Username</label>
                   <input 
                      name='username'
                      placeholder='Username'
                      defaultValue={this.props.username}
                   />
-               </div>
-               <br />
-               <div className="form-user-desc-block">
+               {/* </div> */}
+               
+               {/* <div className="form-user-desc-block"> */}
                   <label>User Description</label>
                   <textarea 
                      name="userDesc" 
@@ -25,8 +25,8 @@ class EditUserForm extends React.Component {
                      id="user-description" 
                      defaultValue={this.props.userDesc}
                   ></textarea>
-               </div>
-               <br />
+               {/* </div> */}
+               {/* <br /> */}
                <input type='submit' />
             </form>
          </div>

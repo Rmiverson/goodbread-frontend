@@ -11,6 +11,8 @@ class CommentForm extends React.Component {
                   rows="5" 
                   cols="30"
                   defaultValue={this.props.value}
+                  required="required"
+                  maxLength="250"
                ></textarea>
                <input type='submit' value='Submit'/>
             </form>

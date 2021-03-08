@@ -38,8 +38,11 @@ class Search extends React.Component {
    renderSearchPage = () => {
       return (
          <div className="Search-page">
-            <h2>Search Page</h2>
-            <SearchBar handleChange={this.handleChange}/>
+            <div className="header">
+               <h2>Search Page</h2>
+               <SearchBar handleChange={this.handleChange}/>
+            </div>
+
             <div className="search-feed">
                {this.renderFeed()}
             </div>
