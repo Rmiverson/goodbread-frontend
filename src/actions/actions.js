@@ -1,4 +1,4 @@
-const API = "http://localhost:3000/api/v1"
+const API = "https://good-bread-backend.herokuapp.com/api/v1"
 
 // user actions
 export const userPostFetch = user => {
