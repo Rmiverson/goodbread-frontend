@@ -29,7 +29,8 @@ body {
 .home-page,
 .post-page,
 .profile-page,
-.edit-user-page {
+.edit-user-page,
+.Search-page {
   width: 75%;
   margin: auto;
 }
@@ -201,7 +202,9 @@ body {
   .new-post-page,
   .header,
   .post-preview-card,
-  .user-form {
+  .user-form,
+  .Search-page,
+  .profile-page {
     border-radius: 0;
     width: 100%;
   }
