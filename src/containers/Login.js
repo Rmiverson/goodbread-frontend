@@ -4,6 +4,9 @@ import { userLoginFetch } from '../actions/actions'
 import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
+import Landing from '../components/Landing'
+
+import {ReactComponent as ReactLogo} from '../logo.svg'
 
 class Login extends React.Component {
    state = {
@@ -27,6 +30,10 @@ class Login extends React.Component {
       return(
          <div className="login-form">
             {!!this.props.currentUser.id && <Redirect to="/" />}
+            <div className="landing-logo">
+               <ReactLogo />
+            </div>
+            <Landing />
             <UserForm type="Login" username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
          </div>
       )   

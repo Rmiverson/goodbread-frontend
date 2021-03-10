@@ -25,7 +25,11 @@ class Profile extends React.Component {
             <div className="header">
                <h2>Profile Page</h2>
                <UserInfoCard user={this.props.currentUserData} />
-               <Link to="/edituser">Edit Profile</Link>               
+
+               <div className="router-link-btn">
+                  <Link to="/edituser">Edit Profile</Link> 
+               </div>
+                             
             </div>
 
             <Feed posts={this.state.posts} />

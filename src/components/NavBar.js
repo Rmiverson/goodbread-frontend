@@ -1,11 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux'
+import {ReactComponent as ReactLogo} from '../logo.svg'
 
 class NavBar extends React.Component {
    render() {
       return ( 
          <nav className="navbar">
+            <div className="logo">
+               <ReactLogo />
+            </div>
+            
+            
             {!this.props.currentUser.id ? (
                <>
                   <NavLink className="link" to="/">Login</NavLink>

@@ -138,6 +138,63 @@ body {
 .link-btn:hover {
   opacity: 1;
 }
+.router-link-btn a {
+  border-radius: 10px;
+  text-decoration: none;
+  padding: 5px 25px 5px 25px;
+  background-color: #f78e28;
+  color: #fff;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+.router-link-btn a:hover {
+  opacity: 1;
+}
+.router-edit-btn {
+  margin-bottom: 25px;
+}
+.router-edit-btn a {
+  border-radius: 10px;
+  text-decoration: none;
+  padding: 5px 25px 5px 25px;
+  background-color: #f78e28;
+  color: #fff;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+.router-edit-btn a:hover {
+  opacity: 1;
+}
+.submit-btn {
+  border-radius: 10px;
+  border: 0;
+  text-decoration: none;
+  text-align: center;
+  height: 1.5rem;
+  width: 7rem !important;
+  background-color: #f78e28;
+  color: #fff;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+.submit-btn:hover {
+  opacity: 1;
+}
+.delete-btn {
+  border-radius: 10px;
+  border: 0;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 30px 10px 30px;
+  margin-top: 2rem;
+  background-color: #f45229;
+  color: #fff;
+  box-shadow: 3px 3px 10px 3px #595959;
+  transition: 0.3s;
+}
+.delete-btn:hover {
+  padding: 15px 40px 15px 40px;
+}
 .edit-user-form,
 .new-post-page {
   border-radius: 6px;
@@ -185,11 +242,32 @@ body {
   margin: 0 auto 1rem auto;
   width: 5rem;
 }
+.logo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.6rem 0 0 2rem;
+}
+.landing-component {
+  border-radius: 6px;
+  width: 30rem;
+  margin: 4rem auto 1rem auto;
+  padding: 0.05rem 1rem 1.3rem 1rem;
+  background-color: #fff;
+  box-shadow: 5px 5px 10px 5px #595959;
+}
+.landing-logo {
+  width: 30rem;
+  margin: auto;
+  padding-top: 5rem;
+  margin-bottom: -130px;
+}
 @media (max-width: 1500px) {
   .post,
   .edit-user-form,
   .header {
-    width: 100%;
+    width: 75%;
   }
 }
 @media (max-width: 890px) {
@@ -204,7 +282,8 @@ body {
   .post-preview-card,
   .user-form,
   .Search-page,
-  .profile-page {
+  .profile-page,
+  .landing-component {
     border-radius: 0;
     width: 100%;
   }

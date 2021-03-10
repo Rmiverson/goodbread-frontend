@@ -11,10 +11,10 @@ class CommentForm extends React.Component {
                   rows="5" 
                   cols="30"
                   defaultValue={this.props.value}
-                  required="required"
+                  required
                   maxLength="250"
                ></textarea>
-               <input type='submit' value='Submit'/>
+               <input type='submit' value='Submit' className="submit-btn"/>
             </form>
          </div>
       )

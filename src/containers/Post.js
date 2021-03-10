@@ -68,9 +68,9 @@ class Post extends React.Component {
 
       if (this.props.currentUser.id !== this.state.post.user_id) {
          if (!this.arrIncludesId(this.state.post.post_likes, currentUser.id)) {
-            return <button onClick={this.handleUnlike}>Unlike</button>
+            return <button onClick={this.handleUnlike} className="submit-btn">Unlike</button>
          } else {
-            return <button onClick={this.handleLike}>Like</button>
+            return <button onClick={this.handleLike} className="submit-btn">Like</button>
          }         
       }
 
@@ -85,7 +85,12 @@ class Post extends React.Component {
 
    renderEditBtn = () => {
       if (this.props.currentUser.id === this.state.post.user.id) {
-         return <Link to={`/editpost/${this.state.post.id}`}>Edit</Link>
+         return (
+            <div className="router-edit-btn">
+               <Link to={`/editpost/${this.state.post.id}`}>Edit</Link>
+            </div>    
+         )
+            
       }
    }
 
@@ -95,7 +100,9 @@ class Post extends React.Component {
             <div className="post">
                <h2>{this.state.post.title}</h2>
                {this.renderEditBtn()}
-               <Link to={`/user/${this.state.post.user.id}`} >Author: {this.state.post.user.username}</Link>
+               <div className="router-link-btn">
+                  <Link to={`/user/${this.state.post.user.id}`} >Author: {this.state.post.user.username}</Link>
+               </div>
                <h5>Likes: {this.state.post.post_likes.length}</h5>
                <p>{this.state.post.content}</p>
                <div className="like-btn">

@@ -84,8 +84,8 @@ class Comment extends React.Component {
       if (this.props.currentUser.id === this.state.comment.user.id) {
          return (
             <div className="edit-delete-btns">
-               <button onClick={this.handleEdit}>Edit</button>
-               <button onClick={this.handleDelete}>Delete</button>
+               <button onClick={this.handleEdit} className="submit-btn">Edit</button>
+               <button onClick={this.handleDelete} className="submit-btn">Delete</button>
             </div>
          )
       }
@@ -94,9 +94,9 @@ class Comment extends React.Component {
    renderLikeBtn = () => {
       if (this.props.currentUser.id !== this.state.comment.user.id) {
          if (!this.arrIncludesId(this.state.comment.comment_likes, this.props.currentUser.id)) {
-            return <button onClick={this.handleUnlike}>Unlike</button>
+            return <button onClick={this.handleUnlike} className="submit-btn">Unlike</button>
          } else {
-            return <button onClick={this.handleLike}>Like</button>
+            return <button onClick={this.handleLike} className="submit-btn">Like</button>
          } 
       } 
    }
@@ -105,17 +105,19 @@ class Comment extends React.Component {
       return(
          <div className="comment">
             <div className="content-header">
-               <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
-               <h5>likes: {this.state.comment.comment_likes.length}</h5>
+               <div className="router-link-btn">
+                  <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
+               </div>
             </div>
 
             <p>{this.state.comment.content}</p>
-            
+            <h5>likes: {this.state.comment.comment_likes.length}</h5>
             <div className="comment-edit-section">
                {this.renderEditBtn()}
                <div className="like-btns">
                   {this.renderLikeBtn()}  
                </div>
+
             </div>
 
          </div>

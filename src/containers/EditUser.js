@@ -38,7 +38,7 @@ class EditUser extends React.Component {
    }
 
    renderDelete = () => {
-      return <button onClick={this.handleDelete}>Delete Profile</button>
+      return <button onClick={this.handleDelete} className="delete-btn">Delete Profile</button>
    }
 
    render() {
