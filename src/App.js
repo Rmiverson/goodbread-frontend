@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css';
 
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
+import { HashRouter, Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser, userPersistFetch } from './actions/actions'
 
@@ -34,24 +34,26 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <NavBar handleLogout={this.handleLogout}/>
+        <HashRouter basename='/'>
+          <NavBar handleLogout={this.handleLogout}/>
 
-        <Switch>
-          <Route exact path="/login" render={() => <Login />} />        
-          <Route exact path="/signup" render={() => <Signup />} />
+          <Switch>
+            <Route exact path="/login" render={() => <Login />} />        
+            <Route exact path="/signup" render={() => <Signup />} />
 
-          {!this.props.currentUser.id && <Redirect to="/login" />}
-          <Route exact path="/" render={() => <Home />}/>
-          <Route exact path="/search" render={() => <Search />}/>
-          <Route exact path="/profile" render={() => <Profile />}/>
-          <Route path='/post/:postId' render={() => <Post />} />
-          <Route path='/user/:userId' render={() => <User />} />
-          <Route exact path="/newpost" render={() => <NewPost />} />
-          <Route path="/editpost/:postId" render={() => <EditPost />} />
-          <Route path="/edituser" render={() => <EditUser/> } />
+            {!this.props.currentUser.id && <Redirect to="/login" />}
+            <Route exact path="/" render={() => <Home />}/>
+            <Route exact path="/search" render={() => <Search />}/>
+            <Route exact path="/profile" render={() => <Profile />}/>
+            <Route path='/post/:postId' render={() => <Post />} />
+            <Route path='/user/:userId' render={() => <User />} />
+            <Route exact path="/newpost" render={() => <NewPost />} />
+            <Route path="/editpost/:postId" render={() => <EditPost />} />
+            <Route path="/edituser" render={() => <EditUser/> } />
 
-          <Route component={NotFound} />
-        </Switch>
+            <Route component={NotFound} />
+          </Switch>
+        </HashRouter>
       </div>
     )
   }

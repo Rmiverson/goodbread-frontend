@@ -9,9 +9,9 @@ import { store } from './store/store'
 
 ReactDOM.render(
   <Provider store={store}>
-    <HashRouter basename='/'>
+    
       <App />
-    </HashRouter>
+    
   </Provider>,
   document.getElementById('root')
 );
