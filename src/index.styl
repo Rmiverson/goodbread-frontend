@@ -184,6 +184,77 @@ body {
    }
 }
 
+.router-link-btn {
+   a {
+      br(10px)
+      text-decoration: none
+      padding: 5px 25px 5px 25px
+      background-color: colors.orange
+      color: white
+
+      opacity: 0.6
+      transition: 0.3s
+
+      &:hover {
+         opacity: 1   
+      }
+   }   
+}
+
+.router-edit-btn {
+   margin-bottom: 25px
+   a {
+      br(10px)
+      text-decoration: none
+      padding: 5px 25px 5px 25px
+      background-color: colors.orange
+      color: white
+
+      opacity: 0.6
+      transition: 0.3s
+
+      &:hover {
+         opacity: 1   
+      }
+   } 
+}
+
+.submit-btn {
+   br(10px)
+   border: 0
+   text-decoration: none
+   text-align: center
+   height: 1.5rem
+   width: 7rem !important
+   background-color: colors.orange
+   color: white
+
+   opacity: 0.6
+   transition: 0.3s
+
+   &:hover {
+      opacity: 1   
+   }
+}
+
+.delete-btn {
+   br(10px)
+   border: 0
+   text-decoration: none
+   text-align: center
+   padding: 10px 30px 10px 30px 
+   margin-top: 2rem
+   background-color: colors.red
+   color: white
+   box-shadow: 3px 3px 10px 3px colors.grey
+
+   transition: 0.3s
+
+   &:hover {
+      padding: 15px 40px 15px 40px
+   }
+}
+
 .edit-user-form, .new-post-page {
    br(6px)
    width: 50rem
@@ -235,9 +306,34 @@ body {
    }   
 }
 
+.logo {
+   width: 100%
+   height: 100%
+   display: flex
+   justify-content: flex-start
+   padding: 0.6rem 0 0 2rem
+}
+
+.landing-component {
+   br(6px)
+   width: 30rem
+   margin: 4rem auto 1rem auto
+   padding: 0.05rem 1rem 1.30rem 1rem  
+   background-color: white
+   box-shadow: 5px 5px 10px 5px colors.grey
+}
+
+.landing-logo {
+   width: 30rem  
+   margin: auto
+   padding-top: 5rem
+   margin-bottom: -130px
+
+}
+
 @media (max-width:1500px) {  
    .post, .edit-user-form, .header {
-      width: 100%   
+      width: 75%   
    }
 
 }
@@ -248,7 +344,7 @@ body {
       margin: 0 5rem 0 5rem
    }
 
-   .edit-user-form, .new-post-page, .header, .post-preview-card, .user-form {
+   .edit-user-form, .new-post-page, .header, .post-preview-card, .user-form, .landing-component {
       br(0)   
       width: 100%
    }

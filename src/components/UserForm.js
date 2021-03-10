@@ -14,18 +14,20 @@ class UserForm extends React.Component {
                      placeholder='Username'
                      value={this.props.username}
                      onChange={this.props.handleChange}
+                     required
                   />
                
                   <label>Password</label>
-                  <input 
+                  <input
                      name='password'
                      placeholder='password'
                      type="password"
                      value={this.props.password}
                      onChange={this.props.handleChange}
+                     required
                   />
                
-               <input type='submit' />
+               <input type='submit' className="submit-btn" value={this.props.type}/>
             </form>
          </div>
       )

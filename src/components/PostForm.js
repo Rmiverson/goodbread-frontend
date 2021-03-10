@@ -6,12 +6,12 @@ const PostForm = ( {type, renderReRoute, handleSubmit, values} ) => {
          <h2>{type}</h2>
          <form className="new-post-form" onSubmit={handleSubmit}>
             <label>Title</label>
-            <input type="text" name="title" id="new-post-title" defaultValue={values.title}/>
+            <input required type="text" name="title" id="new-post-title" defaultValue={values.title}/>
 
             <label>Content</label>
-            <textarea name="content" rows="20" cols="60" id="new-post-content" defaultValue={values.content}></textarea>
+            <textarea required name="content" rows="20" cols="60" id="new-post-content" defaultValue={values.content}></textarea>
 
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Submit" className="submit-btn"/>
          </form>
          { renderReRoute() }
       </div>
