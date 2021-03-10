@@ -1,4 +1,6 @@
 const API = "https://good-bread-backend.herokuapp.com/api/v1"
+// http://localhost:3000/api/v1/
+// https://good-bread-backend.herokuapp.com/api/v1
 
 // user actions
 export const userPostFetch = user => {
