@@ -131,6 +131,7 @@ p {
 }
 .link-btn {
   border-radius: 10px;
+  border: 0;
   text-decoration: none;
   padding: 5px 25px 5px 25px;
   background-color: #f78e28;

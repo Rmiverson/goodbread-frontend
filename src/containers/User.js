@@ -56,9 +56,9 @@ class User extends React.Component {
       if (selectedUser.id === currentUser.id) {
          return ""
       } else if (!this.arrIncludesId(selectedUser.followers, currentUser.id)) {
-         return <button onClick={this.handleUnfollow}>Unfollow</button>
+         return <button onClick={this.handleUnfollow} className="link-btn">Unfollow</button>
       } else {
-         return <button onClick={this.handleFollow}>Follow</button>
+         return <button onClick={this.handleFollow} className="link-btn">Follow</button>
       }
    }
 
