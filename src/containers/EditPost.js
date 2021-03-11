@@ -75,7 +75,7 @@ class EditPost extends React.Component {
                      }
                   }
                />
-               <button onClick={this.handleDelete}>Delete</button>
+               <button onClick={this.handleDelete} className="delete-btn">Delete</button>
                { this.state.deleted && <Redirect to={'/profile'} /> }
             </div>
          )

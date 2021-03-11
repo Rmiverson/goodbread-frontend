@@ -5,6 +5,9 @@ body {
   color: #213037;
   margin: 0;
 }
+p {
+  white-space: pre-wrap;
+}
 .navbar {
   display: flex;
   justify-content: flex-end;
