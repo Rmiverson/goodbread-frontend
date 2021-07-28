@@ -46,7 +46,7 @@ class Post extends React.Component {
       e.target.content.value = ""
    }
 
-   handleLike = e => {
+   handleLike = () => {
       let likeObj = {
          user_id: this.props.currentUser.id,
          post_id: this.state.post.id
@@ -55,9 +55,8 @@ class Post extends React.Component {
       this.props.postLikeFetch(likeObj, this.commentCallback)
    }
 
-   handleUnlike = e => {
+   handleUnlike = () => {
       let likeArr = this.state.post.post_likes
-
       let like = likeArr.find(like => like.user_id === this.props.currentUser.id)
 
       this.props.postUnlikeFetch(like.id, this.commentCallback)

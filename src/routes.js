@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser, userPersistFetch } from './actions/actions'
@@ -17,17 +17,16 @@ import EditPost from './containers/EditPost';
 import EditUser from './containers/EditUser';
 
 const Routes = (props) => {
-
    const { currentUser } = props
 
    useEffect(() => {
-      userPersistFetch()
+      props.userPersistFetch()
    }, [])
   
    const handleLogout = (e) => {
       e.preventDefault()
       localStorage.removeItem("token")
-      logoutUser()
+      props.logoutUser()
    }
   
     

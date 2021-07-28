@@ -1,5 +1,8 @@
 const API = "http://localhost:3000/api/v1/"
 
+// for now until i rework redux
+/* eslint-disable no-unused-vars*/
+
 // user actions
 export const userPostFetch = user => {
    return dispatch => {
@@ -13,7 +16,7 @@ export const userPostFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         if (!!data.message) {
+         if (data.message) {
             console.log(data.message)
          } else {
             localStorage.setItem("token", data.token)
@@ -35,7 +38,7 @@ export const userLoginFetch = user => {
       })
       .then(resp => resp.json())
       .then(data => {
-         if (!!data.message) {
+         if (data.message) {
             console.log(data.message)
          } else {
             localStorage.setItem("token", data.token)
@@ -57,7 +60,7 @@ export const userPersistFetch = user => {
          })
          .then(resp => resp.json())
          .then(data => {
-            if (!!data.message) {
+            if (data.message) {
                console.log(data.message)
                localStorage.removeItem("token")
             } else {
@@ -568,3 +571,5 @@ export const currentUserData = userObj => ({
    type: 'USER_DATA',
    payload: userObj
 })
+
+/* eslint-enable no-unused-vars*/

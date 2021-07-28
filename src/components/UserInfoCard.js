@@ -3,7 +3,7 @@ import React from 'react'
 class UserInfoCard extends React.Component {
 
    renderFollow = (arr) => {
-      if (!!arr) {
+      if (arr) {
          return arr.length
       }
    }

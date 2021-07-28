@@ -31,7 +31,7 @@ class User extends React.Component {
       })
    }
 
-   handleUnfollow = e => {
+   handleUnfollow = () => {
       let relationship = {
          follower_id: this.props.currentUserData.id,
          followee_id: this.state.user.id
@@ -40,7 +40,7 @@ class User extends React.Component {
       this.props.unfollowUserFetch(relationship, this.getUserInfo)
    }
 
-   handleFollow = e => {
+   handleFollow = () => {
       let relationship = {
          follower_id: this.props.currentUserData.id,
          followee_id: this.state.user.id
