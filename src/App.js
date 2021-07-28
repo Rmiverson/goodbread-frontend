@@ -1,5 +1,5 @@
 import React from 'react'
-import './App.css';
+import './scss/app.scss';
 
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -20,7 +20,6 @@ import EditUser from './containers/EditUser';
 
 
 class App extends React.Component {
-
   componentDidMount = () => {
     this.props.userPersistFetch()
   }
