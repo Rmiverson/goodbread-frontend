@@ -13,17 +13,25 @@ const User = (props) => {
       let path = window.location.pathname
       let arr = path.split("/")
       let id = arr[2]
-
       getUserInfo(id)
    }, [])
 
    const userCallback = (userObj) => {
-      setLoading(false)
       setUser(userObj)
+      setLoading(false)
+   }
+
+   const arrIncludesId = (arr, id) => {
+      return arr.every( element => {
+         if (element.user_id === id) {
+            return false
+         }
+         return true 
+      })
    }
 
    const getUserInfo = (id = user.id) => {
-      getUserInfoFetch(id, userCallback)
+      props.getUserInfoFetch(id, userCallback)
    }
 
    const handleUnfollow = () => {
@@ -49,7 +57,7 @@ const User = (props) => {
 
       if (selectedUser.id === currentUser.id) {
          return ""
-      } else if (!this.arrIncludesId(selectedUser.followers, currentUser.id)) {
+      } else if (!arrIncludesId(selectedUser.followers, currentUser.id)) {
          return <button onClick={handleUnfollow} className="link-btn">Unfollow</button>
       } else {
          return <button onClick={handleFollow} className="link-btn">Follow</button>

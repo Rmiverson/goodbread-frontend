@@ -11,6 +11,9 @@ const Home = (props) => {
       props.userInfoFetch(props.currentUser)
    },[])
 
+   // console.log(props.currentUser)
+   // console.log(props.currentUserData)
+
    return (
       <div className="home-page">
          <div className="header">
