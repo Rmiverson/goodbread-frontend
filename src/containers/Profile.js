@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getUserPosts } from '../actions/actions'
@@ -6,49 +6,36 @@ import { getUserPosts } from '../actions/actions'
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from '../containers/Feed'
 
-class Profile extends React.Component {
-   state = {
-      loading: true,
-      posts: []
+const Profile = (props) => {
+   const [loading, setLoading] = useState(true)
+   const [posts, setPosts] = useState([])
+
+   const postsCallback = (postsArr) => {
+      setLoading(false)
+      setPosts(postsArr)
    }
 
-   postsCallback = (postsArr) =>  {
-      this.setState({
-         loading:false,
-         posts: postsArr
-      })
-   }
+   useEffect(() => {
+      props.getUserPosts(props.currentUserData, postsCallback)
+   }, [])
 
-   renderProfile = () => {
-      return(
-         <div className="profile-page">
-            <div className="header">
+   if (loading) {
+      return (
+         <span>Loading...</span>
+      )
+   } else {
+      return (
+         <div className='profile-page'>
+            <div className='header'>
                <h2>Profile Page</h2>
-               <UserInfoCard user={this.props.currentUserData} />
-
-               <div className="router-link-btn">
-                  <Link to="/edituser">Edit Profile</Link> 
+               <UserInfoCard user={props.currentUserData} />
+               <div className='router-link-btn'>
+                  <Link to='/edituser'>Edit Profile</Link>
                </div>
-                             
             </div>
-
-            <Feed posts={this.state.posts} />
+            <Feed posts={posts} />
          </div>
-      ) 
-   }
-   
-   render() {
-      if (this.state.loading) {
-         return (
-            <span>Loading...</span>
-         )
-      } else {
-         return( this.renderProfile() )
-      }
-   }
-
-   componentDidMount() {
-      this.props.getUserPosts(this.props.currentUserData, this.postsCallback)
+      )
    }
 }
 
