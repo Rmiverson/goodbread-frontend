@@ -1,37 +1,34 @@
 import React from 'react'
 
-class UserForm extends React.Component {
+const UserForm = (props) => {
+   return(
+      <div className="user-form">
+         <h2>{props.type}</h2>
+         <form onSubmit={props.handleSubmit}>            
+               <label>Username</label>
 
-   render() {
-      return(
-         <div className="user-form">
-            <h2>{this.props.type}</h2>
-            <form onSubmit={this.props.handleSubmit}>            
-                  <label>Username</label>
-   
-                  <input 
-                     name='username'
-                     placeholder='Username'
-                     value={this.props.username}
-                     onChange={this.props.handleChange}
-                     required
-                  />
-               
-                  <label>Password</label>
-                  <input
-                     name='password'
-                     placeholder='password'
-                     type="password"
-                     value={this.props.password}
-                     onChange={this.props.handleChange}
-                     required
-                  />
-               
-               <input type='submit' className="submit-btn" value={this.props.type}/>
-            </form>
-         </div>
-      )
-   }
+               <input 
+                  name='username'
+                  placeholder='Username'
+                  value={props.username}
+                  onChange={props.handleChange}
+                  required
+               />
+            
+               <label>Password</label>
+               <input
+                  name='password'
+                  placeholder='password'
+                  type="password"
+                  value={props.password}
+                  onChange={props.handleChange}
+                  required
+               />
+            
+            <input type='submit' className="submit-btn" value={props.type}/>
+         </form>
+      </div>
+   )   
 }
 
 export default UserForm
