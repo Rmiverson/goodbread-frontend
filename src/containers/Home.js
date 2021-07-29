@@ -25,13 +25,13 @@ const Home = (props) => {
    )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
    currentUser: state.currentUser,
    followsPosts: state.followsPosts,
    currentUserData: state.currentUserData
 })
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
    userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser)),
    userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
 })
