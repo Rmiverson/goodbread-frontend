@@ -1,24 +1,21 @@
 import React from 'react'
 import PostPreviewCard from '../components/PostPreviewCard'
 
-class Feed extends React.Component {
-
-   renderFeed = () => {
-      let posts = this.props.posts
+const Feed = (props) => {
+   const renderFeed = () => {
+      let posts = props.posts
       if (!!posts && posts.length > 0) {
          return posts.map(post => {
             return (<PostPreviewCard post={post} key={post.id}/>)
-         })  
-      }
+         })
+      } 
    }
 
-   render(){
-      return(
-         <div className="feed">
-            {this.renderFeed()}
-         </div> 
-      )
-   }
+   return (
+      <div className="feed">
+         {renderFeed()}
+      </div>      
+   )
 }
 
 export default Feed

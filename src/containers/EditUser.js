@@ -1,55 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import EditUserForm from '../components/EditUserForm'
 import { connect } from 'react-redux'
 import { deleteUser, updateUserFetch } from '../actions/actions'
 import { Redirect } from 'react-router-dom'
 
-class EditUser extends React.Component {
-   state = {
-      submitted: false
+const EditUser = (props) => {
+   const [submitted, setSubmitted] = useState(false)
+
+   const updateSubmit = () => {
+      setSubmitted(true)
    }
 
-   updateSubmit = () => {
-      this.setState({submitted: true})
+   const handleDelete = () => {
+      props.deleteUser(props.currentUserData.id)
    }
 
-   handleDelete = () => {
-      this.props.deleteUser(this.props.currentUserData.id)
-   }
-
-   handleSubmit = e => {
+   const handleSubmit = (e) => {
       e.preventDefault()
       let userObj = {
-         id: this.props.currentUserData.id,
+         id: props.currentUserData.id,
          username: e.target.username.value,
          user_desc: e.target.userDesc.value
       }
-      this.props.updateUserFetch(userObj, this.updateSubmit)
+
+      props.updateUserFetch(userObj, updateSubmit)
    }
 
-   renderForm = () => {
-      return <EditUserForm type="Edit Profile" handleSubmit={this.handleSubmit} username={this.props.currentUserData.username} userDesc={this.props.currentUserData.user_desc} />
-   }
-
-   renderRedirect = () => {
-      if (this.state.submitted) {
-         return <Redirect to="/profile"/>         
-      }
-   }
-
-   renderDelete = () => {
-      return <button onClick={this.handleDelete} className="delete-btn">Delete Profile</button>
-   }
-
-   render() {
-      return (
-         <div className="edit-user-page">
-            {this.renderForm()}
-            {this.renderDelete()}
-            {this.renderRedirect()}
-         </div>
-      )
-   }
+   return (
+      <div className="edit-user-page">
+         <EditUserForm type="Edit Profile" handleSubmit={handleSubmit} username={props.currentUserData.username} userDesc={props.currentUserData.userDesc}/>
+         <button onClick={handleDelete} className="delete-btn">Delete Profile</button>
+         {!!submitted && <Redirect to="/profile" />}
+      </div>
+   )
 }
 
 const mapStateToProps = state => ({
