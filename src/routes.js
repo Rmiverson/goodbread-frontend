@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser, userPersistFetch } from './actions/actions'
+import { logoutUser, userPersistFetch } from './store/actions/userActions'
 
 import Signup from './containers/Signup'
 import Login from './containers/Login'

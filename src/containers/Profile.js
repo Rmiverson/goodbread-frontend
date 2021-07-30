@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getUserPosts } from '../actions/actions'
+import { getUserPosts } from '../store/actions/postActions'
 
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from '../containers/Feed'

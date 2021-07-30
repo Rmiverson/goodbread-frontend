@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import EditUserForm from '../components/EditUserForm'
 import { connect } from 'react-redux'
-import { deleteUser, updateUserFetch } from '../actions/actions'
+import { deleteUser, updateUserFetch } from '../store/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
 const EditUser = (props) => {

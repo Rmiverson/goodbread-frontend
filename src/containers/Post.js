@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getPostFetch, newCommentFetch, postLikeFetch, postUnlikeFetch } from '../actions/actions'
+import { getPostFetch, postLikeFetch, postUnlikeFetch } from '../store/actions/postActions'
+import { newCommentFetch } from '../store/actions/commentActions'
 import { Link } from 'react-router-dom'
 
 import Comment from '../components/Comment'

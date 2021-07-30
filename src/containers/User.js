@@ -3,7 +3,9 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { followUserFetch, getUserInfoFetch, getUserPosts,  unfollowUserFetch } from '../actions/actions'
+import { getUserInfoFetch } from '../store/actions/userActions'
+import { getUserPosts } from '../store/actions/postActions'
+import { followUserFetch, unfollowUserFetch } from '../store/actions/followActions'
 
 const User = (props) => {
    const [loading, setLoading] = useState(true)

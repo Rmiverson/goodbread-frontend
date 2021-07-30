@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { userFollowPostsFetch, userInfoFetch } from '../actions/actions'
+import { userFollowPostsFetch, userInfoFetch } from '../store/actions/userActions'
 import { Link } from 'react-router-dom'
 
 import Feed from '../containers/Feed'

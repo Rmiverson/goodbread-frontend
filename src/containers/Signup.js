@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { userPostFetch } from '../actions/actions.js'
+import { userPostFetch } from '../store/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
