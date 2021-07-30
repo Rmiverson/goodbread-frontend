@@ -1,42 +1,40 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { userFollowPostsFetch, userInfoFetch } from '../actions/actions'
 import { Link } from 'react-router-dom'
 
 import Feed from '../containers/Feed'
 
+const Home = (props) => {
+   useEffect(() => {
+      props.userFollowPostsFetch(props.currentUser)
+      props.userInfoFetch(props.currentUser)
+   },[])
 
-class Home extends React.Component {
+   // console.log(props.currentUser)
+   // console.log(props.currentUserData)
 
-   render() {
-      return(
-         <div className="home-page">
-            <div className="header">
-               {/* <h2>Home</h2> */}
-               <h3>Welcome to GoodBread {this.props.currentUser.username}!</h3>
-               <Link to="/newpost" className="link-btn">New Post</Link>
-            </div>
-
-            <div className="home-feed">
-               <Feed posts={this.props.followsPosts} />   
-            </div>
+   return (
+      <div className="home-page">
+         <div className="header">
+            <h3>Welcome to GoodBread {props.currentUser.username}!</h3>
+            <Link to="/newpost" className="link-btn">New Post</Link>
          </div>
-      )
-   }
 
-   componentDidMount() {
-      this.props.userFollowPostsFetch(this.props.currentUser)
-      this.props.userInfoFetch(this.props.currentUser)
-   }
+         <div className="home-feed">
+            <Feed posts={props.followsPosts} />   
+         </div>
+      </div>
+   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
    currentUser: state.currentUser,
    followsPosts: state.followsPosts,
    currentUserData: state.currentUserData
 })
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
    userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser)),
    userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
 })

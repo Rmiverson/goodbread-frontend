@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-class PostPreviewCard extends React.Component {
-
-   previewContent = (content) => {
+const PostPreviewCard = (props) => {
+   const previewContent = (content) => {
       let str = content
       if (str.length > 250) {
          str = str.substring(0, 250) + '...'
@@ -11,17 +10,13 @@ class PostPreviewCard extends React.Component {
       return str
    }
 
-   render() {
-      return(
-         <div className="post-preview-card">
-            <h4>{this.props.post.title}</h4>
-            <p>
-               {this.previewContent(this.props.post.content)}
-            </p>
-            <Link to={`/post/${this.props.post.id}`} className="link-btn">Read More</Link>
-         </div>
-      )
-   }
+   return(
+      <div className="post-preview-card">
+         <h4>{props.post.title}</h4>
+         <p>{previewContent(props.post.content)}</p>
+         <Link to={`/post/${props.post.id}`} className="link-btn">Read More</Link>
+      </div>
+   )   
 }
 
 export default PostPreviewCard

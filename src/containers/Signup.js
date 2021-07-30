@@ -1,50 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { userPostFetch } from '../actions/actions.js'
 import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
 import Landing from '../components/Landing'
-
 import {ReactComponent as ReactLogo} from '../logo.svg'
 
-class Signup extends React.Component {
-   state = {
-      username: "",
-      password: ""
+const Signup = (props) => {
+   const [username, setUsername] = useState('')
+   const [password, setPassword] = useState('')
+
+   const handleChange = (e) => {
+      if (e.target.name === 'password') {
+         setPassword(e.target.value)
+      } else if (e.target.name === 'username') {
+         setUsername(e.target.value)
+      }
    }
 
-   handleChange = e => {
-      this.setState({
-         [e.target.name]: e.target.value
+   const handleSubmit = (e) => {
+      e.preventDefault()
+      props.userPostFetch({
+         username: username,
+         password: password
       })
    }
-
-   handleSubmit = e => {
-      e.preventDefault()
-      this.props.userPostFetch(this.state)
-   }
-
-   render() {
-      return(
-         <div className="signup-form">
-            {!!this.props.currentUser.id && <Redirect to="/" />}
-            <div className="landing-logo">
-               <ReactLogo />
-            </div>
-            <Landing />
-            <UserForm type="Signup" username={this.state.username} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+   
+   return (
+      <div className="signup-form">
+         {!!props.currentUser.id && <Redirect to="/" />}
+         <div className="landing-logo">
+            <ReactLogo />
          </div>
-      )
-   }
+         <Landing />
+         <UserForm type="Signup" username={username} password={password} handleChange={handleChange} handleSubmit={handleSubmit}/>
+      </div>
+   )
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
    currentUser: state.currentUser
 })
 
-const mapDispatchToProps = dispatch => ({
-   userPostFetch: userInfo => dispatch(userPostFetch(userInfo))
+const mapDispatchToProps = (dispatch) => ({
+   userPostFetch: (userInfo) => dispatch(userPostFetch(userInfo))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signup)

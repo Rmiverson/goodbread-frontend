@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getCommentFetch, editCommentFetch, deleteCommentFetch, commentLikeFetch, commentUnlikeFetch } from '../actions/actions'
 import CommentForm from './CommentForm'
 
-class Comment extends React.Component {
-   state = {
-      loading: true,
-      edit: false,
-      deleted: false,
-      comment: {}
-   }
+const Comment = (props) => {
+   const [loading, setLoading] = useState(true)
+   const [edit, setEdit] = useState(false)
+   const [deleted, setDeleted] = useState(false)
+   const [comment, setComment] = useState({})
 
-   arrIncludesId = (arr, id) => {
+   useEffect(() => {
+      getComment()
+   }, [])
+
+   const arrIncludesId = (arr, id) => {
       return arr.every( element => {
          if (element.user_id === id) {
             return false
@@ -21,129 +23,108 @@ class Comment extends React.Component {
       })
    }
 
-   getComment = () => {
-      this.props.getCommentFetch(this.props.id, this.commentCallback)
+   const getComment = () => {
+      props.getCommentFetch(props.id, commentCallback)
    }
 
-   commentCallback = (commentObj) => {
-      this.setState({
-         loading: false,
-         comment: commentObj
-      })
+   const commentCallback = (commentObj) => {
+      setComment(commentObj)
+      setLoading(false)
    }
 
-   deleteCommentCallback = () => {
-      this.setState({
-         comment: {},
-         deleted: true
-      })
+   const deleteCommentCallback = () => {
+      setComment({})
+      setDeleted(true)
    }
 
-   handleEdit = () => {
-      this.setState({edit: true})
+   const handleEdit = () => setEdit(true)
+   
+   const handleDelete = () => {
+      props.deleteCommentFetch(comment.id, deleteCommentCallback)
    }
 
-   handleDelete = () => {
-      this.props.deleteCommentFetch(this.state.comment.id, this.deleteCommentCallback)
-   }
-
-   handleCommentSubmit = e => {
+   const handleCommentSubmit = (e) => {
       e.preventDefault()
 
       let comment = {
-         id: this.state.comment.id,
-         user_id: this.props.currentUser.id,
-         post_id: this.state.comment.post.id,
+         id: comment.id,
+         user_id: props.currentUser.id,
+         post_id: comment.post.id,
          content: e.target.content.value
       }
 
-      this.props.editCommentFetch(comment, this.commentCallback)
-
+      props.editCommentFetch(comment, commentCallback)
       e.target.content.value = ""
-      this.setState({edit: false})
+      setEdit(false)
    }
 
-   handleLike = () => {
+   const handleLike = () => {
       let like = {
-         user_id: this.props.currentUser.id,
-         comment_id: this.state.comment.id
+         user_id: props.currentUser.id,
+         comment_id: comment.id
       }
 
-      this.props.commentLikeFetch(like, this.getComment)
+      props.commentLikeFetch(like, getComment)
    }
 
-   handleUnlike = () => {
-      let likeArr = this.state.comment.comment_likes
+   const handleUnlike = () => {
+      let likeArr = comment.comment_likes
+      let like = likeArr.find(like => like.user_id === props.currentUser.id)
 
-      let like = likeArr.find(like => like.user_id === this.props.currentUser.id)
-
-      this.props.commentUnlikeFetch(like.id, this.getComment)
+      props.commentUnlikeFetch(like.id, getComment)
    }
 
-   renderEditBtn = () => {
-      if (this.props.currentUser.id === this.state.comment.user.id) {
+   const renderEditBtn = () => {
+      if (props.currentUser.id === comment.user.id) {
          return (
             <div className="edit-delete-btns">
-               <button onClick={this.handleEdit} className="submit-btn">Edit</button>
-               <button onClick={this.handleDelete} className="submit-btn">Delete</button>
+               <button onClick={handleEdit} className="submit-btn">Edit</button>
+               <button onClick={handleDelete} className="submit-btn">Delete</button>
             </div>
          )
       }
    }
 
-   renderLikeBtn = () => {
-      if (this.props.currentUser.id !== this.state.comment.user.id) {
-         if (!this.arrIncludesId(this.state.comment.comment_likes, this.props.currentUser.id)) {
-            return <button onClick={this.handleUnlike} className="submit-btn">Unlike</button>
+   const renderLikeBtn = () => {
+      if (props.currentUser.id !== comment.user.id) {
+         if (!arrIncludesId(comment.comment_likes, props.currentUser.id)) {
+            return <button onClick={handleUnlike} className="submit-btn">Unlike</button>
          } else {
-            return <button onClick={this.handleLike} className="submit-btn">Like</button>
+            return <button onClick={handleLike} className="submit-btn">Like</button>
          } 
       } 
    }
-
-   renderComment = () => {
+   
+   if (loading) {
+      return (
+         <span>Loading...</span>
+      )
+   } else if (edit) {
+      return( 
+         <CommentForm type="Edit" handleSubmit={handleCommentSubmit} value={comment.content} />
+      )
+   } else if(deleted) {
+      return (<h5>Comment Deleted</h5>)
+   } else {
       return(
          <div className="comment">
             <div className="content-header">
                <div className="router-link-btn">
-                  <Link to={`/user/${this.state.comment.user.id}`}>{this.state.comment.user.username}</Link>
+                  <Link to={`/user/${comment.user.id}`}>{comment.user.username}</Link>
                </div>
             </div>
 
-            <p>{this.state.comment.content}</p>
-            <h5>likes: {this.state.comment.comment_likes.length}</h5>
+            <p>{comment.content}</p>
+            <h5>likes: {comment.comment_likes.length}</h5>
             <div className="comment-edit-section">
-               {this.renderEditBtn()}
+               {renderEditBtn()}
                <div className="like-btns">
-                  {this.renderLikeBtn()}  
+                  {renderLikeBtn()}  
                </div>
-
             </div>
-
          </div>
-      )      
-   }
-
-   render() {
-      if (this.state.loading) {
-         return (
-            <span>Loading...</span>
-         )
-      } else if (this.state.edit) {
-         return( 
-            <CommentForm type="Edit" handleSubmit={ this.handleCommentSubmit } value={this.state.comment.content} />
-         )
-      } else if(this.state.deleted) {
-         return (<h5>Comment Deleted</h5>)
-      } else {
-         return( this.renderComment() )
-      }
-   }
-
-   componentDidMount() {
-      this.getComment()
-   }
-
+      )
+   }   
 }
 
 const mapStateToProps = state => ({

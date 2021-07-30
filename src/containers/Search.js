@@ -1,67 +1,53 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { allPostsFetch } from '../actions/actions'
 
 import Feed from '../containers/Feed'
 import SearchBar from '../components/SearchBar'
 
-class Search extends React.Component {
-   state = {
-      loading: true,
-      search: ""
+const Search = (props) => {
+   const [loading, setLoading] = useState(true)
+   const [search, setSearch] = useState("")
+
+   const searchCallback = () => {
+      setLoading(false)
    }
 
-   searchCallback = () => {
-      this.setState({
-         loading: false
-      })
+   const handleChange = (e) => {
+      setSearch(e.target.value)
    }
 
-   handleChange = e => {
-      this.setState({
-         [e.target.name]: e.target.value
-      })
-   }
+   useEffect(() => {
+      props.allPostsFetch(searchCallback)
+   }, [])
 
-   renderFeed = () => {
-      let posts = this.props.allPosts
-
+   const renderFeed = () => {
+      let posts = props.allPosts
       let filtered = posts.filter(post => {
          let postTitle = post.title.toLowerCase()
-         let search = this.state.search.toLowerCase()
-         return postTitle.includes(search) ? true : false
+         let lowerCaseSearch = search.toLowerCase()
+         return postTitle.includes(lowerCaseSearch) ? true : false
       })
-
       return <Feed posts={filtered}/>
    }
 
-   renderSearchPage = () => {
-      return (
-         <div className="Search-page">
-            <div className="header">
-               <h2>Search Page</h2>
-               <SearchBar handleChange={this.handleChange}/>
-            </div>
-
-            <div className="search-feed">
-               {this.renderFeed()}
-            </div>
-         </div>
+   if (loading) {
+      return(
+         <span>Loading...</span>
       )
-   }
+   } else {
+      return(
+      <div className="Search-page">
+         <div className="header">
+            <h2>Search Page</h2>
+            <SearchBar handleChange={handleChange}/>
+         </div>
 
-   render() {
-      if (this.state.loading) {
-         return (
-            <span>Loading...</span>
-         )
-      } else {
-         return( this.renderSearchPage() )
-      }
-   }
-
-   componentDidMount() {
-      this.props.allPostsFetch( this.searchCallback )
+         <div className="search-feed">
+            {renderFeed()}
+         </div>
+      </div>         
+      )
    }
 }
 

@@ -1,55 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { newPostFetch } from '../actions/actions'
 
 import PostForm from '../components/PostForm'
 
-class NewPost extends React.Component {
-   state = {
-      submitted: false,
-      postId: ""
+const NewPost = (props) => {
+   const [submitted, setSubmitted] = useState(false)
+   const [postId, setPostId] = useState('')
+
+   let emptyValues = {
+      title: '',
+      content: ''
    }
 
-   emptyValues = {
-      title: "",
-      content: ""
+   const updateIdCallback = (post) => {
+      setPostId(post.id)
+      setSubmitted(true)
    }
 
-   updateIdCallback = (post) => {
-      this.setState({
-         submitted: true,
-         postId: post.id
-      })
-   }
-
-   handleSubmit = e => {
+   const handleSubmit = (e) => {
       e.preventDefault()
 
       let newPostObj = {
-         user_id: this.props.currentUser.id,
-         title: this.sanitize(e.target.title.value),
-         content: this.sanitize(e.target.content.value)
+         user_id: props.currentUser.id,
+         title: sanitize(e.target.title.value),
+         content: sanitize(e.target.content.value)
       }
-
-      this.props.newPostFetch(newPostObj, this.updateIdCallback)      
+      props.newPostFetch(newPostObj, updateIdCallback)
    }
 
-   sanitize = (text) => {  
+   const sanitize = (text) => {
       let sanitized = text.replace("<script>", "")
       sanitized = sanitized.replace("</script>", "")
       return sanitized
    }
 
-   renderReRoute = () => {
-      return (this.state.submitted && <Redirect to={`/post/${this.state.postId}`} />)
+   const renderReRoute = () => {
+      return (submitted && <Redirect to={`/post/${postId}`} />)
    }
 
-   render() {
-      return(
-         <PostForm type="New Form Page" renderReRoute={(this.renderReRoute)} handleSubmit={this.handleSubmit} values={this.emptyValues}/>
-      )
-   }
+   return (
+      <PostForm type='New Form Page' renderReRoute={(renderReRoute)} handleSubmit={handleSubmit} values={emptyValues}/>
+   )
 }
 
 const mapStateToProps = state => ({
