@@ -13,13 +13,13 @@ import NotFound from './components/NotFound'
 import Post from './containers/Post'
 import User from './containers/User'
 import NewPost from './containers/NewPost'
-import EditPost from './containers/EditPost';
-import EditUser from './containers/EditUser';
+import EditPost from './containers/EditPost'
+import EditUser from './containers/EditUser'
+import Loading from './components/Loading'
 
 const Routes = (props) => {
-   const { currentUser } = props
 
-   useEffect(() => {
+   useEffect(async () => {
       props.userPersistFetch()
    }, [])
   
@@ -28,7 +28,12 @@ const Routes = (props) => {
       localStorage.removeItem("token")
       props.logoutUser()
    }
-  
+
+   if (props.isLoading) {
+      return <Loading />
+   }
+
+
     
    return (
       <>
@@ -38,7 +43,7 @@ const Routes = (props) => {
             <Route exact path="/login" render={() => <Login />} />        
             <Route exact path="/signup" render={() => <Signup />} />
 
-            {!currentUser.id && <Redirect to="/login" />}
+            {!props.currentUser.id && <Redirect to="/login" />}
             <Route exact path="/" render={() => <Home />}/>
             <Route exact path="/search" render={() => <Search />}/>
             <Route exact path="/profile" render={() => <Profile />}/>
@@ -56,15 +61,14 @@ const Routes = (props) => {
 
 const mapStateToProps = (state) => {
    return {
-      currentUser: state.currentUser    
+      currentUser: state.currentUser,
+      isLoading: state.isLoading 
    }
 }
 
-const mapDispatchToProps = (dispatch) => {
-   return {
-      userPersistFetch: () => dispatch(userPersistFetch()),
-      logoutUser: () => dispatch(logoutUser())       
-   }
-}
+const mapDispatchToProps = (dispatch) => ({
+   userPersistFetch: () => dispatch(userPersistFetch()),
+   logoutUser: () => dispatch(logoutUser())    
+})
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Routes))

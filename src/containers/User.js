@@ -3,7 +3,8 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { getUserInfoFetch } from '../store/actions/userActions'
+import { Redirect } from 'react-router'
+import { currentUserData, getUser } from '../store/actions/userActions'
 import { getUserPosts } from '../store/actions/postActions'
 import { followUserFetch, unfollowUserFetch } from '../store/actions/followActions'
 
@@ -15,13 +16,11 @@ const User = (props) => {
       let path = window.location.pathname
       let arr = path.split("/")
       let id = arr[2]
-      getUserInfo(id)
-   }, [])
-
-   const userCallback = (userObj) => {
-      setUser(userObj)
+      let user = getUser(id)
+      console.log('hit')
+      setUser(user)
       setLoading(false)
-   }
+   }, [])
 
    const arrIncludesId = (arr, id) => {
       return arr.every( element => {
@@ -32,16 +31,12 @@ const User = (props) => {
       })
    }
 
-   const getUserInfo = (id = user.id) => {
-      props.getUserInfoFetch(id, userCallback)
-   }
-
    const handleUnfollow = () => {
       let relationship = {
          follower_id: props.currentUserData.id,
          followee_id: user.id
       }
-      props.unfollowUserFetch(relationship, getUserInfo)
+      props.unfollowUserFetch(relationship)
    }
 
    const handleFollow = () => {
@@ -50,11 +45,11 @@ const User = (props) => {
          followee_id: user.id
       }
 
-      props.followUserFetch(relationship, getUserInfo)
+      props.followUserFetch(relationship)
    }
 
    const renderFollowButton = () => {
-      let currentUser = props.currentUserData
+      let currentUser = props.currentUser
       let selectedUser = user
 
       if (selectedUser.id === currentUser.id) {
@@ -71,8 +66,9 @@ const User = (props) => {
          <span>Loading...</span>
       )
    } else {
-      return( 
+      return(   
          <div className="profile-page">
+         {!currentUserData.id && <Redirect to="/profile" />}
             <div className="header">
                <h2>user page</h2>
                {renderFollowButton()}
@@ -86,12 +82,12 @@ const User = (props) => {
 }
 
 const mapStateToProps = state => ({
-   currentUserData: state.currentUserData
+   currentUser: state.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
+   getUser: (id) => dispatch(getUser(id)),
    getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback)),
-   getUserInfoFetch: (id, callback) => dispatch(getUserInfoFetch(id, callback)),
    followUserFetch: (relationship, callback) => dispatch(followUserFetch(relationship, callback)),
    unfollowUserFetch: (relationship, callback) => dispatch(unfollowUserFetch(relationship, callback))
 })
