@@ -4,7 +4,7 @@ import Feed from './Feed'
 
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-import { currentUserData, getUser } from '../store/actions/userActions'
+import { getUser } from '../store/actions/userActions'
 import { getUserPosts } from '../store/actions/postActions'
 import { followUserFetch, unfollowUserFetch } from '../store/actions/followActions'
 
@@ -33,7 +33,7 @@ const User = (props) => {
 
    const handleUnfollow = () => {
       let relationship = {
-         follower_id: props.currentUserData.id,
+         follower_id: props.currentUser.id,
          followee_id: user.id
       }
       props.unfollowUserFetch(relationship)
@@ -41,7 +41,7 @@ const User = (props) => {
 
    const handleFollow = () => {
       let relationship = {
-         follower_id: props.currentUserData.id,
+         follower_id: props.currentUser.id,
          followee_id: user.id
       }
 
@@ -68,7 +68,7 @@ const User = (props) => {
    } else {
       return(   
          <div className="profile-page">
-         {!currentUserData.id && <Redirect to="/profile" />}
+         {!props.currentUser.id && <Redirect to="/profile" />}
             <div className="header">
                <h2>user page</h2>
                {renderFollowButton()}

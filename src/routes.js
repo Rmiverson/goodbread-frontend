@@ -32,8 +32,6 @@ const Routes = (props) => {
    if (props.isLoading) {
       return <Loading />
    }
-
-
     
    return (
       <>

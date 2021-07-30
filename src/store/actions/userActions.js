@@ -84,26 +84,26 @@ export const userFollowPostsFetch = (user) => {
    }
 }
 
-export const setUserInfo = (id) => {
-   return async dispatch => {
-      const token = localStorage.token
-      if (token) {
-         try {
-            const resp = await fetch(API + "users/" + id, {
-               method: "GET",
-               headers: {
-                  Authorization: `Bearer ${token}`
-               },
-            })
-            const data = await resp.json()
-            console.log(data)
-            dispatch(currentUserData(data))
-         } catch (error) {
-            console.error('Error:', error)
-         }
-      }
-   }
-}
+// export const updateUserFetch = (id) => {
+//    return async dispatch => {
+//       const token = localStorage.token
+//       if (token) {
+//          try {
+//             const resp = await fetch(API + "users/" + id, {
+//                method: "GET",
+//                headers: {
+//                   Authorization: `Bearer ${token}`
+//                },
+//             })
+//             const data = await resp.json()
+//             console.log(data)
+//             dispatch(updateUser(data))
+//          } catch (error) {
+//             console.error('Error:', error)
+//          }
+//       }
+//    }
+// }
 
 export const getUser = (id) => {
    return async () => {
@@ -125,7 +125,7 @@ export const getUser = (id) => {
    }
 }
 
-export const updateUserFetch = (user, callback = () => {}) => {
+export const updateUserFetch = (user) => {
    return async dispatch => {
       const token = localStorage.token
       if (token) {
@@ -139,8 +139,8 @@ export const updateUserFetch = (user, callback = () => {}) => {
                body: JSON.stringify(user)
             })
             const data = await resp.json()
-            dispatch(currentUserData(data))
-            callback()
+            console.log(data)
+            dispatch(updateUser(data))
          } catch (error) {
             console.log('Error:', error)
          }
@@ -177,8 +177,8 @@ export const logoutUser = () => ({
    type: 'LOGOUT_USER'
 })
 
-export const currentUserData = (userObj) => ({
-   type: 'USER_DATA',
+export const updateUser = (userObj) => ({
+   type: 'UPDATE_USER',
    payload: userObj
 })
 

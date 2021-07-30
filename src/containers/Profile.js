@@ -1,51 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getUserPosts } from '../store/actions/postActions'
 
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from '../containers/Feed'
 
 const Profile = (props) => {
-   const [loading, setLoading] = useState(true)
-   const [posts, setPosts] = useState([])
-
-   const postsCallback = (postsArr) => {
-      setLoading(false)
-      setPosts(postsArr)
-   }
-
-   useEffect(() => {
-      props.getUserPosts(props.currentUserData, postsCallback)
-   }, [])
-
-   if (loading) {
-      return (
-         <span>Loading...</span>
-      )
-   } else {
-      return (
-         <div className='profile-page'>
-            <div className='header'>
-               <h2>Profile Page</h2>
-               <UserInfoCard user={props.currentUserData} />
-               <div className='router-link-btn'>
-                  <Link to='/edituser'>Edit Profile</Link>
-               </div>
+   return (
+      <div className='profile-page'>
+         <div className='header'>
+            <h2>Profile Page</h2>
+            <UserInfoCard user={props.currentUser} />
+            <div className='router-link-btn'>
+               <Link to='/edituser'>Edit Profile</Link>
             </div>
-            <Feed posts={posts} />
          </div>
-      )
-   }
+         <Feed posts={props.currentUser.posts} />
+      </div>
+   )
 }
 
 const mapStateToProps = state => ({
-   currentUserData: state.currentUserData
+   currentUser: state.currentUser
  })
 
- const mapDispatchToProps = dispatch => ({
-   getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback))
- })
- 
-
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps, null)(Profile)
