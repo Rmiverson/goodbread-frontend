@@ -3,10 +3,9 @@ import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
-import { getUser } from '../store/actions/userActions'
-import { getUserPosts } from '../store/actions/postActions'
 import { followUserFetch, unfollowUserFetch } from '../store/actions/followActions'
+import { getUserPosts } from '../store/actions/postActions'
+import { getUserInfoFetch } from '../store/actions/userActions'
 
 const User = (props) => {
    const [loading, setLoading] = useState(true)
@@ -16,11 +15,13 @@ const User = (props) => {
       let path = window.location.pathname
       let arr = path.split("/")
       let id = arr[2]
-      let user = getUser(id)
-      console.log('hit')
-      setUser(user)
-      setLoading(false)
+      getUserInfo(id)
    }, [])
+
+   const userCallback = (userObj) => {
+      setUser(userObj)
+      setLoading(false)
+   }
 
    const arrIncludesId = (arr, id) => {
       return arr.every( element => {
@@ -31,30 +32,31 @@ const User = (props) => {
       })
    }
 
+   const getUserInfo = (id = user.id) => {
+      props.getUserInfoFetch(id, userCallback)
+   }
+
    const handleUnfollow = () => {
       let relationship = {
          follower_id: props.currentUser.id,
          followee_id: user.id
       }
-      props.unfollowUserFetch(relationship)
+      props.unfollowUserFetch(relationship, getUserInfo)
    }
 
    const handleFollow = () => {
       let relationship = {
-         follower_id: props.currentUser.id,
+         follower_id: props.currentUserData.id,
          followee_id: user.id
       }
 
-      props.followUserFetch(relationship)
+      props.followUserFetch(relationship, getUserInfo)
    }
 
    const renderFollowButton = () => {
-      let currentUser = props.currentUser
-      let selectedUser = user
-
-      if (selectedUser.id === currentUser.id) {
+      if (user.id === props.currentUser.id) {
          return ""
-      } else if (!arrIncludesId(selectedUser.followers, currentUser.id)) {
+      } else if (!arrIncludesId(user.followers, props.currentUser.id)) {
          return <button onClick={handleUnfollow} className="link-btn">Unfollow</button>
       } else {
          return <button onClick={handleFollow} className="link-btn">Follow</button>
@@ -66,9 +68,8 @@ const User = (props) => {
          <span>Loading...</span>
       )
    } else {
-      return(   
+      return( 
          <div className="profile-page">
-         {!props.currentUser.id && <Redirect to="/profile" />}
             <div className="header">
                <h2>user page</h2>
                {renderFollowButton()}
@@ -86,8 +87,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   getUser: (id) => dispatch(getUser(id)),
    getUserPosts: (user, callback) => dispatch(getUserPosts(user, callback)),
+   getUserInfoFetch: (id, callback) => dispatch(getUserInfoFetch(id, callback)),
    followUserFetch: (relationship, callback) => dispatch(followUserFetch(relationship, callback)),
    unfollowUserFetch: (relationship, callback) => dispatch(unfollowUserFetch(relationship, callback))
 })

@@ -84,28 +84,28 @@ export const userFollowPostsFetch = (user) => {
    }
 }
 
-// export const updateUserFetch = (id) => {
-//    return async dispatch => {
-//       const token = localStorage.token
-//       if (token) {
-//          try {
-//             const resp = await fetch(API + "users/" + id, {
-//                method: "GET",
-//                headers: {
-//                   Authorization: `Bearer ${token}`
-//                },
-//             })
-//             const data = await resp.json()
-//             console.log(data)
-//             dispatch(updateUser(data))
-//          } catch (error) {
-//             console.error('Error:', error)
-//          }
-//       }
-//    }
-// }
+export const updateUserFetch = (id) => {
+   return async dispatch => {
+      const token = localStorage.token
+      if (token) {
+         try {
+            const resp = await fetch(API + "users/" + id, {
+               method: "GET",
+               headers: {
+                  Authorization: `Bearer ${token}`
+               },
+            })
+            const data = await resp.json()
+            console.log(data)
+            dispatch(updateUser(data))
+         } catch (error) {
+            console.error('Error:', error)
+         }
+      }
+   }
+}
 
-export const getUser = (id) => {
+export const getUserInfoFetch = (id, callback = () => {}) => {
    return async () => {
       const token = localStorage.token
       if (token) {
@@ -117,7 +117,7 @@ export const getUser = (id) => {
                },
             })
             const data = await resp.json()
-            return data
+            callback(data)
          } catch (error) {
             console.error('Error:', error)
          }
@@ -125,28 +125,28 @@ export const getUser = (id) => {
    }
 }
 
-export const updateUserFetch = (user) => {
-   return async dispatch => {
-      const token = localStorage.token
-      if (token) {
-         try {
-            const resp = await fetch(API + "users/" + user.id, {
-               method: 'POST',
-               headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-               },
-               body: JSON.stringify(user)
-            })
-            const data = await resp.json()
-            console.log(data)
-            dispatch(updateUser(data))
-         } catch (error) {
-            console.log('Error:', error)
-         }
-      }
-   }
-}
+// export const updateUserFetch = (user) => {
+//    return async dispatch => {
+//       const token = localStorage.token
+//       if (token) {
+//          try {
+//             const resp = await fetch(API + "users/" + user.id, {
+//                method: 'POST',
+//                headers: {
+//                   Authorization: `Bearer ${token}`,
+//                   'Content-Type': 'application/json'
+//                },
+//                body: JSON.stringify(user)
+//             })
+//             const data = await resp.json()
+//             console.log(data)
+//             dispatch(updateUser(data))
+//          } catch (error) {
+//             console.log('Error:', error)
+//          }
+//       }
+//    }
+// }
 
 export const deleteUser = (id) => {
    return async dispatch => {
