@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router'
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
 import { connect } from 'react-redux'
-import { followUserFetch, getUserInfoFetch, getUserPosts,  unfollowUserFetch } from '../actions/actions'
+import { followUserFetch, unfollowUserFetch } from '../store/actions/followActions'
+import { getUserPosts } from '../store/actions/postActions'
+import { getUserInfoFetch } from '../store/actions/userActions'
 
 const User = (props) => {
    const [loading, setLoading] = useState(true)
@@ -36,7 +39,7 @@ const User = (props) => {
 
    const handleUnfollow = () => {
       let relationship = {
-         follower_id: props.currentUserData.id,
+         follower_id: props.currentUser.id,
          followee_id: user.id
       }
       props.unfollowUserFetch(relationship, getUserInfo)
@@ -52,12 +55,9 @@ const User = (props) => {
    }
 
    const renderFollowButton = () => {
-      let currentUser = props.currentUserData
-      let selectedUser = user
-
-      if (selectedUser.id === currentUser.id) {
+      if (user.id === props.currentUser.id) {
          return ""
-      } else if (!arrIncludesId(selectedUser.followers, currentUser.id)) {
+      } else if (!arrIncludesId(user.followers, props.currentUser.id)) {
          return <button onClick={handleUnfollow} className="link-btn">Unfollow</button>
       } else {
          return <button onClick={handleFollow} className="link-btn">Follow</button>
@@ -67,6 +67,10 @@ const User = (props) => {
    if (loading) {
       return (
          <span>Loading...</span>
+      )
+   } else if (props.currentUser.id === user.id) {
+      return (
+         <Redirect to="/profile" />
       )
    } else {
       return( 
@@ -84,7 +88,7 @@ const User = (props) => {
 }
 
 const mapStateToProps = state => ({
-   currentUserData: state.currentUserData
+   currentUser: state.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { newPostFetch } from '../actions/actions'
+import { newPostFetch } from '../store/actions/postActions'
 
 import PostForm from '../components/PostForm'
 

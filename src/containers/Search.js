@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { allPostsFetch } from '../actions/actions'
+import { allPostsFetch } from '../store/actions/postActions'
 
 import Feed from '../containers/Feed'
 import SearchBar from '../components/SearchBar'

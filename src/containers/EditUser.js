@@ -1,34 +1,31 @@
 import React, { useState } from 'react'
 import EditUserForm from '../components/EditUserForm'
 import { connect } from 'react-redux'
-import { deleteUser, updateUserFetch } from '../actions/actions'
+import { updateUserFetch, deleteUser } from '../store/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
 const EditUser = (props) => {
    const [submitted, setSubmitted] = useState(false)
 
-   const updateSubmit = () => {
-      setSubmitted(true)
-   }
-
    const handleDelete = () => {
-      props.deleteUser(props.currentUserData.id)
+      props.deleteUser(props.currentUser.id)
    }
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      let userObj = {
-         id: props.currentUserData.id,
+      let newUser = { 
+         ...props.currentUser, 
          username: e.target.username.value,
-         user_desc: e.target.userDesc.value
+         user_desc: e.target.userDesc.value           
       }
 
-      props.updateUserFetch(userObj, updateSubmit)
+      props.updateUserFetch(newUser)
+      setSubmitted(true)
    }
 
    return (
       <div className="edit-user-page">
-         <EditUserForm type="Edit Profile" handleSubmit={handleSubmit} username={props.currentUserData.username} userDesc={props.currentUserData.userDesc}/>
+         <EditUserForm type="Edit Profile" handleSubmit={handleSubmit} username={props.currentUser.username} userDesc={props.currentUser.user_desc}/>
          <button onClick={handleDelete} className="delete-btn">Delete Profile</button>
          {!!submitted && <Redirect to="/profile" />}
       </div>
@@ -36,11 +33,11 @@ const EditUser = (props) => {
 }
 
 const mapStateToProps = state => ({
-   currentUserData: state.currentUserData
+   currentUser: state.currentUser
  })
 
  const mapDispatchToProps = dispatch => ({
-   updateUserFetch: (user, callback) => dispatch(updateUserFetch(user, callback)),
+   updateUserFetch: (user) => dispatch(updateUserFetch(user)),
    deleteUser: (userId) => dispatch(deleteUser(userId)) 
  })
 

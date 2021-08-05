@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { userFollowPostsFetch, userInfoFetch } from '../actions/actions'
+import { userFollowPostsFetch } from '../store/actions/userActions'
 import { Link } from 'react-router-dom'
 
 import Feed from '../containers/Feed'
@@ -8,11 +8,7 @@ import Feed from '../containers/Feed'
 const Home = (props) => {
    useEffect(() => {
       props.userFollowPostsFetch(props.currentUser)
-      props.userInfoFetch(props.currentUser)
    },[])
-
-   // console.log(props.currentUser)
-   // console.log(props.currentUserData)
 
    return (
       <div className="home-page">
@@ -30,13 +26,11 @@ const Home = (props) => {
 
 const mapStateToProps = (state) => ({
    currentUser: state.currentUser,
-   followsPosts: state.followsPosts,
-   currentUserData: state.currentUserData
+   followsPosts: state.followsPosts
 })
 
 const mapDispatchToProps = (dispatch) => ({
-   userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser)),
-   userInfoFetch: (currentUser) => dispatch(userInfoFetch(currentUser))
+   userFollowPostsFetch: (currentUser) => dispatch(userFollowPostsFetch(currentUser))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

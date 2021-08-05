@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { getPostFetch, updatePostFetch, deletePost } from '../actions/actions'
+import { getPostFetch, updatePostFetch, deletePost } from '../store/actions/postActions'
 
 import PostForm from '../components/PostForm'
 
