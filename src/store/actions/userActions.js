@@ -125,29 +125,6 @@ export const getUserInfoFetch = (id, callback = () => {}) => {
    }
 }
 
-// export const updateUserFetch = (user) => {
-//    return async dispatch => {
-//       const token = localStorage.token
-//       if (token) {
-//          try {
-//             const resp = await fetch(API + "users/" + user.id, {
-//                method: 'POST',
-//                headers: {
-//                   Authorization: `Bearer ${token}`,
-//                   'Content-Type': 'application/json'
-//                },
-//                body: JSON.stringify(user)
-//             })
-//             const data = await resp.json()
-//             console.log(data)
-//             dispatch(updateUser(data))
-//          } catch (error) {
-//             console.log('Error:', error)
-//          }
-//       }
-//    }
-// }
-
 export const deleteUser = (id) => {
    return async dispatch => {
       const token = localStorage.token

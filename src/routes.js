@@ -15,7 +15,6 @@ import User from './containers/User'
 import NewPost from './containers/NewPost'
 import EditPost from './containers/EditPost'
 import EditUser from './containers/EditUser'
-import Loading from './components/Loading'
 
 const Routes = (props) => {
 
@@ -27,10 +26,6 @@ const Routes = (props) => {
       e.preventDefault()
       localStorage.removeItem("token")
       props.logoutUser()
-   }
-
-   if (props.isLoading) {
-      return <Loading />
    }
     
    return (
@@ -59,8 +54,7 @@ const Routes = (props) => {
 
 const mapStateToProps = (state) => {
    return {
-      currentUser: state.currentUser,
-      isLoading: state.isLoading 
+      currentUser: state.currentUser
    }
 }
 

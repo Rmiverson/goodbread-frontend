@@ -1,8 +1,7 @@
 export const initialState = {
    currentUser: {},
    followsPosts: {},
-   allPosts: {},
-   isLoading: false
+   allPosts: {}
 }
 
 export default function reducer(state = initialState, action) {
@@ -17,8 +16,6 @@ export default function reducer(state = initialState, action) {
          return {...state, followsPosts: action.payload}
       case 'ALL_POSTS':
          return {...state, allPosts: action.payload}
-      case 'LOADING':
-         return {...state, isLoading: action.payload}
       default:
          return state
    }

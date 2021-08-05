@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router'
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
 
@@ -66,6 +67,10 @@ const User = (props) => {
    if (loading) {
       return (
          <span>Loading...</span>
+      )
+   } else if (props.currentUser.id === user.id) {
+      return (
+         <Redirect to="/profile" />
       )
    } else {
       return( 
