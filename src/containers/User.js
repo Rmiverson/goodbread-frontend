@@ -13,9 +13,7 @@ const User = (props) => {
    const [user, setUser] = useState({})
    
    useEffect(() => {
-      let path = window.location.pathname
-      let arr = path.split("/")
-      let id = arr[2]
+      let id = props.match.params.userId
       getUserInfo(id)
    }, [])
 
@@ -47,7 +45,7 @@ const User = (props) => {
 
    const handleFollow = () => {
       let relationship = {
-         follower_id: props.currentUserData.id,
+         follower_id: props.currentUser.id,
          followee_id: user.id
       }
 
@@ -58,6 +56,7 @@ const User = (props) => {
       if (user.id === props.currentUser.id) {
          return ""
       } else if (!arrIncludesId(user.followers, props.currentUser.id)) {
+         console.log(user.follwers)
          return <button onClick={handleUnfollow} className="link-btn">Unfollow</button>
       } else {
          return <button onClick={handleFollow} className="link-btn">Follow</button>

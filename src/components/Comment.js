@@ -23,6 +23,7 @@ const Comment = (props) => {
       })
    }
 
+   // callbacks
    const getComment = () => {
       props.getCommentFetch(props.id, commentCallback)
    }
@@ -33,10 +34,11 @@ const Comment = (props) => {
    }
 
    const deleteCommentCallback = () => {
-      setComment({})
       setDeleted(true)
+      setComment({})
    }
 
+   // handlers
    const handleEdit = () => setEdit(true)
    
    const handleDelete = () => {
@@ -46,14 +48,14 @@ const Comment = (props) => {
    const handleCommentSubmit = (e) => {
       e.preventDefault()
 
-      let comment = {
+      let newComment = {
          id: comment.id,
          user_id: props.currentUser.id,
          post_id: comment.post.id,
          content: e.target.content.value
       }
 
-      props.editCommentFetch(comment, commentCallback)
+      props.editCommentFetch(newComment, commentCallback)
       e.target.content.value = ""
       setEdit(false)
    }

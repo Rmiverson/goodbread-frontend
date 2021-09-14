@@ -13,7 +13,6 @@ const Post = (props) => {
 
    useEffect(() => {
       let id = props.match.params.postId
-      console.log(props)
       props.getPostFetch(id, postCallback)
    }, [])
 

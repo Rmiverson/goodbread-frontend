@@ -18,7 +18,7 @@ const EditUser = (props) => {
          username: e.target.username.value,
          user_desc: e.target.userDesc.value           
       }
-
+      console.log(newUser)
       props.updateUserFetch(newUser)
       setSubmitted(true)
    }
