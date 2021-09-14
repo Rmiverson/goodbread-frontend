@@ -12,21 +12,22 @@ const Post = (props) => {
    const [post, setPost] = useState({})
 
    useEffect(() => {
-      let path = window.location.pathname
-      let arr = path.split("/")
-      let id = arr[2]
+      let id = props.match.params.postId
+      console.log(props)
       props.getPostFetch(id, postCallback)
    }, [])
 
+   // callbacks
    const postCallback = (post) => {
       setPost(post)
       setLoading(false)
    }
 
    const commentCallback = () => {
-      getPostFetch(post.id, postCallback)
+      props.getPostFetch(post.id, postCallback)
    }
 
+   // utils
    const arrIncludesId = (arr, id) => {
       return arr.every( element => {
          if (element.user_id === id) {
@@ -36,6 +37,7 @@ const Post = (props) => {
       })
    }
 
+   // handlers
    const handleCommentSubmit = (e) => {
       e.preventDefault()
 
@@ -55,7 +57,7 @@ const Post = (props) => {
          post_id: post.id
       }
 
-      postLikeFetch(likeObj, this.commentCallback)
+      props.postLikeFetch(likeObj, commentCallback)
    }
 
    const handleUnlike = () => {
@@ -65,11 +67,10 @@ const Post = (props) => {
       props.postUnlikeFetch(like.id, commentCallback)
    } 
 
+   // renders
    const renderLikeBtn = () => {
-      let currentUser = props.currentUser
-
       if (props.currentUser.id !== post.user_id) {
-         if (!arrIncludesId(post.post_likes, currentUser.id)) {
+         if (!arrIncludesId(post.post_likes, props.currentUser.id)) {
             return <button onClick={handleUnlike} className="submit-btn">Unlike</button>
          } else {
             return <button onClick={handleLike} className="submit-btn">Like</button>

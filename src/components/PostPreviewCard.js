@@ -14,7 +14,10 @@ const PostPreviewCard = (props) => {
       <div className="post-preview-card">
          <h4>{props.post.title}</h4>
          <p>{previewContent(props.post.content)}</p>
-         <Link to={`/post/${props.post.id}`} className="link-btn">Read More</Link>
+         <Link to={{
+            pathname: `/post/${props.post.id}`,
+            state: {}
+         }} className="link-btn">Read More</Link>
       </div>
    )   
 }

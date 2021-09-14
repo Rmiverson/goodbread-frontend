@@ -54,7 +54,7 @@ export const userPersistFetch = () => {
                },
             })
             const data = await resp.json()
-            console.log(data)
+            // console.log(data)
             dispatch(loginUser(data))
          } catch (error) {
             localStorage.removeItem("token")
