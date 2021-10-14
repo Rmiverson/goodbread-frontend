@@ -1,44 +1,37 @@
 import React, { useState } from 'react'
 import EditUserForm from '../components/EditUserForm'
-import { connect } from 'react-redux'
+import { useSelector,useDispatch } from 'react-redux'
 import { updateUserFetch, deleteUser } from '../store/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
-const EditUser = (props) => {
+const EditUser = () => {
    const [submitted, setSubmitted] = useState(false)
 
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
+
    const handleDelete = () => {
-      props.deleteUser(props.currentUser.id)
+      dispatch(deleteUser(currentUser.id))
    }
 
    const handleSubmit = (e) => {
       e.preventDefault()
       let newUser = { 
-         ...props.currentUser, 
+         ...currentUser, 
          username: e.target.username.value,
          user_desc: e.target.userDesc.value           
       }
-      console.log(newUser)
-      props.updateUserFetch(newUser)
+      dispatch(updateUserFetch(newUser))
       setSubmitted(true)
    }
 
    return (
       <div className="edit-user-page">
-         <EditUserForm type="Edit Profile" handleSubmit={handleSubmit} username={props.currentUser.username} userDesc={props.currentUser.user_desc}/>
+         <EditUserForm type="Edit Profile" handleSubmit={handleSubmit} username={currentUser.username} userDesc={currentUser.user_desc}/>
          <button onClick={handleDelete} className="delete-btn">Delete Profile</button>
          {!!submitted && <Redirect to="/profile" />}
       </div>
    )
 }
 
-const mapStateToProps = state => ({
-   currentUser: state.currentUser
- })
-
- const mapDispatchToProps = dispatch => ({
-   updateUserFetch: (user) => dispatch(updateUserFetch(user)),
-   deleteUser: (userId) => dispatch(deleteUser(userId)) 
- })
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditUser)
+export default EditUser
