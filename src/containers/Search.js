@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { allPostsFetch } from '../store/actions/postActions'
 
 import Feed from '../containers/Feed'
 import SearchBar from '../components/SearchBar'
 
-const Search = (props) => {
-   const [loading, setLoading] = useState(true)
+const Search = () => {
    const [search, setSearch] = useState("")
 
-   const searchCallback = () => {
-      setLoading(false)
-   }
+   const allPosts = useSelector((state) => state.allPosts)
+   const dispatch = useDispatch()
 
    const handleChange = (e) => {
       setSearch(e.target.value)
    }
 
    useEffect(() => {
-      props.allPostsFetch(searchCallback)
+      dispatch(allPostsFetch())
    }, [])
 
    const renderFeed = () => {
-      let posts = props.allPosts
-      let filtered = posts.filter(post => {
+      let filtered = allPosts.filter(post => {
          let postTitle = post.title.toLowerCase()
          let lowerCaseSearch = search.toLowerCase()
          return postTitle.includes(lowerCaseSearch) ? true : false
@@ -31,7 +28,7 @@ const Search = (props) => {
       return <Feed posts={filtered}/>
    }
 
-   if (loading) {
+   if (allPosts.length === 0) {
       return(
          <span>Loading...</span>
       )
@@ -51,12 +48,4 @@ const Search = (props) => {
    }
 }
 
-const mapStateToProps = state => ({
-   allPosts: state.allPosts
-})
-
-const mapDispatchToProps = dispatch => ({
-   allPostsFetch: (callback) => dispatch(allPostsFetch(callback))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search)
+export default Search

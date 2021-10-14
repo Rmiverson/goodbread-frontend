@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userPostFetch } from '../store/actions/userActions'
 import { Redirect } from 'react-router-dom'
 
 import UserForm from '../components/UserForm'
 import Landing from '../components/Landing'
-import {ReactComponent as ReactLogo} from '../logo.svg'
+import { ReactComponent as ReactLogo } from '../logo.svg'
 
-const Signup = (props) => {
+const Signup = () => {
    const [username, setUsername] = useState('')
    const [password, setPassword] = useState('')
+
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
    const handleChange = (e) => {
       if (e.target.name === 'password') {
@@ -21,15 +24,17 @@ const Signup = (props) => {
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      props.userPostFetch({
-         username: username,
-         password: password
-      })
+      dispatch(userPostFetch(
+         {
+            username: username,
+            password: password
+         }
+      ))
    }
    
    return (
       <div className="signup-form">
-         {!!props.currentUser.id && <Redirect to="/" />}
+         {!!currentUser.id && <Redirect to="/" />}
          <div className="landing-logo">
             <ReactLogo />
          </div>
@@ -39,12 +44,4 @@ const Signup = (props) => {
    )
 }
 
-const mapStateToProps = (state) => ({
-   currentUser: state.currentUser
-})
-
-const mapDispatchToProps = (dispatch) => ({
-   userPostFetch: (userInfo) => dispatch(userPostFetch(userInfo))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signup)
+export default Signup
