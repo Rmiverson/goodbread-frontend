@@ -84,6 +84,7 @@ export const userFollowPostsFetch = (user) => {
 export const updateUserFetch = (userObj) => {
    return async dispatch => {
       const token = localStorage.token
+      console.log(userObj)
       if (token) {
          try {
             const resp = await fetch(API + "users/" + userObj.id, {
