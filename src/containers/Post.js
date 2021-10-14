@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPostFetch, postLikeFetch, postUnlikeFetch } from '../store/actions/postActions'
 import { newCommentFetch } from '../store/actions/commentActions'
@@ -19,13 +19,13 @@ const Post = (props) => {
    }, [])
 
    // callbacks
-   const postCallback = (post) => {
-      setPost(post)
-   }
+   const postCallback = useCallback(
+      (post) => setPost(post)
+   )
 
-   const commentCallback = () => {
-      dispatch(getPostFetch(post.id, postCallback))
-   }
+   const commentCallback = useCallback(
+      () => dispatch(getPostFetch(post.id, postCallback))
+   )
 
    // utils
    const includesId = (arr, id) => {
@@ -91,7 +91,11 @@ const Post = (props) => {
       if (currentUser.id === post.user.id) {
          return (
             <div className="router-edit-btn">
-               <Link to={`/editpost/${post.id}`}>Edit</Link>
+               <Link to={{
+                  pathname: `/post/${post.id}/edit`,
+                  state: {}
+                  }}
+               >Edit</Link>
             </div>    
          )
       }

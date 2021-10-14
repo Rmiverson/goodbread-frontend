@@ -1,93 +1,82 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { getPostFetch, updatePostFetch, deletePost } from '../store/actions/postActions'
 
 import PostForm from '../components/PostForm'
 
 const EditPost = (props) => {
-   const [loading, setLoading] = useState(true)
-   const [post, setPost] = useState('')
+   const [post, setPost] = useState({})
    const [submitted, setSubmitted] = useState(false)
    const [deleted, setDeleted] = useState(false)
 
-   useEffect(() => {
-      let path = window.location.pathname
-      let arr = path.split("/")
-      let id = arr[2]
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
-      props.getPostFetch(id, updateLoadingCallback)
+   useEffect(() => {
+      let id = props.match.params.postId
+      dispatch(getPostFetch(id, postCallback))
    }, [])
 
+   // utils
    const sanitize = (text) => {
-      let sanitized = text.replace("<script>", "")
-      sanitized = sanitized.replace("</script>", "")
+      let sanitized = text.replace('<script>', '')
+      sanitized = sanitized.replace('</script>', '')
       return sanitized
    }
 
-   const updateLoadingCallback = (postObj) => {
-      setLoading(false)
-      setPost(postObj)
-   }
+   //callbacks
+   const postCallback = useCallback(
+      (postObj) => setPost(postObj)
+   )
 
-   const updateSubmittedCallback = () => {
-      setSubmitted(true)
-   }
+   const submitCallback = useCallback(
+      () => setSubmitted(true)
+   )
 
-   const updateDeleteCallback = () => {
-      setDeleted(true)
-   }
+   const deleteCallback = useCallback(
+      () => setDeleted(true)
+   )
 
+   //handlers
    const handleSubmit = (e) => {
       e.preventDefault()
 
-      let newPostObj = {
-         id: post.id,
-         user_id: props.currentUser.id,
-         title: sanitize(e.target.title.value),
-         content: sanitize(e.target.content.value)
-      }
-
-      props.updatePostFetch(newPostObj, updateSubmittedCallback)
+      dispatch(updatePostFetch({
+            id: post.id,
+            user_id: currentUser.id,
+            title: sanitize(e.target.title.value),
+            content: sanitize(e.target.content.value)
+         },
+         submitCallback
+      ))
    }
 
    const handleDelete = () => {
-      props.deletePost(post.id, updateDeleteCallback)
+      dispatch(deletePost(post.id, deleteCallback))
    }
 
-   if (loading) {
+   if (Object.keys(post).length <= 0) {
       return (
          <span>Loading...</span>
       )
    } else {
       return(
-         <div className="edit-post-page">
+         <div className='edit-post-page'>
             <PostForm 
-               type="Edit Form Page" 
+               type='Edit Form Page'
                renderReRoute={() => submitted && <Redirect to={`/post/${post.id}`} />} 
                handleSubmit={handleSubmit} 
-               values={   
-                  {
-                     title: post.title,
-                     content: post.content
-                  }
-               }
+               values={{
+                 title: post.title,
+                 content: post.content
+               }}
             />
-            <button onClick={handleDelete} className="delete-btn">Delete</button>
+            <button onClick={handleDelete} className='delete-btn'>Delete</button>
             { !!deleted && <Redirect to={'/profile'} /> }
          </div>
       )
    }
 }
 
-const mapStateToProps = state => ({
-   currentUser: state.currentUser
- })
-
-const mapDispatchToProps = dispatch => ({
-   updatePostFetch: (newPostObj, callback) => dispatch(updatePostFetch(newPostObj, callback)),
-   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback)),
-   deletePost: (id, callback) => dispatch(deletePost(id, callback))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditPost)
+export default EditPost

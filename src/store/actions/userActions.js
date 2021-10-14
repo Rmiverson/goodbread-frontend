@@ -84,7 +84,6 @@ export const userFollowPostsFetch = (user) => {
 export const updateUserFetch = (newUser) => {
    return async dispatch => {
       const token = localStorage.token
-      console.log(newUser)
       if (token) {
          try {
             const resp = await fetch(API + 'users/' + newUser.id, {
@@ -97,7 +96,6 @@ export const updateUserFetch = (newUser) => {
                body: JSON.stringify({ user: newUser })
             })
             const data = await resp.json()
-            console.log(data)
             dispatch(updateUser(data))
          } catch (error) {
             console.error('Error:', error)

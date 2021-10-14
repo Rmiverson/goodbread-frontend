@@ -12,8 +12,6 @@ const Profile = () => {
    const currentUser = useSelector((state) => state.currentUser)
    const dispatch = useDispatch()
 
-   console.log(currentUser)
-
    useEffect(() => {
       dispatch(getUserPosts(currentUser.id, postCallback))
    }, [])

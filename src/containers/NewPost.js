@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { newPostFetch } from '../store/actions/postActions'
@@ -12,10 +12,12 @@ const NewPost = () => {
    const currentUser = useSelector((state) => state.currentUser)
    const dispatch = useDispatch()
 
-   const updateIdCallback = (post) => {
-      setPostId(post.id)
-      setSubmitted(true)
-   }
+   const updateIdCallback = useCallback(
+      (post) => {
+         setPostId(post.id)
+         setSubmitted(true)
+      }
+   )
 
    const handleSubmit = (e) => {
       e.preventDefault()
