@@ -28,9 +28,7 @@ const User = (props) => {
    }
 
    const userCallback = useCallback(
-      (userObj) => {
-         setUser(userObj)
-      }
+      (userObj) => setUser(userObj)
    )
 
    const getUserInfo = (id = user.id) => {
@@ -67,7 +65,7 @@ const User = (props) => {
       }
    }
 
-   if (Object.keys(user).length === 0) {
+   if (Object.keys(user).length <= 0) {
       return (
          <span>Loading...</span>
       )

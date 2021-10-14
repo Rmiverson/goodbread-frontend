@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { newPostFetch } from '../store/actions/postActions'
 
 import PostForm from '../components/PostForm'
 
-const NewPost = (props) => {
+const NewPost = () => {
    const [submitted, setSubmitted] = useState(false)
    const [postId, setPostId] = useState('')
 
-   let emptyValues = {
-      title: '',
-      content: ''
-   }
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
    const updateIdCallback = (post) => {
       setPostId(post.id)
@@ -23,11 +21,11 @@ const NewPost = (props) => {
       e.preventDefault()
 
       let newPostObj = {
-         user_id: props.currentUser.id,
+         user_id: currentUser.id,
          title: sanitize(e.target.title.value),
          content: sanitize(e.target.content.value)
       }
-      props.newPostFetch(newPostObj, updateIdCallback)
+      dispatch(newPostFetch(newPostObj, updateIdCallback))
    }
 
    const sanitize = (text) => {
@@ -41,16 +39,16 @@ const NewPost = (props) => {
    }
 
    return (
-      <PostForm type='New Form Page' renderReRoute={(renderReRoute)} handleSubmit={handleSubmit} values={emptyValues}/>
+      <PostForm 
+         type='New Form Page'
+         renderReRoute={ renderReRoute }
+         handleSubmit={ handleSubmit }
+         values={ {
+            title: '',
+            content: ''
+         }}
+      />
    )
 }
 
-const mapStateToProps = state => ({
-   currentUser: state.currentUser
- })
-
-const mapDispatchToProps = dispatch => ({
-   newPostFetch: (newPostObj, callback) => dispatch(newPostFetch(newPostObj, callback))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewPost)
+export default NewPost

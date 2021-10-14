@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getPostFetch, postLikeFetch, postUnlikeFetch } from '../store/actions/postActions'
 import { newCommentFetch } from '../store/actions/commentActions'
 import { Link } from 'react-router-dom'
@@ -8,26 +8,27 @@ import Comment from '../components/Comment'
 import CommentForm from '../components/CommentForm'
 
 const Post = (props) => {
-   const [loading, setLoading] = useState(true)
    const [post, setPost] = useState({})
+
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
    useEffect(() => {
       let id = props.match.params.postId
-      props.getPostFetch(id, postCallback)
+      dispatch(getPostFetch(id, postCallback))
    }, [])
 
    // callbacks
    const postCallback = (post) => {
       setPost(post)
-      setLoading(false)
    }
 
    const commentCallback = () => {
-      props.getPostFetch(post.id, postCallback)
+      dispatch(getPostFetch(post.id, postCallback))
    }
 
    // utils
-   const arrIncludesId = (arr, id) => {
+   const includesId = (arr, id) => {
       return arr.every( element => {
          if (element.user_id === id) {
             return false
@@ -40,36 +41,38 @@ const Post = (props) => {
    const handleCommentSubmit = (e) => {
       e.preventDefault()
 
-      let comment = {
-         user_id: props.currentUser.id,
-         post_id: post.id,
-         content: e.target.content.value
-      }
-
-      props.newCommentFetch(comment, commentCallback)
+      dispatch(newCommentFetch(
+         {
+            user_id: currentUser.id,
+            post_id: post.id,
+            content: e.target.content.value
+         }, 
+         commentCallback
+      ))
       e.target.content.value = ""
    }
 
    const handleLike = () => {
-      let likeObj = {
-         user_id: props.currentUser.id,
-         post_id: post.id
-      }
-
-      props.postLikeFetch(likeObj, commentCallback)
+      dispatch(postLikeFetch(
+         {
+            user_id: currentUser.id,
+            post_id: post.id
+         },
+         commentCallback
+      ))
    }
 
    const handleUnlike = () => {
       let likeArr = post.post_likes
-      let like = likeArr.find(like => like.user_id === props.currentUser.id)
+      let like = likeArr.find(like => like.user_id === currentUser.id)
 
-      props.postUnlikeFetch(like.id, commentCallback)
+      dispatch(postUnlikeFetch(like.id, commentCallback))
    } 
 
    // renders
    const renderLikeBtn = () => {
-      if (props.currentUser.id !== post.user_id) {
-         if (!arrIncludesId(post.post_likes, props.currentUser.id)) {
+      if (currentUser.id !== post.user_id) {
+         if (!includesId(post.post_likes, currentUser.id)) {
             return <button onClick={handleUnlike} className="submit-btn">Unlike</button>
          } else {
             return <button onClick={handleLike} className="submit-btn">Like</button>
@@ -85,7 +88,7 @@ const Post = (props) => {
    }
 
    const renderEditBtn = () => {
-      if (props.currentUser.id === post.user.id) {
+      if (currentUser.id === post.user.id) {
          return (
             <div className="router-edit-btn">
                <Link to={`/editpost/${post.id}`}>Edit</Link>
@@ -94,7 +97,7 @@ const Post = (props) => {
       }
    }
 
-   if (loading) {
+   if (Object.keys(post).length <= 0) {
       return (
          <span>Loading...</span>
       )
@@ -123,16 +126,4 @@ const Post = (props) => {
    }
 }
 
-const mapStateToProps = state => ({
-   currentUser: state.currentUser
- })
-
-const mapDispatchToProps = dispatch => ({
-   getPostFetch: (postId, postCallback) => dispatch(getPostFetch(postId, postCallback)),
-   newCommentFetch: (comment, commentCallback) => dispatch(newCommentFetch(comment, commentCallback)),
-   postLikeFetch: (likeObj, callback) => dispatch(postLikeFetch(likeObj, callback)),
-   postUnlikeFetch: (id, callback) => dispatch(postUnlikeFetch(id, callback))
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default Post

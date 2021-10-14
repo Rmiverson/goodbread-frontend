@@ -1,7 +1,7 @@
 export const initialState = {
    currentUser: {},
    followsPosts: {},
-   allPosts: {}
+   allPosts: []
 }
 
 export default function reducer(state = initialState, action) {

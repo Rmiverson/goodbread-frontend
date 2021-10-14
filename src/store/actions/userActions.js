@@ -1,10 +1,10 @@
-const API = "http://localhost:3000/api/v1/"
+const API = 'http://localhost:3000/api/v1/'
 
 export const userPostFetch = (user) => {
    return async dispatch => {
       try {
-         const resp = await fetch(API + "sign_up", {
-            method: "POST",
+         const resp = await fetch(API + 'sign_up', {
+            method: 'POST',
             headers: {
                'Content-Type': 'application/json',
                Accept: 'application/json'
@@ -12,8 +12,7 @@ export const userPostFetch = (user) => {
             body: JSON.stringify({ user: user })
          })
          const data = await resp.json()
-         console.log(data)
-         localStorage.setItem("token", data.token)
+         localStorage.setItem('token', data.token)
          dispatch(loginUser(data))
       } catch (error) {
          console.error('Error:', error)
@@ -24,8 +23,8 @@ export const userPostFetch = (user) => {
 export const userLoginFetch = (user) => {
    return async dispatch => {
       try {
-         const resp = await fetch(API + "login", {
-            method: "POST",
+         const resp = await fetch(API + 'login', {
+            method: 'POST',
             headers: {
                'Content-Type': 'application/json',
                Accept: 'application/json'
@@ -33,8 +32,7 @@ export const userLoginFetch = (user) => {
             body: JSON.stringify(user)
          })
          const data = await resp.json()
-         console.log(data)
-         localStorage.setItem("token", data.token)
+         localStorage.setItem('token', data.token)
          dispatch(loginUser(data))
       } catch (error) {
          console.error('Error:', error)
@@ -47,8 +45,8 @@ export const userPersistFetch = () => {
       const token = localStorage.token
       if (token) {
          try {
-            const resp = await fetch(API + "persist", {
-               method: "GET",
+            const resp = await fetch(API + 'persist', {
+               method: 'GET',
                headers: {
                   Authorization: `Bearer ${token}`
                },
@@ -56,7 +54,7 @@ export const userPersistFetch = () => {
             const data = await resp.json()
             dispatch(loginUser(data))
          } catch (error) {
-            localStorage.removeItem("token")
+            localStorage.removeItem('token')
             console.error('Error:', error)
          }  
       }
@@ -68,8 +66,8 @@ export const userFollowPostsFetch = (user) => {
       const token = localStorage.token
       if (token) {
          try {
-            const resp = await fetch(API + "followposts/" + user.id, {
-               method: "GET",
+            const resp = await fetch(API + 'followposts/' + user.id, {
+               method: 'GET',
                headers: {
                   Authorization: `Bearer ${token}`
                },

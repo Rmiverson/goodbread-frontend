@@ -1,6 +1,6 @@
 const API = "http://localhost:3000/api/v1"
 
-export const allPostsFetch = (callback = () => {}) => {
+export const allPostsFetch = () => {
    return async dispatch => {
       const token = localStorage.token
       if (token) {
@@ -13,7 +13,6 @@ export const allPostsFetch = (callback = () => {}) => {
             })
             const data = await resp.json()
             dispatch(posts(data))
-            callback()
          } catch (error) {
             console.error('Error:', error)
          }
@@ -64,10 +63,10 @@ export const newPostFetch = (post, callback = () => {}) => {
    }
 }
 
-export const getUserPosts = (user, callback = () => {}) => {
+export const getUserPosts = (userId, callback = () => {}) => {
    return async () => {
       const token = localStorage.token
-      const userId = user.id
+      // const userId = user.id
       if (token) {
          try {
             const resp = await fetch(API + '/userposts/' + userId, {

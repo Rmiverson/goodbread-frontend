@@ -20,7 +20,7 @@ const Search = () => {
    }, [])
 
    const renderFeed = () => {
-      let filtered = allPosts.filter(post => {
+      let filtered = allPosts.filter((post) => {
          let postTitle = post.title.toLowerCase()
          let lowerCaseSearch = search.toLowerCase()
          return postTitle.includes(lowerCaseSearch) ? true : false
@@ -28,7 +28,7 @@ const Search = () => {
       return <Feed posts={filtered}/>
    }
 
-   if (allPosts.length === 0) {
+   if (allPosts.length <= 0) {
       return(
          <span>Loading...</span>
       )
