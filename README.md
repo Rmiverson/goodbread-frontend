@@ -7,7 +7,7 @@ In this app you can write recipes and post them. You can follow other people and
 ## Resources used
 * React
 * React-Redux
-* Stylus, a preprocessor for CSS styling
+* SASS, a preprocessor for CSS styling
 * Backend information [here](https://github.com/Rmiverson/goodbread-backend)
 
 ## Installing
