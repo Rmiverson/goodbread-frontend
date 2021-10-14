@@ -54,7 +54,6 @@ export const userPersistFetch = () => {
                },
             })
             const data = await resp.json()
-            console.log(data)
             dispatch(loginUser(data))
          } catch (error) {
             localStorage.removeItem("token")
@@ -84,16 +83,17 @@ export const userFollowPostsFetch = (user) => {
    }
 }
 
-export const updateUserFetch = (id) => {
+export const updateUserFetch = (userObj) => {
    return async dispatch => {
       const token = localStorage.token
       if (token) {
          try {
-            const resp = await fetch(API + "users/" + id, {
-               method: "GET",
+            const resp = await fetch(API + "users/" + userObj.id, {
+               method: "POST",
                headers: {
                   Authorization: `Bearer ${token}`
                },
+               body: JSON.stringify(userObj)
             })
             const data = await resp.json()
             console.log(data)

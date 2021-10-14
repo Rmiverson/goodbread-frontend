@@ -40,8 +40,8 @@ const Routes = (props) => {
             <Route exact path="/" render={() => <Home />}/>
             <Route exact path="/search" render={() => <Search />}/>
             <Route exact path="/profile" render={() => <Profile />}/>
-            <Route path='/post/:postId' render={() => <Post />} />
-            <Route path='/user/:userId' render={() => <User />} />
+            <Route path='/post/:postId' component={Post} />
+            <Route path='/user/:userId' component={User} />
             <Route exact path="/newpost" render={() => <NewPost />} />
             <Route path="/editpost/:postId" render={() => <EditPost />} />
             <Route path="/edituser" render={() => <EditUser/> } />
