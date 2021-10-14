@@ -24,7 +24,7 @@ const Routes = (props) => {
   
    const handleLogout = (e) => {
       e.preventDefault()
-      localStorage.removeItem("token")
+      localStorage.removeItem('token')
       props.logoutUser()
    }
     
@@ -33,19 +33,18 @@ const Routes = (props) => {
          <NavBar handleLogout={handleLogout}/>
 
          <Switch>
-            <Route exact path="/login" render={() => <Login />} />        
-            <Route exact path="/signup" render={() => <Signup />} />
+            <Route exact path='/login' component={Login} />        
+            <Route exact path='/signup' component={Signup} />
 
             {!props.currentUser.id && <Redirect to="/login" />}
-            <Route exact path="/" render={() => <Home />}/>
-            <Route exact path="/search" render={() => <Search />}/>
-            <Route exact path="/profile" render={() => <Profile />}/>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/search' component={Search} />
+            <Route exact path='/profile' component={Profile} />
+            <Route exact path='/profile/edit' component={EditUser} />
             <Route exact path='/post/:postId' component={Post} />
             <Route exact path='/post/:postId/edit' component={EditPost} />
+            <Route exact path='/post/new' component={NewPost} />
             <Route exact path='/user/:userId' component={User} />
-            <Route exact path="/newpost" render={() => <NewPost />} />
-   
-            <Route path="/edituser" render={() => <EditUser/> } />
 
             <Route component={NotFound} />
          </Switch>

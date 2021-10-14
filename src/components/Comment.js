@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getCommentFetch, editCommentFetch, deleteCommentFetch, commentLikeFetch, commentUnlikeFetch } from '../store/actions/commentActions'
 import CommentForm from './CommentForm'
@@ -10,11 +10,15 @@ const Comment = (props) => {
    const [deleted, setDeleted] = useState(false)
    const [comment, setComment] = useState({})
 
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
+
    useEffect(() => {
       getComment()
    }, [])
 
-   const arrIncludesId = (arr, id) => {
+   //utils
+   const includesId = (arr, id) => {
       return arr.every( element => {
          if (element.user_id === id) {
             return false
@@ -24,60 +28,63 @@ const Comment = (props) => {
    }
 
    // callbacks
-   const getComment = () => {
-      props.getCommentFetch(props.id, commentCallback)
-   }
+   const getComment = useCallback(
+      () => dispatch(getCommentFetch(props.id, commentCallback))
+   )
 
-   const commentCallback = (commentObj) => {
-      setComment(commentObj)
-      setLoading(false)
-   }
+   const commentCallback = useCallback(
+      (commentObj) => {
+         setComment(commentObj)
+         setLoading(false)
+      }
+   )
 
-   const deleteCommentCallback = () => {
-      setDeleted(true)
-      setComment({})
-   }
+   const deleteCommentCallback = useCallback(
+      () => {
+         setDeleted(true)
+         setComment({})
+      }
+   )
 
    // handlers
    const handleEdit = () => setEdit(true)
    
    const handleDelete = () => {
-      props.deleteCommentFetch(comment.id, deleteCommentCallback)
+      dispatch(deleteCommentFetch(comment.id, deleteCommentCallback))
    }
 
    const handleCommentSubmit = (e) => {
       e.preventDefault()
 
-      let newComment = {
+      dispatch(editCommentFetch({
          id: comment.id,
          user_id: props.currentUser.id,
          post_id: comment.post.id,
          content: e.target.content.value
-      }
+      }, commentCallback))
 
-      props.editCommentFetch(newComment, commentCallback)
       e.target.content.value = ""
       setEdit(false)
    }
 
    const handleLike = () => {
       let like = {
-         user_id: props.currentUser.id,
+         user_id: currentUser.id,
          comment_id: comment.id
       }
 
-      props.commentLikeFetch(like, getComment)
+      dispatch(commentLikeFetch(like, getComment))
    }
 
    const handleUnlike = () => {
       let likeArr = comment.comment_likes
-      let like = likeArr.find(like => like.user_id === props.currentUser.id)
+      let like = likeArr.find(like => like.user_id === currentUser.id)
 
-      props.commentUnlikeFetch(like.id, getComment)
+      dispatch(commentUnlikeFetch(like.id, getComment))
    }
 
    const renderEditBtn = () => {
-      if (props.currentUser.id === comment.user.id) {
+      if (currentUser.id === comment.user.id) {
          return (
             <div className="edit-delete-btns">
                <button onClick={handleEdit} className="submit-btn">Edit</button>
@@ -88,8 +95,8 @@ const Comment = (props) => {
    }
 
    const renderLikeBtn = () => {
-      if (props.currentUser.id !== comment.user.id) {
-         if (!arrIncludesId(comment.comment_likes, props.currentUser.id)) {
+      if (currentUser.id !== comment.user.id) {
+         if (!includesId(comment.comment_likes, currentUser.id)) {
             return <button onClick={handleUnlike} className="submit-btn">Unlike</button>
          } else {
             return <button onClick={handleLike} className="submit-btn">Like</button>
@@ -129,17 +136,4 @@ const Comment = (props) => {
    }   
 }
 
-const mapStateToProps = state => ({
-   currentUser: state.currentUser
- })
-
-const mapDispatchToProps = dispatch => ({
-   getCommentFetch: (comment, callback) => dispatch(getCommentFetch(comment, callback)),
-   editCommentFetch: (comment, callback) => dispatch(editCommentFetch(comment, callback)),
-   deleteCommentFetch: (id, callback) => dispatch(deleteCommentFetch(id, callback)),
-   commentLikeFetch: (comment, callback) => dispatch(commentLikeFetch(comment, callback)),
-   commentUnlikeFetch: (id, callback) => dispatch(commentUnlikeFetch(id, callback))
-
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comment)
+export default Comment

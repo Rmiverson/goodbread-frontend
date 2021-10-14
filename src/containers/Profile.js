@@ -19,7 +19,6 @@ const Profile = () => {
    const postCallback = useCallback(
       (data) => setPosts(data)
    )
-
    
    return (
       <div className='profile-page'>
@@ -27,7 +26,10 @@ const Profile = () => {
             <h2>Profile Page</h2>
             <UserInfoCard user={currentUser} />
             <div className='router-link-btn'>
-               <Link to='/edituser'>Edit Profile</Link>
+               <Link to={{
+                  pathname: '/profile/edit',
+                  state: {}
+               }}>Edit Profile</Link>
             </div>
          </div>
          <Feed posts={posts} />
