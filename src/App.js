@@ -3,7 +3,7 @@ import './scss/app.scss';
 
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { store } from './store/store'
+import store from './store/persistStore'
 import Routes from './routes';
 
 const App = () => {

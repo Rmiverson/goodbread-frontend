@@ -22,7 +22,7 @@ const NavBar = (props) => {
                <NavLink to="/" exact className="link">Home</NavLink>
                <NavLink to="/search" exact className="link">Search</NavLink>
                <NavLink to="/profile" exact className="link">Profile</NavLink>
-               <a href="http://localhost:3001/" className="link logout" onClick={props.handleLogout}>Logout</a>
+               <a href="http://localhost:3001/login" className="link logout" onClick={props.handleLogout}>Logout</a>
             </>
          )}
       </nav>

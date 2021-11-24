@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { Switch, Route, Redirect, withRouter, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser, userPersistFetch } from './store/actions/userActions'
 
 import Signup from './containers/Signup'
@@ -16,51 +16,47 @@ import NewPost from './containers/NewPost'
 import EditPost from './containers/EditPost'
 import EditUser from './containers/EditUser'
 
-const Routes = (props) => {
+const Routes = () => {
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
    useEffect(async () => {
-      props.userPersistFetch()
+      dispatch(userPersistFetch())
    }, [])
   
    const handleLogout = (e) => {
       e.preventDefault()
       localStorage.removeItem('token')
-      props.logoutUser()
+      dispatch(logoutUser())
    }
+
+   let history = useHistory()
+
+   console.log(history.location.pathname)
+   console.log(history)
     
    return (
       <>
          <NavBar handleLogout={handleLogout}/>
 
          <Switch>
-            <Route exact path='/login' component={Login} />        
-            <Route exact path='/signup' component={Signup} />
+            <Route path='/login' component={Login} />        
+            <Route path='/signup' component={Signup} />
 
-            {!props.currentUser.id && <Redirect to="/login" />}
+            {!currentUser.id && <Redirect to="/login" />}
             <Route exact path='/' component={Home} />
             <Route exact path='/search' component={Search} />
             <Route exact path='/profile' component={Profile} />
             <Route exact path='/profile/edit' component={EditUser} />
             <Route exact path='/post/:postId' component={Post} />
             <Route exact path='/post/:postId/edit' component={EditPost} />
-            <Route exact path='/post/new' component={NewPost} />
+            <Route exact path='/new-post' component={NewPost} />
             <Route exact path='/user/:userId' component={User} />
 
-            <Route component={NotFound} />
+            <Route default component={NotFound} />
          </Switch>
       </>
    )
 }
 
-const mapStateToProps = (state) => {
-   return {
-      currentUser: state.currentUser
-   }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-   userPersistFetch: () => dispatch(userPersistFetch()),
-   logoutUser: () => dispatch(logoutUser())    
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Routes))
+export default withRouter(Routes)
