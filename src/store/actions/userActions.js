@@ -61,12 +61,12 @@ export const userPersistFetch = () => {
    }
 }
 
-export const userFollowPostsFetch = (user) => {
+export const userFollowPostsFetch = (id) => {
    return async dispatch => {
       const token = localStorage.token
       if (token) {
          try {
-            const resp = await fetch(API + 'followposts/' + user.id, {
+            const resp = await fetch(API + 'followposts/' + id, {
                method: 'GET',
                headers: {
                   Authorization: `Bearer ${token}`
