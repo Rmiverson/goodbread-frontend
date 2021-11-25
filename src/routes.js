@@ -1,20 +1,22 @@
-import React, { useEffect } from 'react'
-import { Switch, Route, Redirect, withRouter, useHistory } from 'react-router-dom'
+import React, { useEffect, lazy, Suspense } from 'react'
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser, userPersistFetch } from './store/actions/userActions'
 
-import Signup from './containers/Signup'
-import Login from './containers/Login'
-import NavBar from './components/NavBar'
-import Home from './containers/Home'
-import Search from './containers/Search'
-import Profile from './containers/Profile'
-import NotFound from './components/NotFound'
-import Post from './containers/Post'
-import User from './containers/User'
-import NewPost from './containers/NewPost'
-import EditPost from './containers/EditPost'
-import EditUser from './containers/EditUser'
+import Loading from './components/Loading'
+
+const Signup = lazy(() => import('./containers/Signup'))
+const Login = lazy(() => import('./containers/Login'))
+const NavBar = lazy(() => import('./components/NavBar'))
+const Home = lazy(() => import('./containers/Home'))
+const Search = lazy(() => import('./containers/Search'))
+const Profile = lazy(() => import('./containers/Profile'))
+const NotFound = lazy(() => import('./components/NotFound'))
+const Post = lazy(() => import('./containers/Post'))
+const User = lazy(() => import('./containers/User'))
+const NewPost = lazy(() => import('./containers/NewPost'))
+const EditPost = lazy(() => import('./containers/EditPost'))
+const EditUser = lazy(() => import('./containers/EditUser'))
 
 const Routes = () => {
    const currentUser = useSelector((state) => state.currentUser)
@@ -30,32 +32,33 @@ const Routes = () => {
       dispatch(logoutUser())
    }
 
-   let history = useHistory()
+   // let history = useHistory()
 
-   console.log(history.location.pathname)
-   console.log(history)
+   // console.log(history.location.pathname)
+   // console.log(history)
     
    return (
-      <>
+      <Suspense fallback={<Loading sequence="router"/>}>
          <NavBar handleLogout={handleLogout}/>
 
          <Switch>
-            <Route path='/login' component={Login} />        
-            <Route path='/signup' component={Signup} />
+               <Route path='/login' component={Login} />        
+               <Route path='/signup' component={Signup} />
 
-            {!currentUser.id && <Redirect to="/login" />}
-            <Route exact path='/' component={Home} />
-            <Route exact path='/search' component={Search} />
-            <Route exact path='/profile' component={Profile} />
-            <Route exact path='/profile/edit' component={EditUser} />
-            <Route exact path='/post/:postId' component={Post} />
-            <Route exact path='/post/:postId/edit' component={EditPost} />
-            <Route exact path='/new-post' component={NewPost} />
-            <Route exact path='/user/:userId' component={User} />
+               {!currentUser.id && <Redirect to="/login" />}
+               <Route exact path='/' component={Home} />
+               <Route exact path='/search' component={Search} />
+               <Route exact path='/profile' component={Profile} />
+               <Route exact path='/profile/edit' component={EditUser} />
+               <Route exact path='/post/:postId' component={Post} />
+               <Route exact path='/post/:postId/edit' component={EditPost} />
+               <Route exact path='/new-post' component={NewPost} />
+               <Route exact path='/user/:userId' component={User} />
 
-            <Route default component={NotFound} />
+               <Route default component={NotFound} />
+            
          </Switch>
-      </>
+      </Suspense>
    )
 }
 
