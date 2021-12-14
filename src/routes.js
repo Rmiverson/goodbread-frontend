@@ -1,22 +1,20 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser, userPersistFetch } from './store/actions/userActions'
 
-import Loading from './components/Loading'
-
-const Signup = lazy(() => import('./containers/Signup'))
-const Login = lazy(() => import('./containers/Login'))
-const NavBar = lazy(() => import('./components/NavBar'))
-const Home = lazy(() => import('./containers/Home'))
-const Search = lazy(() => import('./containers/Search'))
-const Profile = lazy(() => import('./containers/Profile'))
-const NotFound = lazy(() => import('./components/NotFound'))
-const Post = lazy(() => import('./containers/Post'))
-const User = lazy(() => import('./containers/User'))
-const NewPost = lazy(() => import('./containers/NewPost'))
-const EditPost = lazy(() => import('./containers/EditPost'))
-const EditUser = lazy(() => import('./containers/EditUser'))
+import NavBar from './components/NavBar'
+import Login from './containers/Login'
+import Signup from './containers/Signup'
+import Home from './containers/Home'
+import Search from './containers/Search'
+import Profile from './containers/Profile'
+import EditUser from './containers/EditUser'
+import Post from './containers/Post'
+import EditPost from './containers/EditPost'
+import NewPost from './containers/NewPost'
+import User from './containers/User'
+import NotFound from './components/NotFound'
 
 const Routes = () => {
    const currentUser = useSelector((state) => state.currentUser)
@@ -31,14 +29,9 @@ const Routes = () => {
       localStorage.removeItem('token')
       dispatch(logoutUser())
    }
-
-   // let history = useHistory()
-
-   // console.log(history.location.pathname)
-   // console.log(history)
     
    return (
-      <Suspense fallback={<Loading sequence="router"/>}>
+      <>
          <NavBar handleLogout={handleLogout}/>
 
          <Switch>
@@ -58,7 +51,7 @@ const Routes = () => {
                <Route default component={NotFound} />
             
          </Switch>
-      </Suspense>
+      </>
    )
 }
 

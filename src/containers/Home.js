@@ -1,13 +1,10 @@
-import React, { lazy, Suspense, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {  useSelector, useDispatch  } from 'react-redux'
 import { userFollowPostsFetch } from '../store/actions/userActions'
 import { Link } from 'react-router-dom'
 
-// import Feed from '../containers/Feed'
 import Loading from '../components/Loading'
-
-
-const Feed = lazy(() => import('../containers/Feed'))
+import Feed from './Feed'
 
 const Home = () => {
    const currentUser = useSelector((state) => state.currentUser)
@@ -18,21 +15,20 @@ const Home = () => {
       dispatch(userFollowPostsFetch(currentUser.id))
    },[])
 
-   console.log(followsPosts)
-   return (
-      <Suspense fallback={<Loading sequence="home"/>}>
+   if (!followsPosts.length) {
+      return <Loading sequence='home'/>
+   } else {
+      return (
          <div className="home-page">
             <div className="header">
                <h3>Welcome to GoodBread {currentUser.username}!</h3>
                <Link to="/new-post" className="link-btn">New Post</Link>
             </div>
             <Feed posts={followsPosts} />   
-            
+      
          </div>
-      </Suspense>
-   )    
+      )      
+   }
 }
-
-
 
 export default Home

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 import Comment from '../components/Comment'
 import CommentForm from '../components/CommentForm'
+import Loading from '../components/Loading'
 
 const Post = (props) => {
    const [post, setPost] = useState({})
@@ -102,9 +103,7 @@ const Post = (props) => {
    }
 
    if (Object.keys(post).length <= 0) {
-      return (
-         <span>Loading...</span>
-      )
+      return <Loading sequence='post'/>
    } else {
       return( 
          <div className="post-page">

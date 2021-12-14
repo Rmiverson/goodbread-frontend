@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { getPostFetch, updatePostFetch, deletePost } from '../store/actions/postActions'
 
 import PostForm from '../components/PostForm'
+import Loading from '../components/Loading'
 
 const EditPost = (props) => {
    const [post, setPost] = useState({})
@@ -57,9 +58,7 @@ const EditPost = (props) => {
    }
 
    if (Object.keys(post).length <= 0) {
-      return (
-         <span>Loading...</span>
-      )
+      return <Loading sequence='edit post' />
    } else {
       return(
          <div className='edit-post-page'>

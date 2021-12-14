@@ -6,6 +6,7 @@ import { getUserInfoFetch } from '../store/actions/userActions'
 
 import UserInfoCard from '../components/UserInfoCard'
 import Feed from './Feed'
+import Loading from '../components/Loading'
 
 const User = (props) => {
    const [user, setUser] = useState({})
@@ -66,9 +67,7 @@ const User = (props) => {
    }
 
    if (Object.keys(user).length <= 0) {
-      return (
-         <span>Loading...</span>
-      )
+      return <Loading sequence='user' />
    } else if (currentUser.id === user.id) {
       return (
          <Redirect to="/profile" />

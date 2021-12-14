@@ -1,5 +1,5 @@
-export const setLoading = (status) => {
-   return (dispatch) => {
-      dispatch(status)
-   }
-}
+// export const setLoading = (status) => {
+//    return (dispatch) => {
+//       dispatch(status)
+//    }
+// }

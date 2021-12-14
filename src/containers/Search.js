@@ -4,6 +4,7 @@ import { allPostsFetch } from '../store/actions/postActions'
 
 import Feed from '../containers/Feed'
 import SearchBar from '../components/SearchBar'
+import Loading from '../components/Loading'
 
 const Search = () => {
    const [search, setSearch] = useState("")
@@ -29,9 +30,7 @@ const Search = () => {
    }
 
    if (allPosts.length <= 0) {
-      return(
-         <span>Loading...</span>
-      )
+      return <Loading sequence='search' />
    } else {
       return(
       <div className="Search-page">
