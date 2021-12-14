@@ -30,7 +30,7 @@ const Search = () => {
    }
 
    if (allPosts.length <= 0) {
-      return <Loading sequence='search' />
+      return <Loading />
    } else {
       return(
       <div className="Search-page">

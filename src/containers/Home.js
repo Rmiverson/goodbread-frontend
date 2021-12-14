@@ -16,7 +16,7 @@ const Home = () => {
    },[])
 
    if (!followsPosts.length) {
-      return <Loading sequence='home'/>
+      return <Loading />
    } else {
       return (
          <div className="home-page">

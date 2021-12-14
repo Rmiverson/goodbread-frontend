@@ -67,7 +67,7 @@ const User = (props) => {
    }
 
    if (Object.keys(user).length <= 0) {
-      return <Loading sequence='user' />
+      return <Loading />
    } else if (currentUser.id === user.id) {
       return (
          <Redirect to="/profile" />

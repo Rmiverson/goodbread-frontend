@@ -58,7 +58,7 @@ const EditPost = (props) => {
    }
 
    if (Object.keys(post).length <= 0) {
-      return <Loading sequence='edit post' />
+      return <Loading />
    } else {
       return(
          <div className='edit-post-page'>

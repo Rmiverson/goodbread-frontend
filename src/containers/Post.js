@@ -103,7 +103,7 @@ const Post = (props) => {
    }
 
    if (Object.keys(post).length <= 0) {
-      return <Loading sequence='post'/>
+      return <Loading />
    } else {
       return( 
          <div className="post-page">
