@@ -8,8 +8,10 @@ const PostForm = (props) => {
             <label>Title</label>
             <input required type="text" name="title" id="new-post-title" defaultValue={props.values.title}/>
 
-            <label>Content</label>
-            <textarea required name="content" rows="20" cols="60" id="new-post-content" defaultValue={props.values.content}></textarea>
+            <label>Introduction</label>
+            <textarea required name="content" rows="20" cols="60" id="new-post-intro" defaultValue={props.values.introduction}></textarea>
+
+            <label>ingredients</label>
 
             <input type="submit" value="Submit" className="submit-btn"/>
          </form>
