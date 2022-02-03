@@ -1,21 +1,16 @@
 import React, { useState } from 'react'
-// import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 const NewPost = () => {
-    // const [ingredients, setIngredients] = useState([])
-    // const [instructions, setInstructions] = useState([])
-    // const [tags, setTags] = useState([])
-
     const [data, setData] = useState({
-        title: '',
-        introduction: '',
-        conclusion: '',
+        contents: [{heading: '', text: ''}],
         ingredients: [{name: '', amount: 0}],
-        instructions: [],
-        tags: []
+        instructions: [''],
+        tags: ['']
     })
-    console.log(data)
-    // const currentUser = useSelector((state) => state.currentUser)
+    // console.log(data)
+
+    const currentUser = useSelector((state) => state.currentUser)
 
     // ingredients
     const handleIngredientNameChange = (index) => (e) => {
@@ -43,48 +38,78 @@ const NewPost = () => {
     }
 
     // instructions
-    // const handleInstructionSubmit = (e) => {
-    //     e.preventDefault()
+    const handleInstructionChange = (index) => (e) => {
+        const newInstructions = data.instructions.map((instruction, sIndex) => {
+            if (index !== sIndex) return instruction
+            return e.target.value
+        })
+        setData({...data, instructions: newInstructions})
+    }
 
-    //     setInstructions([...instructions, e.target.instruction.value])
-    // }
+    const handleAddInstruction = () => {
+        setData({...data, instructions: [...data.instructions, '']})
+    }
 
-    // const handleTagSubmit = (e) => {
-    //     e.preventDefault()
-    //     setTags([...tags, e.target.tag.value])
-    // }
+    const handleRemoveInstruction = (index) => () => {
+        setData({...data, instructions: data.instructions.filter((s, sIndex) => index !== sIndex)})
+    }
+
+    // tags
+    const handleTagChange = (index) => (e) => {
+        const newTags = data.tags.map((tag, sIndex) => {
+            if (index !== sIndex) return tag
+            return e.target.value            
+        })
+        setData({...data, tags: newTags})
+    }
+
+    const handleAddTag = () => {
+        setData({...data, tags: [...data.tags, '']})
+    }
+
+    const handleRemoveTag = (index) => () => {
+        setData({...data, tags: data.tags.filter((s, sIndex) => index !== sIndex)})
+    }
+
+    // content
+    const handleContentsHeadingChange = (index) => (e) => {
+        const newContents = data.contents.map((content, sIndex) => {
+            if (index !== sIndex) return content
+            return {...content, heading: e.target.value}
+        })
+        setData({...data, contents: newContents})
+    }
+
+    const handleContentsTextChange = (index) => (e) => {
+        const newContents = data.contents.map((content, sIndex) => {
+            if (index !== sIndex) return content
+            return {...content, text: e.target.value}
+        })
+        setData({...data, contents: newContents})
+    }
+
+    const handleAddContent = () => {
+        setData({...data, contents: [...data.contents, {heading: '', text: ''}]})
+    }
+
+    const handleRemoveContent = (index) => () => {
+        setData({...data, contents: data.contents.filter((s, sIndex) => index !== sIndex)})
+    }
 
     const submitPost = (e) => {
         e.preventDefault()
 
-        // let postData = {
-        //     user_id: currentUser.id,
-        //     title: e.target.title.value,
-        //     introduction: e.target.introduction.value,
-        //     conclusion: e.target.conclusion.value,
-        //     ingredients: ingredients,
-        //     instructions: instructions,
-        //     tags: tags
-        // }
+        let postData = {
+            user_id: currentUser.id,
+            title: e.target.title.value,
+            content: data.content,
+            ingredients: data.ingredients,
+            instructions: data.instructions,
+            tags: data.tags
+        }
 
-        // if (postData.instructions.length <= 0 || postData.ingredients <= 0) {
-        //     window.alert('Your ingredients or instructions cannot be empty.')
-        // } else if (postData.tags <= 0) {
-        //     window.alert('You must have at least one tag.')
-        // }
-
-        console.log(data)
+        console.log(postData)
     }
-
-    // const renderList = (input) => {
-    //     if (input.length <= 0) {
-    //         return <li>Empty!</li>
-    //     } else {
-    //         return input.map((element, index) => {
-    //             return <li key={index}>{element}</li>
-    //         })            
-    //     }
-    // }
 
     return (
         <div className='new-post-page'>
@@ -92,26 +117,44 @@ const NewPost = () => {
                 <label>Title</label>
                 <input required type='text' name='title' defaultValue=''  />
 
-                <label>Introduction</label>
-                <input required type='text' name='introduction' defaultValue='' />
+                {/* content */}
+                <label>Text Content</label>
+                {data.contents.map((content, index) => (
+                    <div key={index} className='content'>
+                        <input 
+                            type='text'
+                            placeholder='heading'
+                            value={content.heading}
+                            onChange={handleContentsHeadingChange(index)}
+                        />
+                        <input 
+                            type='text'
+                            placeholder={'text'}
+                            value={content.text}
+                            onChange={handleContentsTextChange(index)}
+                        />
+                        <button
+                            type='button'
+                            onClick={handleRemoveContent(index)}
+                        >
+                            -
+                        </button>
+                    </div>
+                ))}
+                <button
+                    type='button'
+                    onClick={handleAddContent}
+                >
+                    Add Text Content
+                </button>
 
-                <label>Conclusion (optional)</label>
-                <input type='text' name='conclusion' defaultValue='' />
-
-            </form>
-
-            {/* <h4>Ingredients</h4>
-            <ul id='ingredient-list'>
-                {renderList(ingredients)}
-            </ul> */}
-            
-            <form id='ingredient-form'> 
-                <h4>ingredients</h4>
+                {/* ingredients */}
+                <label>Ingredients</label>
                 {data.ingredients.map((ingredient, index) => (
                     <div key={index} className='ingredient'>
                         <input
                             type='text'
-                            placeholder={`Ingredient #${index + 1} name`}
+                            placeholder={`Ingredient #${index + 1}`}
                             value={ingredient.name}
                             onChange={handleIngredientNameChange(index)}
                         />
@@ -135,30 +178,57 @@ const NewPost = () => {
                 >
                     Add Ingredient
                 </button>
-            </form>
 
-            {/* <h4>Instructions</h4>
-            <ol id='instructions-list'>
-                {renderList(instructions)}
-            </ol> */}
+                {/*  Instructions  */}
+                <label>instructions</label>
+                {data.instructions.map((instruction, index) => (
+                    <div key={index} className='instruction'>
+                        <input
+                            type='text'
+                            placeholder={`Instruction #${index + 1}`}
+                            value={instruction}
+                            onChange={handleInstructionChange(index)}
+                        />
+                        <button
+                            type='button'
+                            onClick={handleRemoveInstruction(index)}
+                        >
+                            -
+                        </button>
+                    </div>
+                ))}
+                <button
+                    type='button'
+                    onClick={handleAddInstruction}
+                >
+                    Add Instruction
+                </button>
 
-            {/* <form id='instruction-form' onSubmit={handleInstructionSubmit}>
-                <label>Add an instruction</label>
-                <input required type='text' name='instruction' defaultValue='' />
-
-                <input type='submit' value='Add' />
-            </form> */}
-{/* 
-            <h4>Tags</h4>
-            <ul id='tag-list'>
-                {renderList(tags)}
-            </ul> */}
-
-            {/* <form id='tag-form' onSubmit={handleTagSubmit}>
-                <label>Add a tag (Pizza, Italian, Dinner, Etc...)</label>
-                <input required type='text' name='tag' defaultValue='' />
-                <input type='submit' value='add' />
-            </form> */}
+                {/* Tags */}
+                <label>Tags</label>
+                {data.tags.map((tag, index) => (
+                    <div key={index} className='tags'> 
+                        <input
+                            type='text'
+                            placeholder={`Tag #${index + 1}`}
+                            value={tag}
+                            onChange={handleTagChange(index)}
+                        />
+                        <button
+                            type='button'
+                            onClick={handleRemoveTag(index)}
+                        >
+                            -
+                        </button>
+                    </div>
+                ))}
+                <button
+                    type='button'
+                    onClick={handleAddTag}
+                >
+                    Add Tag
+                </button>
+            </form>   
             
             <input form='new-post-form' type='submit' value='Submit Recipe' />
         </div>
