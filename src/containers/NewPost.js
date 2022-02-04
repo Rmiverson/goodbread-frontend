@@ -1,18 +1,29 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { newPostFetch } from '../store/actions/postActions'
 
 const NewPost = () => {
-    const [data, setData] = useState({
-        contents: [{heading: '', text: ''}],
-        ingredients: [{name: '', amount: 0}],
-        instructions: [''],
-        tags: ['']
-    })
-    // console.log(data)
+   const [submitted, setSubmitted] = useState(false)
+   const [postId, setPostId] = useState('')
+   const [data, setData] = useState({
+      contents: [{heading: '', text: ''}],
+      ingredients: [{name: '', amount: 0}],
+      instructions: [''],
+      tags: ['']
+   })
 
-    const currentUser = useSelector((state) => state.currentUser)
+   const currentUser = useSelector((state) => state.currentUser)
+   const dispatch = useDispatch()
 
-    // ingredients
+   const updateIdCallback = useCallback(
+      (post) => {
+         setPostId(post.id)
+         setSubmitted(true)
+      }
+   )    
+   
+   // ingredients
     const handleIngredientNameChange = (index) => (e) => {
         const newIngredients = data.ingredients.map((ingredient, sIndex) => {
             if (index !== sIndex) return ingredient
@@ -96,19 +107,24 @@ const NewPost = () => {
         setData({...data, contents: data.contents.filter((s, sIndex) => index !== sIndex)})
     }
 
+    const renderReRoute = () => {
+      return (submitted && <Redirect to={`/post/${postId}`} />)
+   }
+
     const submitPost = (e) => {
         e.preventDefault()
 
         let postData = {
             user_id: currentUser.id,
             title: e.target.title.value,
-            content: data.content,
+            contents: data.contents,
             ingredients: data.ingredients,
             instructions: data.instructions,
             tags: data.tags
         }
 
-        console.log(postData)
+      //   console.log(postData)
+        dispatch(newPostFetch(postData, updateIdCallback))
     }
 
     return (
@@ -231,6 +247,7 @@ const NewPost = () => {
             </form>   
             
             <input form='new-post-form' type='submit' value='Submit Recipe' />
+            {renderReRoute()}
         </div>
     )
 }

@@ -17,6 +17,7 @@ const Post = (props) => {
    useEffect(() => {
       let id = props.match.params.postId
       dispatch(getPostFetch(id, postCallback))
+      
    }, [])
 
    // callbacks
@@ -35,6 +36,21 @@ const Post = (props) => {
             return false
          }
          return true 
+      })
+   }
+
+   const arrayDecipher = (arr) => {
+      return arr.map(string => {
+         let firstKey = string.split(/"/)[1]
+         let secondKey = string.split(/"/)[5]
+         let firstContent = string.split(/"/)[3]
+         let secondContent = string.split(/"/)[7]
+
+         let newObj = {
+            [firstKey]: firstContent,
+            [secondKey]: secondContent
+         }
+         return newObj
       })
    }
 
@@ -89,6 +105,7 @@ const Post = (props) => {
    }
 
    const renderEditBtn = () => {
+      arrayDecipher(post.contents)
       if (currentUser.id === post.user.id) {
          return (
             <div className="router-edit-btn">
@@ -114,10 +131,37 @@ const Post = (props) => {
                   <Link to={`/user/${post.user.id}`} >Author: {post.user.username}</Link>
                </div>
                <h5>Likes: {post.post_likes.length}</h5>
-               <p>{post.content}</p>
                <div className="like-btn">
                   {renderLikeBtn()}
                </div>
+
+               {arrayDecipher(post.contents).map((content, index ) => (
+                  <div key={index}>
+                     <h4>{content.heading}</h4>
+                     <p>{content.text}</p>
+                  </div>
+               ))}
+
+               <h4>Ingredients</h4>
+               <ul>
+                  {arrayDecipher(post.ingredients).map((ingredient, index) => (   
+                     <li key={index}>{ingredient.amount} {ingredient.name}</li>
+                  ))}
+               </ul>
+
+               <h4>Instructions</h4>
+               <ol>
+                  {post.instructions.map((instruction, index) => (
+                     <li key={index}>{instruction}</li>
+                  ))}            
+               </ol>
+               
+               <h4>Tags</h4>
+               <ul>
+                  {post.tags.map((tag, index) => (
+                     <p key={index}>{tag}</p>
+                  ))}
+               </ul>
             </div>
             
             <div className="comment-section">
