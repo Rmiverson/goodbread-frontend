@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import DraftTextBox from '../components/DraftTextBox'
 import { newPostFetch } from '../store/actions/postActions'
 
 const NewPost = () => {
@@ -59,7 +60,7 @@ const NewPost = () => {
     }
     
     const renderTextForm = () => {
-
+        return DraftTextBox()
     }
 
     return (
@@ -87,7 +88,8 @@ const NewPost = () => {
                             case 'text':
                                 return (
                                     <div key={index} className='text-content-box'>
-                                        <p>text</p>
+                                        <DraftTextBox /> 
+                                        {/* left off here working on draft text box */}
                                     </div>                                 
                                 )
                             case 'ul':
