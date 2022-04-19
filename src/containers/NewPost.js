@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import DraftTextBox from '../components/DraftTextBox'
 import { newPostFetch } from '../store/actions/postActions'
 
 const NewPost = () => {
@@ -15,6 +14,8 @@ const NewPost = () => {
 
     const currentUser = useSelector((state) => state.currentUser)
     const dispatch = useDispatch()
+    
+    console.log(data)
 
     // contents set functions
     const textOnClick = () => {
@@ -35,6 +36,30 @@ const NewPost = () => {
     const contentImageOnClick = () => {
         console.log('image')
         setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'image', imageContent: ''}]})
+    }
+
+        
+    // Text handlers
+    const handleSubHeadingChange = (index) => (e) => {
+        const newContents = data.contents.map((content, sIndex) => {
+            if (index !== sIndex) return content
+            return {...content, subHeading: e.target.value}
+        })
+        setData({...data, contents: newContents})
+    }
+    
+    const handleTextContentChange = (index) => (e) => {
+        const newContents = data.contents.map((content, sIndex) => {
+            if (index !== sIndex) return content
+            return {...content, text: e.target.value}
+        })
+        setData({...data, contents: newContents})
+    }
+
+    // Ul handlers
+    const handleUlItemChange = (index) => (e) => {
+        const newUlItems = data.contents.map((content, sIndex))
+        // left off here
     }
 
     // tags
@@ -59,9 +84,6 @@ const NewPost = () => {
         return (submitted && <Redirect to={`/post/${postId}`} />)
     }
     
-    const renderTextForm = () => {
-        return DraftTextBox()
-    }
 
     return (
         <div className='new-post-page'>
@@ -88,15 +110,38 @@ const NewPost = () => {
                             case 'text':
                                 return (
                                     <div key={index} className='text-content-box'>
-                                        <DraftTextBox /> 
-                                        {/* left off here working on draft text box */}
+                                        <input 
+                                            type='text'
+                                            placeholder='Sub-Heading'
+                                            value={content.subHeading}
+                                            onChange={handleSubHeadingChange(index)}
+                                        />
+                                        <input 
+                                            type='text'
+                                            placeholder='Content'
+                                            value={content.text}
+                                            onChange={handleTextContentChange(index)}
+                                        />
                                     </div>                                 
                                 )
                             case 'ul':
                                 return (
-                                    <div key={index} className='ul-content-box'>
-                                        <p>ul</p>
-                                    </div>                                 
+                                    <ul key={index} className='ul-content-box'>
+                                        {content.listContent.map((listItem, index) => {
+                                            <li key={index} className='list-item'>
+                                                <input 
+                                                    type='text'
+                                                    placeholder={`Item #${index + 1}`}
+                                                    value={listItem}
+                                                    onChange={handleUlItemChange(index)}
+                                                />
+                                                <button 
+                                                    type='button'
+                                                    onClick={handleRemoveUlItem(index)}
+                                                >-</button>
+                                            </li>
+                                        })}
+                                    </ul>                                 
                                 )
                             case 'ol':
                                 return (
