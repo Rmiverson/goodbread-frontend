@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import FormUl from '../components/FormUl'
 import { newPostFetch } from '../store/actions/postActions'
 
 const NewPost = () => {
@@ -25,7 +26,7 @@ const NewPost = () => {
 
     const ulOnClick = () => {
         console.log('ul')
-        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'ul', listContent: ['']}]})
+        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'ul'}]})
     }
 
     const olOnClick = () => {
@@ -36,6 +37,10 @@ const NewPost = () => {
     const contentImageOnClick = () => {
         console.log('image')
         setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'image', imageContent: ''}]})
+    }
+
+    const handleRemoveList = (index) => () => {
+        setData({...data, contents: data.contents.filter((s, sIndex) => index !== sIndex)})
     }
 
         
@@ -55,12 +60,7 @@ const NewPost = () => {
         })
         setData({...data, contents: newContents})
     }
-
-    // Ul handlers
-    const handleUlItemChange = (index) => (e) => {
-        const newUlItems = data.contents.map((content, sIndex))
-        // left off here
-    }
+    //left off here
 
     // tags
     const handleTagChange = (index) => (e) => {
@@ -126,22 +126,13 @@ const NewPost = () => {
                                 )
                             case 'ul':
                                 return (
-                                    <ul key={index} className='ul-content-box'>
-                                        {content.listContent.map((listItem, index) => {
-                                            <li key={index} className='list-item'>
-                                                <input 
-                                                    type='text'
-                                                    placeholder={`Item #${index + 1}`}
-                                                    value={listItem}
-                                                    onChange={handleUlItemChange(index)}
-                                                />
-                                                <button 
-                                                    type='button'
-                                                    onClick={handleRemoveUlItem(index)}
-                                                >-</button>
-                                            </li>
-                                        })}
-                                    </ul>                                 
+                                    <div className='ul-content-box' key={content.id}>
+                                        <FormUl id={content.id}/>
+                                        <button
+                                            type='button'
+                                            onClick={handleRemoveList(index)}
+                                        >Remove List</button>
+                                    </div>
                                 )
                             case 'ol':
                                 return (
