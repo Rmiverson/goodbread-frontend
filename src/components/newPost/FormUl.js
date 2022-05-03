@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
 
-const FormUl = (props) => {
-    const [id] = useState(props.id)
+const FormUl = () => {
     const [listContents, setListContent] = useState([''])
-
-    console.log(listContents)
 
     const handleAddListItem = () => {
         setListContent([...listContents, ''])
@@ -23,7 +20,7 @@ const FormUl = (props) => {
     }
 
     return(
-        <ul key={id}>
+        <ul className='ul-inputs'>
             {listContents.map((listItem, index) => (
                 <li key={index} className='list-item'>
                     <input 

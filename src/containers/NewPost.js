@@ -1,12 +1,14 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import FormUl from '../components/FormUl'
+import FormText from '../components/newPost/FormText'
+import FormUl from '../components/newPost/FormUl'
 import { newPostFetch } from '../store/actions/postActions'
 
 const NewPost = () => {
     const [submitted, setSubmitted] = useState(false)
     const [postId, setPostId] = useState('')
+    const [idCounter, setIdCounter] = useState(0)
     const [data, setData] = useState({
         mainContent: {title: '', description: '', photo: ''},
         contents: [],
@@ -21,46 +23,31 @@ const NewPost = () => {
     // contents set functions
     const textOnClick = () => {
         console.log('text')
-        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'text', subHeading: '', text: ''}]})
+        setIdCounter(idCounter + 1)
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'text'}]})
     }
 
     const ulOnClick = () => {
         console.log('ul')
-        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'ul'}]})
+        setIdCounter(idCounter + 1)
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ul'}]})
     }
 
     const olOnClick = () => {
         console.log('ol')
-        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'ol', listContent: ['']}]})
+        setIdCounter(idCounter + 1)
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ol', listContent: ['']}]})
     }
 
     const contentImageOnClick = () => {
         console.log('image')
-        setData({...data, contents: [...data.contents, {id: data.contents.length + 1, type: 'image', imageContent: ''}]})
+        setIdCounter(idCounter + 1)
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'image', imageContent: ''}]})
     }
 
-    const handleRemoveList = (index) => () => {
+    const handleRemove = (index) => () => {
         setData({...data, contents: data.contents.filter((s, sIndex) => index !== sIndex)})
     }
-
-        
-    // Text handlers
-    const handleSubHeadingChange = (index) => (e) => {
-        const newContents = data.contents.map((content, sIndex) => {
-            if (index !== sIndex) return content
-            return {...content, subHeading: e.target.value}
-        })
-        setData({...data, contents: newContents})
-    }
-    
-    const handleTextContentChange = (index) => (e) => {
-        const newContents = data.contents.map((content, sIndex) => {
-            if (index !== sIndex) return content
-            return {...content, text: e.target.value}
-        })
-        setData({...data, contents: newContents})
-    }
-    //left off here
 
     // tags
     const handleTagChange = (index) => (e) => {
@@ -109,20 +96,13 @@ const NewPost = () => {
                         switch (content.type) {
                             case 'text':
                                 return (
-                                    <div key={index} className='text-content-box'>
-                                        <input 
-                                            type='text'
-                                            placeholder='Sub-Heading'
-                                            value={content.subHeading}
-                                            onChange={handleSubHeadingChange(index)}
-                                        />
-                                        <input 
-                                            type='text'
-                                            placeholder='Content'
-                                            value={content.text}
-                                            onChange={handleTextContentChange(index)}
-                                        />
-                                    </div>                                 
+                                    <div className='text-content-box' key={content.id}>
+                                        <FormText id={content.id}/>
+                                        <button
+                                            type='button'
+                                            onClick={handleRemove(index)}
+                                        >Remove text box</button>
+                                    </div>                              
                                 )
                             case 'ul':
                                 return (
@@ -130,7 +110,7 @@ const NewPost = () => {
                                         <FormUl id={content.id}/>
                                         <button
                                             type='button'
-                                            onClick={handleRemoveList(index)}
+                                            onClick={handleRemove(index)}
                                         >Remove List</button>
                                     </div>
                                 )
