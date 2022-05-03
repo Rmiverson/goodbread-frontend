@@ -26,6 +26,7 @@ const FormOl = (props) => {
 
     return(
         <div className='ol-input-box' >
+            <h4>Ordered List Input</h4>
             <input
                 type='text'
                 placeholder='List Header'

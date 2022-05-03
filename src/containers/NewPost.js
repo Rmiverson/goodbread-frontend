@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import FormImage from '../components/newPost/FormImage'
 import FormOl from '../components/newPost/FormOl'
 import FormText from '../components/newPost/FormText'
 import FormUl from '../components/newPost/FormUl'
@@ -102,11 +103,7 @@ const NewPost = () => {
                             case 'ol':
                                 return <FormOl key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
                             case 'image':
-                                return (
-                                    <div key={index} className='image-content-box'>
-                                        <p>image</p>
-                                    </div>                                 
-                                )
+                                return <FormImage key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
                             default:
                                 console.error('bad content data type when mapping')
                         }

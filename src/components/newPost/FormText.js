@@ -14,6 +14,7 @@ const FormText = (props) => {
 
     return (
         <div className='text-input-box' >
+            <h4>Text Input</h4>
             <input 
                 type='text'
                 placeholder='Sub-Heading'
