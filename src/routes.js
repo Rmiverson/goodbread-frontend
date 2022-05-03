@@ -20,7 +20,7 @@ const Routes = () => {
    const currentUser = useSelector((state) => state.currentUser)
    const dispatch = useDispatch()
 
-   useEffect(async () => {
+   useEffect(() => {
       dispatch(userPersistFetch())
    }, [])
   
