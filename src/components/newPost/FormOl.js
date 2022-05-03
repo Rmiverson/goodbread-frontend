@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const FormUl = (props) => {
+const FormOl = (props) => {
     const [listHeader, setListHeader] = useState('')
     const [listContents, setListContent] = useState([''])
 
@@ -25,14 +25,14 @@ const FormUl = (props) => {
     }
 
     return(
-        <div className='ul-input-box' >
+        <div className='ol-input-box' >
             <input
                 type='text'
                 placeholder='List Header'
                 value={listHeader}
                 onChange={handleHeaderChange}
             />
-            <ul className='ul-inputs'>
+            <ol className='ol-inputs'>
                 {listContents.map((listItem, index) => (
                     <li key={index} className='list-item'>
                         <input 
@@ -51,14 +51,13 @@ const FormUl = (props) => {
                     type='button'
                     onClick={handleAddListItem}
                 >Add Item</button>
-            </ul>
+            </ol>
             <button
                 type='button'
                 onClick={props.selfDestruct(props.index)}
-            >Remove List</button>
+            >Remove List</button>            
         </div>
- 
     )
 }
 
-export default FormUl
+export default FormOl

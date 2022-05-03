@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import FormOl from '../components/newPost/FormOl'
 import FormText from '../components/newPost/FormText'
 import FormUl from '../components/newPost/FormUl'
 import { newPostFetch } from '../store/actions/postActions'
@@ -95,31 +96,11 @@ const NewPost = () => {
                     {data.contents.map((content, index) => {
                         switch (content.type) {
                             case 'text':
-                                return (
-                                    <div className='text-content-box' key={content.id}>
-                                        <FormText id={content.id}/>
-                                        <button
-                                            type='button'
-                                            onClick={handleRemove(index)}
-                                        >Remove text box</button>
-                                    </div>                              
-                                )
+                                return <FormText key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
                             case 'ul':
-                                return (
-                                    <div className='ul-content-box' key={content.id}>
-                                        <FormUl id={content.id}/>
-                                        <button
-                                            type='button'
-                                            onClick={handleRemove(index)}
-                                        >Remove List</button>
-                                    </div>
-                                )
+                                return <FormUl key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
                             case 'ol':
-                                return (
-                                    <div key={index} className='ol-content-box'>
-                                        <p>ol</p>
-                                    </div>                                 
-                                )
+                                return <FormOl key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
                             case 'image':
                                 return (
                                     <div key={index} className='image-content-box'>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const FormText = () => {
+const FormText = (props) => {
     const [subHeading, setSubHeading] = useState('')
     const [text, setText] = useState('')
 
@@ -13,7 +13,7 @@ const FormText = () => {
     }
 
     return (
-        <div className='text-content-inputs'>
+        <div className='text-input-box' >
             <input 
                 type='text'
                 placeholder='Sub-Heading'
@@ -26,6 +26,11 @@ const FormText = () => {
                 value={text}
                 onChange={handleTextContentChange}
             />
+
+            <button
+                type='button'
+                onClick={props.selfDestruct(props.index)}
+            >Remove text box</button>
         </div>
     )
 }
