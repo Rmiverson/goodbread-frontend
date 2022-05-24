@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const FormUl = (props) => {
     const [listHeader, setListHeader] = useState('')
     const [listContents, setListContent] = useState([''])
+
+    useEffect(() => {
+        props.inputData.header = listHeader
+        props.inputData.listContents = listContents
+    }, [listHeader, listContents])
 
     const handleHeaderChange = (e) => {
         setListHeader(e.target.value)

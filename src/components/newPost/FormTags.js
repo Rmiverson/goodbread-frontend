@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const FormTags = (props) => {
     const [tags, setTags] = useState([''])
+
+    useEffect(() => {
+        props.setTags(tags)
+    }, [tags]);
 
     const handleTagChange = (index) => (e) => {
         const newTags = tags.map((tag, sIndex) => {

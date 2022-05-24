@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const FormImage = (props) => {
     const [description, setDescription] = useState('')
     const [image, setImage] = useState(null)
     const [imageURL, setImageURL] = useState(null)
+
+    console.log(props.data)
+
+    useEffect(() => {
+        props.inputData.description = description
+        props.inputData.image = image
+    }, [description, image]);
 
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value)
@@ -19,7 +26,7 @@ const FormImage = (props) => {
             <h4>Image Input</h4>
             <input
                 type='text'
-                placeholder='List Header'
+                placeholder='Image Description'
                 value={description}
                 onChange={handleDescriptionChange}
             />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const FormOl = (props) => {
     const [listHeader, setListHeader] = useState('')
@@ -11,6 +11,11 @@ const FormOl = (props) => {
     const handleAddListItem = () => {
         setListContent([...listContents, ''])
     }
+
+    useEffect(() => {
+        props.inputData.header = listHeader
+        props.inputData.listContents = listContents
+    }, [listHeader, listContents])
 
     const handleUlItemChange = (index) => (e) => {
         const newUlItems = listContents.map((content, sIndex) => {

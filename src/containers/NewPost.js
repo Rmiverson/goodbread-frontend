@@ -8,7 +8,7 @@ import FormText from '../components/newPost/FormText'
 import FormUl from '../components/newPost/FormUl'
 import { newPostFetch } from '../store/actions/postActions'
 
-const NewPost = () => {
+const NewPost = (props) => {
     const [submitted, setSubmitted] = useState(false)
     const [postId, setPostId] = useState('')
     const [idCounter, setIdCounter] = useState(0)
@@ -17,30 +17,31 @@ const NewPost = () => {
         contents: []
     })
 
+    const [tags, setTags] = useState([]);
     const currentUser = useSelector((state) => state.currentUser)
     const dispatch = useDispatch()
-    
-    console.log(data)
+
+    // console.log(data)
 
     // contents set functions
     const textOnClick = () => {
         setIdCounter(idCounter + 1)
-        setData({...data, contents: [...data.contents, {id: idCounter, type: 'text'}]})
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'text', inputData: {subHeading: '', text: ''}}]})
     }
 
     const ulOnClick = () => {
         setIdCounter(idCounter + 1)
-        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ul'}]})
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ul', inputData: {header: '', listContents: []}}]})
     }
 
     const olOnClick = () => {
         setIdCounter(idCounter + 1)
-        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ol', listContent: ['']}]})
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'ol', inputData: {header: '', listContents: []}}]})
     }
 
     const contentImageOnClick = () => {
         setIdCounter(idCounter + 1)
-        setData({...data, contents: [...data.contents, {id: idCounter, type: 'image', imageContent: ''}]})
+        setData({...data, contents: [...data.contents, {id: idCounter, type: 'image', inputData: {description: '', image: ''}}]})
     }
 
     const handleRemove = (index) => () => {
@@ -52,12 +53,19 @@ const NewPost = () => {
         return (submitted && <Redirect to={`/post/${postId}`} />)
     }
     
+    const handleSubmit = () => {
+        // left off here, set up data formmating for sending off to the backend
+        setSubmitted(true)
+        console.log(data)
+        console.log(tags)
+    }
 
     return (
         <div className='new-post-page'>
-            <form>
-                <div className='header-content'>
+            <form > {/*onSubmit={handleSubmit}*/}
+                <div className='header-content'> 
                     <h3>Main Header</h3>
+                    {/* finish handlers for these vv */}
                     <input required type='text' name='title' defaultValue='' placeholder='Title' />   
                     <input type='text' name='shortDescription' defaultValue='' placeholder='Description' />
                     <input type='file' name='headerPhoto' accept='image/png, image/jpeg'/> 
@@ -76,25 +84,25 @@ const NewPost = () => {
                     {data.contents.map((content, index) => {
                         switch (content.type) {
                             case 'text':
-                                return <FormText key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
+                                return <FormText key={content.id} id={content.id} index={index} selfDestruct={handleRemove} inputData={content.inputData}/>
                             case 'ul':
-                                return <FormUl key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
+                                return <FormUl key={content.id} id={content.id} index={index} selfDestruct={handleRemove} inputData={content.inputData}/>
                             case 'ol':
-                                return <FormOl key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
+                                return <FormOl key={content.id} id={content.id} index={index} selfDestruct={handleRemove} inputData={content.inputData}/>
                             case 'image':
-                                return <FormImage key={content.id} id={content.id} index={index} selfDestruct={handleRemove}/>
+                                return <FormImage key={content.id} id={content.id} index={index} selfDestruct={handleRemove} inputData={content.inputData}/>
                             default:
                                 console.error('bad content data type when mapping')
                         }
                     })}
                 </div>
 
-                <FormTags />
-
+                <FormTags setTags={setTags} />
+                
             </form>
-
-            <input form='new-post-form' type='submit' value='Submit Recipe' />
-            {renderReRoute()}
+            <input type='submit' value='Submit Recipe' onClick={handleSubmit}/> {/* using onclick to develop how this component handles data collection, will switch to onSubmit later*/}
+            
+            {/* {renderReRoute()} */}
         </div>
     )
 }

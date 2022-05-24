@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const FormText = (props) => {
     const [subHeading, setSubHeading] = useState('')
     const [text, setText] = useState('')
+
+    useEffect(() => {
+        props.inputData.subHeading = subHeading
+        props.inputData.text = text
+    }, [subHeading, text])
 
     const handleSubHeadingChange = (e) => {
         setSubHeading(e.target.value)
