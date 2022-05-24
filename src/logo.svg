@@ -1,1 +1,27 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 317.55 296.13"><defs><style>.cls-1{fill:#f8b735;}.cls-2,.cls-3{isolation:isolate;font-size:90px;font-family:Funkydori-Bold, Funkydori;font-weight:700;}.cls-3{letter-spacing:0.03em;}</style></defs><g id="Layer_4" data-name="Layer 4"><ellipse class="cls-1" cx="113.55" cy="54" rx="88" ry="54"/><ellipse class="cls-1" cx="232.55" cy="56" rx="85" ry="56"/><path class="cls-1" d="M62.9,119.4H275.8a6.94,6.94,0,0,1,7,6.9v116a7.11,7.11,0,0,1-7,7.1H124.2a68.48,68.48,0,0,1-68.4-68.3h0V126.5a7.06,7.06,0,0,1,7.1-7.1Z" transform="translate(-0.25 -47.4)"/></g><g id="Layer_3" data-name="Layer 3"><text class="cls-2" transform="translate(97.1 98.85)">Good</text><text class="cls-2" transform="translate(0 170.85)">Br</text><text class="cls-3" transform="translate(93.77 170.85)">ead</text><text class="cls-2" transform="translate(218.24 170.85)"><tspan xml:space="preserve">  </tspan></text></g></svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 317.55 296.13">
+    <defs>
+        <style>
+            .cls-1{fill:#f8b735;}
+            .cls-2, .cls-3{
+                isolation:isolate;
+                font-size:85px;
+                font-family:'Marck Script', cursive;
+                font-weight:400;
+                src:url('../public/MarckScript-regular.ttf');
+            },
+            .cls-3{letter-spacing:0.03em;}
+        </style>
+    </defs>
+    <g id="Layer_4" data-name="Layer 4">
+        <ellipse class="cls-1" cx="113.55" cy="54" rx="88" ry="54"/>
+        <ellipse class="cls-1" cx="232.55" cy="56" rx="85" ry="56"/>
+        <path class="cls-1" d="M62.9,119.4H275.8a6.94,6.94,0,0,1,7,6.9v116a7.11,7.11,0,0,1-7,7.1H124.2a68.48,68.48,0,0,1-68.4-68.3h0V126.5a7.06,7.06,0,0,1,7.1-7.1Z" transform="translate(-0.25 -47.4)"/>
+    </g>
+    <g id="Layer_3" data-name="Layer 3">
+        <text class="cls-2" transform="translate(97.1 98.85)">Good</text>
+        <text class="cls-2" transform="translate(0 170.85)">Bread</text>
+        <text class="cls-2" transform="translate(218.24 170.85)">
+            <tspan xml:space="preserve">  </tspan>
+        </text>
+    </g>
+</svg>
